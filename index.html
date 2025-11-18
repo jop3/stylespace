@@ -9,6 +9,8 @@
     <script src="https://cdn.jsdelivr.net/npm/animejs@4.2.2/dist/bundles/anime.umd.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/pixi.js@7.4.2/dist/pixi.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/tinycolor2@1.6.0/dist/tinycolor-min.js"></script>
+    <!-- SVG.js for SVG manipulation -->
+    <script src="https://cdn.jsdelivr.net/npm/@svgdotjs/svg.js@3.2.0/dist/svg.min.js"></script>
 
     <!-- DiceBear Avatar Library (ESM) -->
     <script type="importmap">
@@ -38,6 +40,7 @@
                 <div class="menu-tabs">
                     <button class="tab-btn active" data-tab="appearance">Utseende</button>
                     <button class="tab-btn" data-tab="clothes">Kläder</button>
+                    <button class="tab-btn" data-tab="custom">🎨 Custom</button>
                     <button class="tab-btn" data-tab="pets">Pets</button>
                     <button class="tab-btn" data-tab="outfits">Outfits</button>
                     <button class="tab-btn" data-tab="codes">Koder</button>
@@ -205,6 +208,56 @@
                     </div>
                 </div>
 
+                <!-- Custom Design Tab -->
+                <div class="tab-content" id="custom-tab">
+                    <div class="custom-section">
+                        <h3>🎨 Custom SVG Design</h3>
+                        <p style="font-size: 0.9rem; opacity: 0.8; margin-bottom: 15px;">
+                            Avancerad avatar-anpassning med SVG-manipulation
+                        </p>
+
+                        <!-- Multi-Part Coloring -->
+                        <div class="customization-section">
+                            <h4>Multi-Part Färgning</h4>
+                            <p style="font-size: 0.8rem; opacity: 0.7;">Färga olika delar av samma plagg</p>
+                            <button class="option-btn" onclick="applyMultiPartColoring()">🌈 Test Multi-Part</button>
+                        </div>
+
+                        <!-- Patterns -->
+                        <div class="customization-section">
+                            <h4>Mönster</h4>
+                            <div class="option-buttons">
+                                <button class="option-btn" onclick="applyPattern('stripes')">📏 Ränder</button>
+                                <button class="option-btn" onclick="applyPattern('polkadots')">⚪ Prickar</button>
+                                <button class="option-btn" onclick="applyPattern('checkerboard')">🔲 Schack</button>
+                                <button class="option-btn" onclick="applyPattern('gradient')">🌈 Gradient</button>
+                            </div>
+                        </div>
+
+                        <!-- Effects -->
+                        <div class="customization-section">
+                            <h4>Effekter</h4>
+                            <div class="option-buttons">
+                                <button class="option-btn" onclick="applyGlowEffect()">💫 Glow</button>
+                                <button class="option-btn" onclick="clearEffects()">🧹 Rensa Effekter</button>
+                            </div>
+                        </div>
+
+                        <!-- Export -->
+                        <div class="customization-section">
+                            <h4>Export</h4>
+                            <div class="option-buttons">
+                                <button class="option-btn" onclick="exportAvatarSVG()">📄 Ladda ner SVG</button>
+                                <button class="option-btn" onclick="exportAvatarPNG()">🖼️ Ladda ner PNG</button>
+                            </div>
+                        </div>
+
+                        <p style="font-size: 0.8rem; opacity: 0.6; margin-top: 20px;">
+                            💡 Tips: Öppna demo-svg-manipulation.html för fullständig kontroll!
+                        </p>
+                    </div>
+                </div>
+
                 <!-- Outfits Tab -->
                 <div class="tab-content" id="outfits-tab">
                     <div class="outfits-section">
@@ -248,6 +301,7 @@
     </div>
 
     <script src="avatar-renderer.js"></script>
+    <script src="svg-avatar-renderer.js"></script>
     <script type="module" src="game.js"></script>
 </body>
 </html>
