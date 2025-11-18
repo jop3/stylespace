@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>StyleSpace - Avatar Spel</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="game-container">
+        <!-- Header -->
+        <header class="game-header">
+            <h1>✨ StyleSpace ✨</h1>
+            <div class="diamonds-display">
+                <span class="diamond-icon">💎</span>
+                <span id="diamondCount">100</span>
+            </div>
+        </header>
+
+        <!-- Main Game Area -->
+        <div class="game-content">
+            <!-- Left Panel - Customization Menu -->
+            <div class="left-panel">
+                <div class="menu-tabs">
+                    <button class="tab-btn active" data-tab="appearance">Utseende</button>
+                    <button class="tab-btn" data-tab="clothes">Kläder</button>
+                    <button class="tab-btn" data-tab="pets">Pets</button>
+                    <button class="tab-btn" data-tab="outfits">Outfits</button>
+                    <button class="tab-btn" data-tab="codes">Koder</button>
+                </div>
+
+                <!-- Appearance Tab -->
+                <div class="tab-content active" id="appearance-tab">
+                    <div class="customization-section">
+                        <h3>Ansiktsform</h3>
+                        <div class="option-buttons">
+                            <button class="option-btn" data-type="faceShape" data-value="round">Rund</button>
+                            <button class="option-btn" data-type="faceShape" data-value="square">Fyrkantig</button>
+                            <button class="option-btn" data-type="faceShape" data-value="oval">Oval</button>
+                            <button class="option-btn" data-type="faceShape" data-value="heart">Hjärtform</button>
+                            <button class="option-btn" data-type="faceShape" data-value="diamond">Diamant</button>
+                        </div>
+                    </div>
+
+                    <div class="customization-section">
+                        <h3>Hudton</h3>
+                        <div class="color-grid">
+                            <button class="color-btn" data-type="skinTone" data-value="#FFE0BD" style="background-color: #FFE0BD;"></button>
+                            <button class="color-btn" data-type="skinTone" data-value="#FFCD94" style="background-color: #FFCD94;"></button>
+                            <button class="color-btn" data-type="skinTone" data-value="#EAC086" style="background-color: #EAC086;"></button>
+                            <button class="color-btn" data-type="skinTone" data-value="#D4A76A" style="background-color: #D4A76A;"></button>
+                            <button class="color-btn" data-type="skinTone" data-value="#C68642" style="background-color: #C68642;"></button>
+                            <button class="color-btn" data-type="skinTone" data-value="#A07E56" style="background-color: #A07E56;"></button>
+                            <button class="color-btn" data-type="skinTone" data-value="#8D5524" style="background-color: #8D5524;"></button>
+                            <button class="color-btn" data-type="skinTone" data-value="#754422" style="background-color: #754422;"></button>
+                        </div>
+                    </div>
+
+                    <div class="customization-section">
+                        <h3>Ögon</h3>
+                        <div class="option-buttons">
+                            <button class="option-btn" data-type="eyeShape" data-value="round">Stor rund</button>
+                            <button class="option-btn" data-type="eyeShape" data-value="almond">Mandel</button>
+                            <button class="option-btn" data-type="eyeShape" data-value="cat">Cat eye</button>
+                            <button class="option-btn" data-type="eyeShape" data-value="bigAlmond">Stor mandel</button>
+                        </div>
+                        <h4>Ögonfärg</h4>
+                        <div class="color-grid">
+                            <button class="color-btn" data-type="eyeColor" data-value="#654321" style="background-color: #654321;"></button>
+                            <button class="color-btn" data-type="eyeColor" data-value="#4169E1" style="background-color: #4169E1;"></button>
+                            <button class="color-btn" data-type="eyeColor" data-value="#32CD32" style="background-color: #32CD32;"></button>
+                            <button class="color-btn" data-type="eyeColor" data-value="#9370DB" style="background-color: #9370DB;"></button>
+                            <button class="color-btn" data-type="eyeColor" data-value="#808080" style="background-color: #808080;"></button>
+                            <button class="color-btn" data-type="eyeColor" data-value="#DC143C" style="background-color: #DC143C;"></button>
+                            <button class="color-btn" data-type="eyeColor" data-value="#20B2AA" style="background-color: #20B2AA;"></button>
+                            <button class="color-btn" data-type="eyeColor" data-value="#FF1493" style="background-color: #FF1493;"></button>
+                        </div>
+                    </div>
+
+                    <div class="customization-section">
+                        <h3>Hår</h3>
+                        <h4>Längd</h4>
+                        <div class="option-buttons">
+                            <button class="option-btn" data-type="hairLength" data-value="short">Kort</button>
+                            <button class="option-btn" data-type="hairLength" data-value="shoulder">Shoulder</button>
+                            <button class="option-btn" data-type="hairLength" data-value="long">Långt</button>
+                            <button class="option-btn" data-type="hairLength" data-value="veryLong">Väldigt långt</button>
+                        </div>
+                        <h4>Stil</h4>
+                        <div class="option-buttons">
+                            <button class="option-btn" data-type="hairStyle" data-value="straight">Rak</button>
+                            <button class="option-btn" data-type="hairStyle" data-value="wavy">Vågig</button>
+                            <button class="option-btn" data-type="hairStyle" data-value="curly">Lockig</button>
+                            <button class="option-btn" data-type="hairStyle" data-value="bangs">Med lugg</button>
+                        </div>
+                        <h4>Hårfärg</h4>
+                        <div class="color-grid">
+                            <button class="color-btn" data-type="hairColor" data-value="#000000" style="background-color: #000000;"></button>
+                            <button class="color-btn" data-type="hairColor" data-value="#654321" style="background-color: #654321;"></button>
+                            <button class="color-btn" data-type="hairColor" data-value="#D2691E" style="background-color: #D2691E;"></button>
+                            <button class="color-btn" data-type="hairColor" data-value="#FFD700" style="background-color: #FFD700;"></button>
+                            <button class="color-btn" data-type="hairColor" data-value="#FFA500" style="background-color: #FFA500;"></button>
+                            <button class="color-btn" data-type="hairColor" data-value="#DC143C" style="background-color: #DC143C;"></button>
+                            <button class="color-btn" data-type="hairColor" data-value="#FF69B4" style="background-color: #FF69B4;"></button>
+                            <button class="color-btn" data-type="hairColor" data-value="#FFB6C1" style="background-color: #FFB6C1;"></button>
+                            <button class="color-btn" data-type="hairColor" data-value="#DDA0DD" style="background-color: #DDA0DD;"></button>
+                            <button class="color-btn" data-type="hairColor" data-value="#9370DB" style="background-color: #9370DB;"></button>
+                            <button class="color-btn" data-type="hairColor" data-value="#4169E1" style="background-color: #4169E1;"></button>
+                            <button class="color-btn" data-type="hairColor" data-value="#87CEEB" style="background-color: #87CEEB;"></button>
+                            <button class="color-btn" data-type="hairColor" data-value="#40E0D0" style="background-color: #40E0D0;"></button>
+                            <button class="color-btn" data-type="hairColor" data-value="#00CED1" style="background-color: #00CED1;"></button>
+                            <button class="color-btn" data-type="hairColor" data-value="#FFFFFF" style="background-color: #FFFFFF; border: 1px solid #ccc;"></button>
+                        </div>
+                    </div>
+
+                    <div class="customization-section">
+                        <h3>Kroppsform</h3>
+                        <div class="option-buttons">
+                            <button class="option-btn" data-type="bodyShape" data-value="slim">Smal</button>
+                            <button class="option-btn" data-type="bodyShape" data-value="athletic">Sportig</button>
+                            <button class="option-btn" data-type="bodyShape" data-value="round">Rund</button>
+                        </div>
+                        <h4>Längd</h4>
+                        <div class="option-buttons">
+                            <button class="option-btn" data-type="bodyHeight" data-value="short">Kort</button>
+                            <button class="option-btn" data-type="bodyHeight" data-value="medium">Medium</button>
+                            <button class="option-btn" data-type="bodyHeight" data-value="tall">Lång</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Clothes Tab -->
+                <div class="tab-content" id="clothes-tab">
+                    <div class="shop-section">
+                        <h3>Kläder</h3>
+                        <div id="clothesShop"></div>
+                    </div>
+                </div>
+
+                <!-- Pets Tab -->
+                <div class="tab-content" id="pets-tab">
+                    <div class="shop-section">
+                        <h3>Pets (Max 3 aktiva)</h3>
+                        <div id="petsShop"></div>
+                        <div class="active-pets">
+                            <h4>Aktiva Pets:</h4>
+                            <div id="activePetsList"></div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Outfits Tab -->
+                <div class="tab-content" id="outfits-tab">
+                    <div class="outfits-section">
+                        <h3>Mina Outfits (25 platser)</h3>
+                        <button id="saveOutfitBtn" class="primary-btn">Spara Nuvarande Outfit (5 💎)</button>
+                        <div id="outfitsList"></div>
+                    </div>
+                </div>
+
+                <!-- Codes Tab -->
+                <div class="tab-content" id="codes-tab">
+                    <div class="codes-section">
+                        <h3>Ange Kod</h3>
+                        <input type="text" id="codeInput" placeholder="Ange kod här...">
+                        <button id="redeemCodeBtn" class="primary-btn">Lös in</button>
+                        <div class="codes-info">
+                            <h4>Tillgängliga koder:</h4>
+                            <p>GRATIS100 - 100 diamanter</p>
+                            <p>MEGA500 - 500 diamanter</p>
+                            <p>SUPERRIK - 1000 diamanter</p>
+                            <p>START50 - 50 diamanter</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Right Panel - Avatar Display -->
+            <div class="right-panel">
+                <div class="avatar-container">
+                    <canvas id="avatarCanvas" width="600" height="800"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="game.js"></script>
+</body>
+</html>
