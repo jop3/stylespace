@@ -19,11 +19,11 @@ class AvatarRenderer {
         console.log('✅ PixiJS version:', PIXI.VERSION);
         console.log('✅ TinyColor loaded');
 
-        // PixiJS Application Setup
+        // PixiJS Application Setup (v7+ API)
         this.app = new PIXI.Application({
             width: 400,
             height: 400,
-            transparent: true,
+            backgroundAlpha: 0,  // v7+ uses backgroundAlpha instead of transparent
             antialias: true,
             resolution: window.devicePixelRatio || 1,
             autoDensity: true
