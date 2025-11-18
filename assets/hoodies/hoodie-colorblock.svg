@@ -1,0 +1,38 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 250">
+  <!-- Hoodie body - bottom half -->
+  <path d="M50 150 L50 220 L250 220 L250 150 Z" fill="#E74C3C" stroke="#C0392B" stroke-width="3"/>
+
+  <!-- Hoodie body - top half -->
+  <path d="M50 80 L90 60 L120 80 L120 150 L180 150 L180 80 L210 60 L250 80 L250 150 L50 150 Z"
+        fill="#3498DB" stroke="#2980B9" stroke-width="3"/>
+
+  <!-- Hood -->
+  <path d="M120 80 Q90 55 90 30 Q90 20 100 15 Q130 10 150 10 Q170 10 200 15 Q210 20 210 30 Q210 55 180 80"
+        fill="#2980B9" stroke="#1F618D" stroke-width="3"/>
+
+  <!-- Hood opening -->
+  <ellipse cx="150" cy="50" rx="25" ry="30" fill="#1F618D" stroke="#174A7E" stroke-width="2"/>
+
+  <!-- Drawstrings (white) -->
+  <circle cx="135" cy="65" r="3" fill="#FFF"/>
+  <circle cx="165" cy="65" r="3" fill="#FFF"/>
+  <path d="M135 65 L125 75" stroke="#FFF" stroke-width="3" stroke-linecap="round"/>
+  <path d="M165 65 L175 75" stroke="#FFF" stroke-width="3" stroke-linecap="round"/>
+
+  <!-- Kangaroo pocket (on red part) -->
+  <path d="M130 165 Q150 170 170 165 L170 200 Q150 205 130 200 Z"
+        fill="#C0392B" stroke="#A93226" stroke-width="2"/>
+
+  <!-- Pocket opening -->
+  <path d="M135 175 Q150 178 165 175" stroke="#A93226" fill="none" stroke-width="3"/>
+
+  <!-- Color block dividing line accent -->
+  <rect x="50" y="148" width="200" height="4" fill="#2C3E50"/>
+
+  <!-- Ribbing at bottom -->
+  <rect x="50" y="215" width="200" height="5" fill="#2C3E50"/>
+
+  <!-- Ribbing at sleeves -->
+  <ellipse cx="90" cy="62" rx="8" ry="15" fill="#2C3E50"/>
+  <ellipse cx="210" cy="62" rx="8" ry="15" fill="#2C3E50"/>
+</svg>

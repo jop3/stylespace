@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 280">
+  <!-- Waistband -->
+  <rect x="90" y="80" width="120" height="15" rx="2" fill="#2E5C8A" stroke="#1F3A5F" stroke-width="2"/>
+
+  <!-- Button -->
+  <circle cx="150" cy="87" r="4" fill="#7F8C8D" stroke="#5D6D7E" stroke-width="2"/>
+
+  <!-- Zipper -->
+  <line x1="150" y1="95" x2="150" y2="115" stroke="#5D6D7E" stroke-width="3"/>
+
+  <!-- Left leg -->
+  <path d="M90 95 L95 135 L100 180 L105 250 L125 250 L130 180 L135 135 L145 95 Z"
+        fill="#4A90E2" stroke="#2E5C8A" stroke-width="3"/>
+
+  <!-- Right leg -->
+  <path d="M155 95 L165 135 L170 180 L175 250 L195 250 L200 180 L205 135 L210 95 Z"
+        fill="#4A90E2" stroke="#2E5C8A" stroke-width="3"/>
+
+  <!-- Inseam stitching -->
+  <path d="M125 250 L130 180 L135 135 L145 95" stroke="#5BA3F5" stroke-width="2" stroke-dasharray="5,3"/>
+  <path d="M175 250 L170 180 L165 135 L155 95" stroke="#5BA3F5" stroke-width="2" stroke-dasharray="5,3"/>
+
+  <!-- Outseam stitching -->
+  <path d="M95 135 L100 180 L105 250" stroke="#5BA3F5" stroke-width="2" stroke-dasharray="5,3"/>
+  <path d="M205 135 L200 180 L195 250" stroke="#5BA3F5" stroke-width="2" stroke-dasharray="5,3"/>
+
+  <!-- Front pockets -->
+  <path d="M110 105 Q115 115 110 125" stroke="#2E5C8A" fill="none" stroke-width="3"/>
+  <path d="M190 105 Q185 115 190 125" stroke="#2E5C8A" fill="none" stroke-width="3"/>
+
+  <!-- Back pocket (visible on right) -->
+  <rect x="185" y="120" width="18" height="20" rx="2" fill="#5BA3F5" stroke="#2E5C8A" stroke-width="2"/>
+  <path d="M188 125 L200 125" stroke="#5BA3F5" stroke-width="1" stroke-dasharray="2,2"/>
+  <path d="M188 135 L200 135" stroke="#5BA3F5" stroke-width="1" stroke-dasharray="2,2"/>
+
+  <!-- Belt loops -->
+  <rect x="95" y="78" width="5" height="10" fill="#2E5C8A"/>
+  <rect x="125" y="78" width="5" height="10" fill="#2E5C8A"/>
+  <rect x="145" y="78" width="5" height="10" fill="#2E5C8A"/>
+  <rect x="170" y="78" width="5" height="10" fill="#2E5C8A"/>
+  <rect x="200" y="78" width="5" height="10" fill="#2E5C8A"/>
+
+  <!-- Worn patches (distressed) -->
+  <ellipse cx="115" cy="165" rx="8" ry="6" fill="#89C4F4" opacity="0.5"/>
+  <ellipse cx="185" cy="175" rx="6" ry="5" fill="#89C4F4" opacity="0.5"/>
+  <ellipse cx="110" cy="215" rx="7" ry="5" fill="#89C4F4" opacity="0.5"/>
+</svg>

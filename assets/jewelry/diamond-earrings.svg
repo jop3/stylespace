@@ -1,0 +1,19 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 120">
+  <!-- Left earring -->
+  <circle cx="25" cy="15" r="3" fill="#FFD700"/>
+  <path d="M25 20 L20 35 L30 35 Z" fill="#4ECDC4" stroke="#2C3E50" stroke-width="1"/>
+  <path d="M20 35 L25 50 L30 35 Z" fill="#45B7D1" stroke="#2C3E50" stroke-width="1"/>
+  
+  <!-- Right earring -->
+  <circle cx="75" cy="15" r="3" fill="#FFD700"/>
+  <path d="M75 20 L70 35 L80 35 Z" fill="#4ECDC4" stroke="#2C3E50" stroke-width="1"/>
+  <path d="M70 35 L75 50 L80 35 Z" fill="#45B7D1" stroke="#2C3E50" stroke-width="1"/>
+  
+  <!-- Sparkles -->
+  <g fill="#fff" opacity="0.8">
+    <circle cx="22" cy="28" r="1"/>
+    <circle cx="73" cy="28" r="1"/>
+    <circle cx="25" cy="40" r="1.5"/>
+    <circle cx="75" cy="40" r="1.5"/>
+  </g>
+</svg>

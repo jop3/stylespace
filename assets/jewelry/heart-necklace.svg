@@ -1,0 +1,10 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 150 150">
+  <!-- Chain -->
+  <path d="M40 20 Q75 30 110 20" stroke="#FFD700" fill="none" stroke-width="2"/>
+  
+  <!-- Heart pendant -->
+  <path d="M70 60 Q65 55 60 60 Q60 70 70 85 Q80 70 80 60 Q75 55 70 60 Z" fill="#e74c3c" stroke="#c0392b" stroke-width="2"/>
+  
+  <!-- Shine -->
+  <circle cx="68" cy="63" r="3" fill="#fff" opacity="0.6"/>
+</svg>

@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 200">
+  <!-- T-shirt base -->
+  <path d="M50 50 L90 30 L120 50 L120 180 L180 180 L180 50 L210 30 L250 50 L250 180 L50 180 Z" fill="#1a1a1a" stroke="#0a0a0a" stroke-width="2"/>
+
+  <!-- Code brackets -->
+  <path d="M125 95 L115 105 L125 115" stroke="#00FF00" fill="none" stroke-width="3" stroke-linecap="round"/>
+  <path d="M175 95 L185 105 L175 115" stroke="#00FF00" fill="none" stroke-width="3" stroke-linecap="round"/>
+
+  <!-- Forward slash -->
+  <line x1="155" y1="90" x2="145" y2="120" stroke="#00FF00" stroke-width="3" stroke-linecap="round"/>
+
+  <!-- Terminal cursor -->
+  <rect x="130" y="100" width="3" height="12" fill="#00FF00">
+    <animate attributeName="opacity" values="1;0;1" dur="1s" repeatCount="indefinite"/>
+  </rect>
+
+  <!-- Binary numbers -->
+  <text x="120" y="85" font-family="Courier" font-size="8" fill="#00FF00" opacity="0.5">01010</text>
+  <text x="165" y="85" font-family="Courier" font-size="8" fill="#00FF00" opacity="0.5">11001</text>
+  <text x="115" y="130" font-family="Courier" font-size="8" fill="#00FF00" opacity="0.5">10110</text>
+  <text x="170" y="130" font-family="Courier" font-size="8" fill="#00FF00" opacity="0.5">00101</text>
+
+  <text x="150" y="155" font-family="Courier" font-size="12" fill="#00FF00" text-anchor="middle" font-weight="bold">&lt;CODE/&gt;</text>
+  <text x="150" y="170" font-family="Arial Black" font-size="11" fill="#00FF00" text-anchor="middle" font-weight="bold">NINJA</text>
+</svg>

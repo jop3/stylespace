@@ -1,0 +1,43 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 200">
+  <!-- T-shirt base -->
+  <path d="M50 50 L90 30 L120 50 L120 180 L180 180 L180 50 L210 30 L250 50 L250 180 L50 180 Z" fill="#FFF" stroke="#F0F0F0" stroke-width="2"/>
+
+  <!-- Fox head -->
+  <polygon points="150,75 135,100 165,100" fill="#FF8C00" stroke="#FF6347" stroke-width="2"/>
+
+  <!-- Inner ears -->
+  <polygon points="150,78 140,92 146,92" fill="#FFF"/>
+  <polygon points="150,78 160,92 154,92" fill="#FFF"/>
+
+  <!-- Face -->
+  <ellipse cx="150" cy="105" rx="20" ry="18" fill="#FF8C00" stroke="#FF6347" stroke-width="2"/>
+
+  <!-- Snout -->
+  <ellipse cx="150" cy="112" rx="12" ry="10" fill="#FFF" stroke="#FF6347" stroke-width="1"/>
+
+  <!-- Eyes -->
+  <circle cx="143" cy="102" r="3" fill="#000"/>
+  <circle cx="157" cy="102" r="3" fill="#000"/>
+  <circle cx="144" cy="101" r="1" fill="#FFF"/>
+  <circle cx="158" cy="101" r="1" fill="#FFF"/>
+
+  <!-- Nose -->
+  <polygon points="150,108 147,111 153,111" fill="#000"/>
+
+  <!-- Mouth -->
+  <path d="M150 111 Q145 114 143 113" stroke="#000" fill="none" stroke-width="1.5"/>
+  <path d="M150 111 Q155 114 157 113" stroke="#000" fill="none" stroke-width="1.5"/>
+
+  <!-- Whiskers -->
+  <line x1="135" y1="108" x2="125" y2="107" stroke="#000" stroke-width="1"/>
+  <line x1="135" y1="111" x2="125" y2="112" stroke="#000" stroke-width="1"/>
+  <line x1="165" y1="108" x2="175" y2="107" stroke="#000" stroke-width="1"/>
+  <line x1="165" y1="111" x2="175" y2="112" stroke="#000" stroke-width="1"/>
+
+  <!-- Tail tip peeking -->
+  <ellipse cx="180" cy="125" rx="8" ry="12" fill="#FF8C00" stroke="#FF6347" stroke-width="1"/>
+  <ellipse cx="180" cy="130" rx="5" ry="7" fill="#FFF"/>
+
+  <text x="150" y="155" font-family="Arial Black" font-size="12" fill="#FF8C00" text-anchor="middle" font-weight="bold">CLEVER</text>
+  <text x="150" y="170" font-family="Arial Black" font-size="12" fill="#FF6347" text-anchor="middle" font-weight="bold">LIKE A FOX</text>
+</svg>

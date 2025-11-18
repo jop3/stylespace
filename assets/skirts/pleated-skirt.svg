@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 220">
+  <!-- Waistband -->
+  <rect x="90" y="80" width="120" height="12" rx="2" fill="#2C3E50" stroke="#1A252F" stroke-width="2"/>
+
+  <!-- Skirt body with pleats -->
+  <path d="M90 92 L75 180 L90 180 L100 92 Z" fill="#9370DB" stroke="#7B68EE" stroke-width="2"/>
+  <path d="M100 92 L90 180 L105 180 L115 92 Z" fill="#8A5FD3" stroke="#7B68EE" stroke-width="2"/>
+
+  <path d="M115 92 L105 180 L120 180 L130 92 Z" fill="#9370DB" stroke="#7B68EE" stroke-width="2"/>
+  <path d="M130 92 L120 180 L135 180 L145 92 Z" fill="#8A5FD3" stroke="#7B68EE" stroke-width="2"/>
+
+  <path d="M145 92 L135 180 L150 180 L155 92 Z" fill="#9370DB" stroke="#7B68EE" stroke-width="2"/>
+  <path d="M155 92 L150 180 L165 180 L170 92 Z" fill="#8A5FD3" stroke="#7B68EE" stroke-width="2"/>
+
+  <path d="M170 92 L165 180 L180 180 L185 92 Z" fill="#9370DB" stroke="#7B68EE" stroke-width="2"/>
+  <path d="M185 92 L180 180 L195 180 L200 92 Z" fill="#8A5FD3" stroke="#7B68EE" stroke-width="2"/>
+
+  <path d="M200 92 L195 180 L210 180 L210 92 Z" fill="#9370DB" stroke="#7B68EE" stroke-width="2"/>
+  <path d="M210 92 L210 180 L225 180 L225 92 Z" fill="#8A5FD3" stroke="#7B68EE" stroke-width="2"/>
+
+  <!-- Button -->
+  <circle cx="150" cy="86" r="3" fill="#7F8C8D" stroke="#5D6D7E" stroke-width="1"/>
+
+  <!-- Hem line -->
+  <line x1="75" y1="180" x2="225" y2="180" stroke="#7B68EE" stroke-width="3"/>
+</svg>

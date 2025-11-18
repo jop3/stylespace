@@ -1,0 +1,22 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 150 180">
+  <!-- Main body -->
+  <rect x="40" y="50" width="70" height="90" rx="10" fill="#3498db" stroke="#2980b9" stroke-width="2"/>
+  
+  <!-- Top flap -->
+  <path d="M40 50 Q55 35 75 35 Q95 35 110 50" fill="#2980b9"/>
+  
+  <!-- Pocket -->
+  <rect x="50" y="70" width="50" height="35" rx="5" fill="#2980b9" stroke="#21618c" stroke-width="2"/>
+  
+  <!-- Zipper -->
+  <line x1="65" y1="70" x2="85" y2="70" stroke="#ecf0f1" stroke-width="2"/>
+  <rect x="73" y="68" width="4" height="6" fill="#ecf0f1"/>
+  
+  <!-- Straps -->
+  <rect x="45" y="45" width="8" height="60" rx="4" fill="#2c3e50"/>
+  <rect x="97" y="45" width="8" height="60" rx="4" fill="#2c3e50"/>
+  
+  <!-- Bottom pockets -->
+  <circle cx="60" cy="125" r="8" fill="#21618c"/>
+  <circle cx="90" cy="125" r="8" fill="#21618c"/>
+</svg>

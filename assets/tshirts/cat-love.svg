@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 200">
+  <!-- T-shirt base -->
+  <path d="M50 50 L90 30 L120 50 L120 180 L180 180 L180 50 L210 30 L250 50 L250 180 L50 180 Z" fill="#FFB6C1" stroke="#FF69B4" stroke-width="2"/>
+
+  <!-- Cat face -->
+  <circle cx="150" cy="100" r="35" fill="#FFE4E1"/>
+  <circle cx="140" cy="95" r="4" fill="#000"/>
+  <circle cx="160" cy="95" r="4" fill="#000"/>
+  <path d="M145 105 Q150 110 155 105" stroke="#000" fill="none" stroke-width="2"/>
+
+  <!-- Cat ears -->
+  <path d="M125 75 L115 55 L130 70 Z" fill="#FFE4E1"/>
+  <path d="M175 75 L185 55 L170 70 Z" fill="#FFE4E1"/>
+
+  <!-- Hearts -->
+  <path d="M140 125 Q135 120 130 125 Q130 135 140 145 Q150 135 150 125 Q145 120 140 125 Z" fill="#FF69B4"/>
+  <path d="M170 130 Q167 127 164 130 Q164 137 170 143 Q176 137 176 130 Q173 127 170 130 Z" fill="#FF1493"/>
+
+  <!-- Text "MEOW" -->
+  <text x="150" y="165" font-family="Arial Black" font-size="14" fill="#FF1493" text-anchor="middle" font-weight="bold">MEOW</text>
+</svg>

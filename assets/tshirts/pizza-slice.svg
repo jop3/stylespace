@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 200">
+  <!-- T-shirt base -->
+  <path d="M50 50 L90 30 L120 50 L120 180 L180 180 L180 50 L210 30 L250 50 L250 180 L50 180 Z" fill="#ff6b6b" stroke="#c92a2a" stroke-width="2"/>
+
+  <!-- Pizza slice -->
+  <path d="M150 75 L120 140 Q150 145 180 140 Z" fill="#feca57"/>
+  
+  <!-- Crust -->
+  <path d="M120 140 Q150 145 180 140" stroke="#d4a574" fill="none" stroke-width="8" stroke-linecap="round"/>
+  
+  <!-- Cheese -->
+  <ellipse cx="145" cy="105" rx="8" ry="6" fill="#fff8dc" opacity="0.9"/>
+  <ellipse cx="160" cy="115" rx="7" ry="5" fill="#fff8dc" opacity="0.9"/>
+  <ellipse cx="135" cy="120" rx="6" ry="4" fill="#fff8dc" opacity="0.9"/>
+  
+  <!-- Pepperoni -->
+  <circle cx="140" cy="95" r="5" fill="#e74c3c"/>
+  <circle cx="155" cy="100" r="5" fill="#e74c3c"/>
+  <circle cx="148" cy="115" r="5" fill="#e74c3c"/>
+  <circle cx="140" cy="125" r="5" fill="#e74c3c"/>
+  <circle cx="160" cy="128" r="5" fill="#e74c3c"/>
+
+  <!-- Text -->
+  <text x="150" y="165" font-family="Arial Black" font-size="14" fill="#feca57" text-anchor="middle" font-weight="bold">PIZZA</text>
+  <text x="150" y="178" font-family="Arial" font-size="10" fill="#fff" text-anchor="middle">IS BAE</text>
+</svg>

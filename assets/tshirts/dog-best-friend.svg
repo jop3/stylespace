@@ -1,0 +1,34 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 200">
+  <!-- T-shirt base -->
+  <path d="M50 50 L90 30 L120 50 L120 180 L180 180 L180 50 L210 30 L250 50 L250 180 L50 180 Z" fill="#FFF" stroke="#E0E0E0" stroke-width="2"/>
+
+  <!-- Dog face -->
+  <circle cx="150" cy="105" r="28" fill="#D2691E" stroke="#8B4513" stroke-width="2"/>
+
+  <!-- Ears -->
+  <ellipse cx="128" cy="95" rx="12" ry="20" fill="#A0522D" stroke="#8B4513" stroke-width="2"/>
+  <ellipse cx="172" cy="95" rx="12" ry="20" fill="#A0522D" stroke="#8B4513" stroke-width="2"/>
+
+  <!-- Eyes -->
+  <circle cx="140" cy="100" r="5" fill="#000"/>
+  <circle cx="160" cy="100" r="5" fill="#000"/>
+  <circle cx="142" cy="98" r="2" fill="#FFF"/>
+  <circle cx="162" cy="98" r="2" fill="#FFF"/>
+
+  <!-- Snout -->
+  <ellipse cx="150" cy="112" rx="12" ry="10" fill="#DEB887" stroke="#8B4513" stroke-width="1"/>
+
+  <!-- Nose -->
+  <ellipse cx="150" cy="108" rx="5" ry="4" fill="#000"/>
+
+  <!-- Mouth -->
+  <path d="M150 108 L150 115" stroke="#000" stroke-width="2"/>
+  <path d="M150 115 Q145 118 142 116" stroke="#000" fill="none" stroke-width="2"/>
+  <path d="M150 115 Q155 118 158 116" stroke="#000" fill="none" stroke-width="2"/>
+
+  <!-- Tongue -->
+  <ellipse cx="150" cy="119" rx="6" ry="4" fill="#FF69B4"/>
+
+  <text x="150" y="155" font-family="Arial Black" font-size="11" fill="#D2691E" text-anchor="middle" font-weight="bold">DOG IS MY</text>
+  <text x="150" y="170" font-family="Arial Black" font-size="11" fill="#8B4513" text-anchor="middle" font-weight="bold">BEST FRIEND</text>
+</svg>

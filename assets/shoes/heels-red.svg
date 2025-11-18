@@ -1,0 +1,24 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 150">
+  <!-- Heel -->
+  <path d="M90 120 L95 80 L100 80 L98 120 Z" fill="#8B0000" stroke="#660000" stroke-width="2"/>
+
+  <!-- Sole -->
+  <ellipse cx="110" cy="120" rx="35" ry="8" fill="#000" stroke="#1a1a1a" stroke-width="2"/>
+
+  <!-- Shoe upper -->
+  <path d="M75 95 Q80 85 95 80 L120 85 Q140 90 145 100 L140 110 Q130 115 110 115 L85 110 Q75 105 75 95 Z"
+        fill="#DC143C" stroke="#B22222" stroke-width="2"/>
+
+  <!-- Toe detail -->
+  <path d="M120 85 Q135 88 145 100" stroke="#8B0000" fill="none" stroke-width="1.5"/>
+
+  <!-- Heel curve detail -->
+  <path d="M95 80 Q97 100 98 120" stroke="#DC143C" fill="none" stroke-width="2"/>
+
+  <!-- Shine -->
+  <ellipse cx="115" cy="95" rx="15" ry="8" fill="#FFF" opacity="0.3"/>
+
+  <!-- Ankle strap -->
+  <path d="M85 95 Q100 90 120 95" stroke="#DC143C" fill="none" stroke-width="4"/>
+  <circle cx="85" cy="95" r="3" fill="#DAA520" stroke="#B8860B" stroke-width="1"/>
+</svg>

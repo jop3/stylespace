@@ -1,0 +1,28 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 200">
+  <!-- Purse body -->
+  <path d="M50 80 Q50 120 70 140 L130 140 Q150 120 150 80 L140 70 L60 70 Z"
+        fill="#8B4513" stroke="#654321" stroke-width="3"/>
+
+  <!-- Flap -->
+  <path d="M45 70 Q50 50 100 50 Q150 50 155 70 L140 75 Q100 68 60 75 Z"
+        fill="#A0522D" stroke="#654321" stroke-width="3"/>
+
+  <!-- Clasp -->
+  <rect x="95" y="65" width="10" height="12" rx="2" fill="#DAA520" stroke="#B8860B" stroke-width="2"/>
+  <circle cx="100" cy="71" r="2" fill="#B8860B"/>
+
+  <!-- Handle -->
+  <path d="M60 70 Q100 30 140 70" stroke="#654321" fill="none" stroke-width="6" stroke-linecap="round"/>
+
+  <!-- Stitching detail -->
+  <path d="M65 85 L65 125" stroke="#654321" stroke-width="1" stroke-dasharray="3,3"/>
+  <path d="M135 85 L135 125" stroke="#654321" stroke-width="1" stroke-dasharray="3,3"/>
+
+  <!-- Logo/brand emblem -->
+  <circle cx="100" cy="105" r="12" fill="#DAA520" stroke="#B8860B" stroke-width="2"/>
+  <text x="100" y="110" font-family="serif" font-size="14" fill="#654321" text-anchor="middle" font-weight="bold" font-style="italic">E</text>
+
+  <!-- Bottom corners -->
+  <circle cx="75" cy="135" r="3" fill="#654321"/>
+  <circle cx="125" cy="135" r="3" fill="#654321"/>
+</svg>

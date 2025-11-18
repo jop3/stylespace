@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 150 200">
+  <!-- Watch band top -->
+  <rect x="52" y="20" width="46" height="60" fill="#DAA520" stroke="#B8860B" stroke-width="2" rx="5"/>
+
+  <!-- Watch face -->
+  <circle cx="75" cy="100" r="30" fill="#F5F5DC" stroke="#DAA520" stroke-width="4"/>
+
+  <!-- Hour markers -->
+  <circle cx="75" cy="75" r="2" fill="#DAA520"/>
+  <circle cx="75" cy="125" r="2" fill="#DAA520"/>
+  <circle cx="100" cy="100" r="2" fill="#DAA520"/>
+  <circle cx="50" cy="100" r="2" fill="#DAA520"/>
+
+  <!-- Small markers -->
+  <circle cx="90" cy="83" r="1" fill="#B8860B"/>
+  <circle cx="90" cy="117" r="1" fill="#B8860B"/>
+  <circle cx="60" cy="83" r="1" fill="#B8860B"/>
+  <circle cx="60" cy="117" r="1" fill="#B8860B"/>
+
+  <!-- Hour hand -->
+  <line x1="75" y1="100" x2="75" y2="88" stroke="#1A1A1A" stroke-width="3" stroke-linecap="round"/>
+
+  <!-- Minute hand -->
+  <line x1="75" y1="100" x2="85" y2="100" stroke="#1A1A1A" stroke-width="2" stroke-linecap="round"/>
+
+  <!-- Center jewel -->
+  <circle cx="75" cy="100" r="3" fill="#E74C3C"/>
+  <circle cx="75" cy="100" r="1.5" fill="#C0392B"/>
+
+  <!-- Watch band bottom -->
+  <rect x="52" y="120" width="46" height="60" fill="#DAA520" stroke="#B8860B" stroke-width="2" rx="5"/>
+
+  <!-- Band links -->
+  <line x1="60" y1="30" x2="60" y2="70" stroke="#B8860B" stroke-width="1"/>
+  <line x1="68" y1="30" x2="68" y2="70" stroke="#B8860B" stroke-width="1"/>
+  <line x1="76" y1="30" x2="76" y2="70" stroke="#B8860B" stroke-width="1"/>
+  <line x1="84" y1="30" x2="84" y2="70" stroke="#B8860B" stroke-width="1"/>
+  <line x1="92" y1="30" x2="92" y2="70" stroke="#B8860B" stroke-width="1"/>
+
+  <line x1="60" y1="130" x2="60" y2="170" stroke="#B8860B" stroke-width="1"/>
+  <line x1="68" y1="130" x2="68" y2="170" stroke="#B8860B" stroke-width="1"/>
+  <line x1="76" y1="130" x2="76" y2="170" stroke="#B8860B" stroke-width="1"/>
+  <line x1="84" y1="130" x2="84" y2="170" stroke="#B8860B" stroke-width="1"/>
+  <line x1="92" y1="130" x2="92" y2="170" stroke="#B8860B" stroke-width="1"/>
+</svg>

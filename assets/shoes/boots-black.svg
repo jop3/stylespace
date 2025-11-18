@@ -1,0 +1,18 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 150">
+  <!-- Sole -->
+  <ellipse cx="100" cy="130" rx="55" ry="12" fill="#1a1a1a"/>
+  
+  <!-- Boot body -->
+  <path d="M55 130 L55 60 Q55 40 75 40 L125 40 Q145 40 145 60 L145 130 Z" fill="#2c3e50" stroke="#1a1a1a" stroke-width="2"/>
+  
+  <!-- Heel -->
+  <rect x="135" y="115" width="15" height="15" fill="#1a1a1a"/>
+  
+  <!-- Buckle -->
+  <rect x="65" y="90" width="70" height="8" fill="none" stroke="#c0c0c0" stroke-width="2" rx="2"/>
+  <rect x="95" y="92" width="10" height="4" fill="#c0c0c0"/>
+  
+  <!-- Zipper -->
+  <line x1="60" y1="45" x2="60" y2="125" stroke="#888" stroke-width="2"/>
+  <rect x="58" y="55" width="4" height="10" fill="#c0c0c0"/>
+</svg>

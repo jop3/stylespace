@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 200">
+  <path d="M50 50 L90 30 L120 50 L120 180 L180 180 L180 50 L210 30 L250 50 L250 180 L50 180 Z" fill="#f0fff4" stroke="#d5f4e6" stroke-width="2"/>
+  
+  <!-- Cactus -->
+  <rect x="140" y="95" width="20" height="45" rx="10" fill="#2ecc71" stroke="#27ae60" stroke-width="2"/>
+  <rect x="130" y="105" width="15" height="25" rx="7" fill="#2ecc71" stroke="#27ae60" stroke-width="2"/>
+  <rect x="155" y="110" width="15" height="20" rx="7" fill="#2ecc71" stroke="#27ae60" stroke-width="2"/>
+  
+  <!-- Spikes -->
+  <g stroke="#fff" stroke-width="1">
+    <line x1="145" y1="100" x2="143" y2="98"/>
+    <line x1="155" y1="105" x2="157" y2="103"/>
+    <line x1="148" y1="115" x2="146" y2="113"/>
+    <line x1="152" y1="125" x2="154" y2="123"/>
+  </g>
+  
+  <!-- Sunglasses -->
+  <rect x="143" y="102" width="6" height="4" fill="#1a1a1a"/>
+  <rect x="151" y="102" width="6" height="4" fill="#1a1a1a"/>
+  
+  <!-- Pot -->
+  <path d="M135 140 L165 140 L163 150 L137 150 Z" fill="#d35400" stroke="#a04000" stroke-width="2"/>
+  
+  <text x="150" y="168" font-family="Arial Black" font-size="11" fill="#2ecc71" text-anchor="middle" font-weight="bold">DON'T BE A</text>
+  <text x="150" y="180" font-family="Arial Black" font-size="11" fill="#27ae60" text-anchor="middle" font-weight="bold">PRICK</text>
+</svg>

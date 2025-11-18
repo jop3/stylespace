@@ -1,0 +1,23 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 100">
+  <!-- Sole -->
+  <ellipse cx="100" cy="75" rx="60" ry="15" fill="#2c3e50"/>
+  
+  <!-- Shoe body -->
+  <path d="M50 75 Q50 50 70 45 L130 45 Q145 50 145 75 Z" fill="#e74c3c" stroke="#c0392b" stroke-width="2"/>
+  
+  <!-- White stripe -->
+  <path d="M55 65 Q70 60 130 60 Q140 62 140 68 Q130 70 70 70 Q55 68 55 65 Z" fill="#fff"/>
+  
+  <!-- Laces -->
+  <g stroke="#fff" stroke-width="2" fill="none">
+    <path d="M75 45 L75 60"/>
+    <path d="M85 45 L85 60"/>
+    <path d="M95 45 L95 60"/>
+    <path d="M105 45 L105 60"/>
+    <path d="M115 45 L115 60"/>
+    <path d="M125 45 L125 60"/>
+  </g>
+  
+  <!-- Toe cap -->
+  <ellipse cx="75" cy="72" rx="15" ry="8" fill="#c0392b"/>
+</svg>

@@ -1,0 +1,45 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 280">
+  <!-- Dress body (A-line) -->
+  <path d="M120 80 L95 60 L90 80 L70 200 L230 200 L210 80 L205 60 L180 80 Z"
+        fill="#FFB6C1" stroke="#FF69B4" stroke-width="3"/>
+
+  <!-- Bodice detail -->
+  <path d="M120 80 L130 110 L150 115 L170 110 L180 80"
+        fill="#FF69B4" stroke="#FF1493" stroke-width="2"/>
+
+  <!-- Straps -->
+  <path d="M120 80 Q115 60 115 50" stroke="#FF69B4" fill="none" stroke-width="8" stroke-linecap="round"/>
+  <path d="M180 80 Q185 60 185 50" stroke="#FF69B4" fill="none" stroke-width="8" stroke-linecap="round"/>
+
+  <!-- Waistband -->
+  <ellipse cx="150" cy="115" rx="55" ry="8" fill="#FF1493" stroke="#C71585" stroke-width="2"/>
+
+  <!-- Bow at waist -->
+  <ellipse cx="140" cy="115" rx="8" ry="6" fill="#FF69B4"/>
+  <ellipse cx="160" cy="115" rx="8" ry="6" fill="#FF69B4"/>
+  <circle cx="150" cy="115" r="4" fill="#FF1493"/>
+  <path d="M150 115 L148 122 L152 122 Z" fill="#FF1493"/>
+
+  <!-- Floral pattern -->
+  <circle cx="100" cy="140" r="5" fill="#FFF" opacity="0.7"/>
+  <circle cx="97" cy="138" r="3" fill="#FFD700" opacity="0.8"/>
+  <circle cx="103" cy="138" r="3" fill="#FFD700" opacity="0.8"/>
+  <circle cx="97" cy="142" r="3" fill="#FFD700" opacity="0.8"/>
+  <circle cx="103" cy="142" r="3" fill="#FFD700" opacity="0.8"/>
+
+  <circle cx="180" cy="150" r="5" fill="#FFF" opacity="0.7"/>
+  <circle cx="177" cy="148" r="3" fill="#FFD700" opacity="0.8"/>
+  <circle cx="183" cy="148" r="3" fill="#FFD700" opacity="0.8"/>
+  <circle cx="177" cy="152" r="3" fill="#FFD700" opacity="0.8"/>
+  <circle cx="183" cy="152" r="3" fill="#FFD700" opacity="0.8"/>
+
+  <circle cx="130" cy="170" r="5" fill="#FFF" opacity="0.7"/>
+  <circle cx="127" cy="168" r="3" fill="#FFD700" opacity="0.8"/>
+  <circle cx="133" cy="168" r="3" fill="#FFD700" opacity="0.8"/>
+  <circle cx="127" cy="172" r="3" fill="#FFD700" opacity="0.8"/>
+  <circle cx="133" cy="172" r="3" fill="#FFD700" opacity="0.8"/>
+
+  <!-- Ruffle at bottom -->
+  <path d="M70 200 Q80 205 90 200 Q100 195 110 200 Q120 205 130 200 Q140 195 150 200 Q160 205 170 200 Q180 195 190 200 Q200 205 210 200 Q220 195 230 200"
+        stroke="#FF1493" fill="none" stroke-width="4" stroke-linecap="round"/>
+</svg>

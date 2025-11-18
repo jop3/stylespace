@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 200">
+  <!-- Scarf body -->
+  <path d="M50 80 Q100 70 150 75 Q200 80 250 70 L250 110 Q200 120 150 115 Q100 110 50 120 Z"
+        fill="#E74C3C" stroke="#C0392B" stroke-width="2"/>
+
+  <!-- Stripes -->
+  <rect x="50" y="85" width="200" height="8" fill="#FFF" opacity="0.8"/>
+  <rect x="50" y="102" width="200" height="8" fill="#FFF" opacity="0.8"/>
+
+  <!-- Fringe left -->
+  <line x1="50" y1="120" x2="45" y2="135" stroke="#E74C3C" stroke-width="4"/>
+  <line x1="55" y1="120" x2="50" y2="135" stroke="#E74C3C" stroke-width="4"/>
+  <line x1="60" y1="120" x2="55" y2="135" stroke="#E74C3C" stroke-width="4"/>
+  <line x1="65" y1="120" x2="60" y2="135" stroke="#E74C3C" stroke-width="4"/>
+  <line x1="70" y1="120" x2="65" y2="135" stroke="#E74C3C" stroke-width="4"/>
+
+  <!-- Fringe right -->
+  <line x1="250" y1="70" x2="255" y2="55" stroke="#E74C3C" stroke-width="4"/>
+  <line x1="245" y1="70" x2="250" y2="55" stroke="#E74C3C" stroke-width="4"/>
+  <line x1="240" y1="70" x2="245" y2="55" stroke="#E74C3C" stroke-width="4"/>
+  <line x1="235" y1="70" x2="240" y2="55" stroke="#E74C3C" stroke-width="4"/>
+  <line x1="230" y1="70" x2="235" y2="55" stroke="#E74C3C" stroke-width="4"/>
+
+  <!-- Knit texture -->
+  <circle cx="100" cy="95" r="1.5" fill="#C0392B" opacity="0.5"/>
+  <circle cx="110" cy="95" r="1.5" fill="#C0392B" opacity="0.5"/>
+  <circle cx="120" cy="95" r="1.5" fill="#C0392B" opacity="0.5"/>
+  <circle cx="130" cy="95" r="1.5" fill="#C0392B" opacity="0.5"/>
+  <circle cx="140" cy="95" r="1.5" fill="#C0392B" opacity="0.5"/>
+  <circle cx="150" cy="95" r="1.5" fill="#C0392B" opacity="0.5"/>
+  <circle cx="160" cy="95" r="1.5" fill="#C0392B" opacity="0.5"/>
+  <circle cx="170" cy="95" r="1.5" fill="#C0392B" opacity="0.5"/>
+  <circle cx="180" cy="95" r="1.5" fill="#C0392B" opacity="0.5"/>
+  <circle cx="190" cy="95" r="1.5" fill="#C0392B" opacity="0.5"/>
+  <circle cx="200" cy="95" r="1.5" fill="#C0392B" opacity="0.5"/>
+</svg>

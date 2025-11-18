@@ -1,0 +1,42 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 300 200">
+  <!-- T-shirt base -->
+  <path d="M50 50 L90 30 L120 50 L120 180 L180 180 L180 50 L210 30 L250 50 L250 180 L50 180 Z" fill="#34495E" stroke="#2C3E50" stroke-width="2"/>
+
+  <!-- Robot head -->
+  <rect x="135" y="85" width="30" height="35" rx="3" fill="#95A5A6" stroke="#7F8C8D" stroke-width="2"/>
+
+  <!-- Antenna -->
+  <line x1="150" y1="85" x2="150" y2="75" stroke="#7F8C8D" stroke-width="2"/>
+  <circle cx="150" cy="73" r="3" fill="#E74C3C"/>
+  <circle cx="150" cy="73" r="2" fill="#C0392B">
+    <animate attributeName="opacity" values="1;0.3;1" dur="1s" repeatCount="indefinite"/>
+  </circle>
+
+  <!-- Eyes -->
+  <rect x="140" y="92" width="7" height="7" fill="#3498DB" stroke="#2980B9" stroke-width="1"/>
+  <rect x="153" y="92" width="7" height="7" fill="#3498DB" stroke="#2980B9" stroke-width="1"/>
+
+  <!-- Eye glow -->
+  <rect x="141" y="93" width="2" height="2" fill="#5DADE2"/>
+  <rect x="154" y="93" width="2" height="2" fill="#5DADE2"/>
+
+  <!-- Mouth -->
+  <rect x="142" y="107" width="16" height="8" rx="1" fill="#2C3E50"/>
+  <line x1="145" y1="107" x2="145" y2="115" stroke="#7F8C8D" stroke-width="1"/>
+  <line x1="150" y1="107" x2="150" y2="115" stroke="#7F8C8D" stroke-width="1"/>
+  <line x1="155" y1="107" x2="155" y2="115" stroke="#7F8C8D" stroke-width="1"/>
+
+  <!-- Body -->
+  <rect x="138" y="120" width="24" height="15" rx="2" fill="#BDC3C7" stroke="#95A5A6" stroke-width="2"/>
+
+  <!-- Chest panel -->
+  <rect x="145" y="123" width="10" height="9" fill="#2C3E50"/>
+  <circle cx="150" cy="127.5" r="2" fill="#E74C3C"/>
+
+  <!-- Bolts -->
+  <circle cx="140" cy="88" r="1.5" fill="#7F8C8D"/>
+  <circle cx="160" cy="88" r="1.5" fill="#7F8C8D"/>
+
+  <text x="150" y="155" font-family="Courier" font-size="11" fill="#3498DB" text-anchor="middle" font-weight="bold">ROBOT</text>
+  <text x="150" y="170" font-family="Arial Black" font-size="11" fill="#95A5A6" text-anchor="middle" font-weight="bold">FUTURE</text>
+</svg>

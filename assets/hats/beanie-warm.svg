@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 150 100">
+  <!-- Beanie body -->
+  <path d="M30 60 Q30 30 75 20 Q120 30 120 60 L115 70 Q75 75 35 70 Z" fill="#e74c3c" stroke="#c0392b" stroke-width="2"/>
+  
+  <!-- Pom pom -->
+  <circle cx="75" cy="15" r="8" fill="#fff" stroke="#ddd" stroke-width="1"/>
+  <circle cx="72" cy="13" r="3" fill="#e74c3c" opacity="0.6"/>
+  <circle cx="78" cy="13" r="3" fill="#e74c3c" opacity="0.6"/>
+  <circle cx="75" cy="18" r="3" fill="#e74c3c" opacity="0.6"/>
+  
+  <!-- Fold -->
+  <rect x="35" y="65" width="80" height="8" fill="#c0392b"/>
+</svg>

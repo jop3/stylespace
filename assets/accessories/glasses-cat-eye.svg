@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 100">
+  <!-- Left lens -->
+  <path d="M25 50 L55 40 L60 50 L55 60 L25 50 Z" fill="#FF1493" opacity="0.2" stroke="#C71585" stroke-width="3"/>
+
+  <!-- Right lens -->
+  <path d="M175 50 L145 40 L140 50 L145 60 L175 50 Z" fill="#FF1493" opacity="0.2" stroke="#C71585" stroke-width="3"/>
+
+  <!-- Left frame detail -->
+  <path d="M25 50 Q30 35 60 40" stroke="#C71585" fill="none" stroke-width="2"/>
+
+  <!-- Right frame detail -->
+  <path d="M175 50 Q170 35 140 40" stroke="#C71585" fill="none" stroke-width="2"/>
+
+  <!-- Bridge -->
+  <path d="M60 50 Q100 48 140 50" stroke="#C71585" fill="none" stroke-width="3"/>
+
+  <!-- Left temple -->
+  <line x1="25" y1="50" x2="10" y2="52" stroke="#C71585" stroke-width="3" stroke-linecap="round"/>
+
+  <!-- Right temple -->
+  <line x1="175" y1="50" x2="190" y2="52" stroke="#C71585" stroke-width="3" stroke-linecap="round"/>
+
+  <!-- Decorative gems -->
+  <circle cx="58" cy="42" r="2" fill="#FF1493"/>
+  <circle cx="142" cy="42" r="2" fill="#FF1493"/>
+</svg>

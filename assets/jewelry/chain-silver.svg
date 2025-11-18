@@ -1,0 +1,20 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 200 150">
+  <!-- Chain links -->
+  <ellipse cx="100" cy="30" rx="8" ry="12" fill="none" stroke="#C0C0C0" stroke-width="3"/>
+  <ellipse cx="85" cy="45" rx="8" ry="12" fill="none" stroke="#A9A9A9" stroke-width="3" transform="rotate(30 85 45)"/>
+  <ellipse cx="75" cy="65" rx="8" ry="12" fill="none" stroke="#C0C0C0" stroke-width="3"/>
+  <ellipse cx="70" cy="85" rx="8" ry="12" fill="none" stroke="#A9A9A9" stroke-width="3" transform="rotate(30 70 85)"/>
+  <ellipse cx="68" cy="105" rx="8" ry="12" fill="none" stroke="#C0C0C0" stroke-width="3"/>
+
+  <ellipse cx="115" cy="45" rx="8" ry="12" fill="none" stroke="#A9A9A9" stroke-width="3" transform="rotate(-30 115 45)"/>
+  <ellipse cx="125" cy="65" rx="8" ry="12" fill="none" stroke="#C0C0C0" stroke-width="3"/>
+  <ellipse cx="130" cy="85" rx="8" ry="12" fill="none" stroke="#A9A9A9" stroke-width="3" transform="rotate(-30 130 85)"/>
+  <ellipse cx="132" cy="105" rx="8" ry="12" fill="none" stroke="#C0C0C0" stroke-width="3"/>
+
+  <!-- Pendant - star -->
+  <path d="M100 125 L103 135 L113 135 L105 141 L108 151 L100 145 L92 151 L95 141 L87 135 L97 135 Z"
+        fill="#C0C0C0" stroke="#A9A9A9" stroke-width="2"/>
+
+  <!-- Sparkle on pendant -->
+  <circle cx="100" cy="138" r="1.5" fill="#FFF"/>
+</svg>
