@@ -880,13 +880,21 @@ function drawPets(centerX, baseY) {
 
     const spacing = 80;
     const startX = centerX - (pets.length - 1) * spacing / 2;
+    const time = Date.now() / 1000; // Time in seconds
 
     pets.forEach((pet, index) => {
         const petData = petsDatabase.find(p => p.id === pet);
         if (petData) {
             const x = startX + index * spacing;
-            // Add slight bobbing animation effect (static for now)
-            ctx.fillText(petData.emoji, x - 24, baseY);
+
+            // Add bobbing animation with phase offset for each pet
+            const phaseOffset = index * 0.5; // Different timing for each pet
+            const bobAmount = Math.sin(time * 2 + phaseOffset) * 8; // Gentle up/down movement
+
+            // Add slight horizontal sway
+            const swayAmount = Math.sin(time * 1.5 + phaseOffset) * 3;
+
+            ctx.fillText(petData.emoji, x - 24 + swayAmount, baseY + bobAmount);
         }
     });
 
@@ -936,7 +944,16 @@ document.querySelectorAll('.tab-btn').forEach(btn => {
         document.querySelectorAll('.tab-content').forEach(content => {
             content.classList.remove('active');
         });
-        document.getElementById(`${tabName}-tab`).classList.add('active');
+        const activeTab = document.getElementById(`${tabName}-tab`);
+        activeTab.classList.add('active');
+
+        // Animate tab switch
+        animateTabSwitch(activeTab);
+
+        // Animate shop items if switching to clothes or pets tab
+        if (tabName === 'clothes' || tabName === 'pets') {
+            setTimeout(() => animateShopItems(), 100);
+        }
     });
 });
 
@@ -954,6 +971,7 @@ document.querySelectorAll('.option-btn').forEach(btn => {
         // Update avatar
         playerData.avatar[type] = value;
         drawAvatar();
+        animateAvatarChange();
     });
 });
 
@@ -970,6 +988,7 @@ document.querySelectorAll('.color-btn').forEach(btn => {
         // Update avatar
         playerData.avatar[type] = value;
         drawAvatar();
+        animateAvatarChange();
     });
 });
 
@@ -1022,6 +1041,9 @@ function populateShop() {
 
         shopContainer.appendChild(categoryDiv);
     });
+
+    // Animate shop items entrance
+    setTimeout(() => animateShopItems(), 100);
 }
 
 function tryClothes(slot, itemId) {
@@ -1035,6 +1057,7 @@ function tryClothes(slot, itemId) {
     if (item) {
         playerData.tryingOn[slot] = item;
         drawAvatar();
+        animateAvatarChange();
     }
 }
 
@@ -1081,6 +1104,15 @@ function buyClothes(itemId, price) {
     updateDiamondDisplay();
     populateShop();
     drawAvatar();
+    animateAvatarChange();
+
+    // Animate diamond display on purchase
+    anime({
+        targets: '.diamonds-display',
+        scale: [1, 1.15, 1],
+        duration: 500,
+        easing: 'easeOutElastic(1, .5)'
+    });
 
     alert(`Du köpte ${item.name}!`);
 }
@@ -1089,6 +1121,7 @@ function removeClothes(slot) {
     playerData.currentClothes[slot] = null;
     playerData.tryingOn[slot] = null;
     drawAvatar();
+    animateAvatarChange();
 }
 
 // ============================================
@@ -1129,6 +1162,9 @@ function populatePetsShop() {
     });
 
     updateActivePetsList();
+
+    // Animate shop items entrance
+    setTimeout(() => animateShopItems(), 100);
 }
 
 function buyPet(petId, price) {
@@ -1150,6 +1186,14 @@ function buyPet(petId, price) {
     updateDiamondDisplay();
     populatePetsShop();
 
+    // Animate diamond display on purchase
+    anime({
+        targets: '.diamonds-display',
+        scale: [1, 1.15, 1],
+        duration: 500,
+        easing: 'easeOutElastic(1, .5)'
+    });
+
     alert(`Du köpte ${pet.name}!`);
 }
 
@@ -1163,6 +1207,7 @@ function activatePet(petId) {
         playerData.activePets.push(petId);
         populatePetsShop();
         drawAvatar();
+        animateAvatarChange();
     }
 }
 
@@ -1170,6 +1215,7 @@ function deactivatePet(petId) {
     playerData.activePets = playerData.activePets.filter(id => id !== petId);
     populatePetsShop();
     drawAvatar();
+    animateAvatarChange();
 }
 
 function updateActivePetsList() {
@@ -1280,6 +1326,7 @@ function loadOutfit(index) {
 
     drawAvatar();
     populatePetsShop();
+    animateAvatarChange();
 
     alert(`Outfit "${outfit.name}" laddad!`);
 }
@@ -1321,6 +1368,22 @@ document.getElementById('redeemCodeBtn').addEventListener('click', () => {
     updateDiamondDisplay();
     input.value = '';
 
+    // Celebrate with animation!
+    anime({
+        targets: '.diamonds-display',
+        scale: [1, 1.3, 1],
+        rotate: [0, 15, -15, 0],
+        duration: 800,
+        easing: 'easeOutElastic(1, .5)'
+    });
+
+    anime({
+        targets: '.diamond-icon',
+        scale: [1, 1.5, 1],
+        duration: 600,
+        easing: 'easeOutBack'
+    });
+
     alert(`Du fick ${diamonds} diamanter! 💎`);
 });
 
@@ -1330,6 +1393,226 @@ document.getElementById('redeemCodeBtn').addEventListener('click', () => {
 
 function updateDiamondDisplay() {
     document.getElementById('diamondCount').textContent = playerData.diamonds;
+
+    // Animate diamond count change with anime.js
+    anime({
+        targets: '#diamondCount',
+        scale: [1, 1.3, 1],
+        duration: 500,
+        easing: 'easeOutElastic(1, .5)'
+    });
+}
+
+// ============================================
+// ANIMATIONS WITH ANIME.JS
+// ============================================
+
+// Avatar breathing/idle animation
+let avatarBreathingAnimation = null;
+let petAnimations = [];
+
+function startAvatarBreathing() {
+    // Subtle breathing effect on canvas
+    if (avatarBreathingAnimation) {
+        avatarBreathingAnimation.pause();
+    }
+
+    avatarBreathingAnimation = anime({
+        targets: '#avatarCanvas',
+        translateY: [0, -3, 0],
+        duration: 3000,
+        easing: 'easeInOutSine',
+        loop: true
+    });
+}
+
+function stopAvatarBreathing() {
+    if (avatarBreathingAnimation) {
+        avatarBreathingAnimation.pause();
+    }
+}
+
+// Pet hopping/bouncing animations
+let petAnimationLoop = null;
+
+function startPetAnimations() {
+    // Clear any existing pet animation loop
+    if (petAnimationLoop) {
+        cancelAnimationFrame(petAnimationLoop);
+    }
+
+    // Start continuous animation loop for pets
+    function animatePets() {
+        drawAvatar(); // Redraw with updated time for pet animations
+        petAnimationLoop = requestAnimationFrame(animatePets);
+    }
+
+    animatePets();
+}
+
+function stopPetAnimations() {
+    if (petAnimationLoop) {
+        cancelAnimationFrame(petAnimationLoop);
+        petAnimationLoop = null;
+    }
+}
+
+// Smooth transition when avatar changes
+function animateAvatarChange() {
+    // Stop breathing temporarily
+    stopAvatarBreathing();
+
+    // Quick fade + scale effect
+    anime({
+        targets: '#avatarCanvas',
+        opacity: [0.7, 1],
+        scale: [0.95, 1],
+        duration: 400,
+        easing: 'easeOutCubic',
+        complete: () => {
+            // Resume breathing after change
+            startAvatarBreathing();
+        }
+    });
+}
+
+// UI entrance animations
+function animateUIEntrance() {
+    // Animate header
+    anime({
+        targets: '.game-header',
+        translateY: [-50, 0],
+        opacity: [0, 1],
+        duration: 800,
+        easing: 'easeOutExpo'
+    });
+
+    // Animate left panel
+    anime({
+        targets: '.left-panel',
+        translateX: [-100, 0],
+        opacity: [0, 1],
+        duration: 1000,
+        delay: 200,
+        easing: 'easeOutExpo'
+    });
+
+    // Animate right panel (avatar)
+    anime({
+        targets: '.right-panel',
+        translateX: [100, 0],
+        opacity: [0, 1],
+        duration: 1000,
+        delay: 200,
+        easing: 'easeOutExpo'
+    });
+
+    // Stagger animate customization sections
+    anime({
+        targets: '.customization-section',
+        translateY: [30, 0],
+        opacity: [0, 1],
+        duration: 600,
+        delay: anime.stagger(100, {start: 400}),
+        easing: 'easeOutQuad'
+    });
+}
+
+// Button hover animations (enhanced)
+function setupButtonAnimations() {
+    // Add hover animations to all buttons
+    document.querySelectorAll('.option-btn, .color-btn, .shop-btn, .tab-btn').forEach(btn => {
+        btn.addEventListener('mouseenter', function() {
+            anime({
+                targets: this,
+                scale: 1.08,
+                duration: 300,
+                easing: 'easeOutCubic'
+            });
+        });
+
+        btn.addEventListener('mouseleave', function() {
+            anime({
+                targets: this,
+                scale: 1,
+                duration: 300,
+                easing: 'easeOutCubic'
+            });
+        });
+
+        btn.addEventListener('click', function() {
+            // Click animation
+            anime({
+                targets: this,
+                scale: [1, 0.9, 1.05, 1],
+                duration: 400,
+                easing: 'easeOutElastic(1, .6)'
+            });
+        });
+    });
+}
+
+// Diamond sparkle effect
+function createDiamondSparkle() {
+    const diamondDisplay = document.querySelector('.diamonds-display');
+
+    anime({
+        targets: '.diamond-icon',
+        rotate: [0, 360],
+        duration: 2000,
+        easing: 'linear',
+        loop: true
+    });
+
+    // Pulse effect
+    anime({
+        targets: '.diamonds-display',
+        scale: [1, 1.05, 1],
+        duration: 2000,
+        easing: 'easeInOutSine',
+        loop: true
+    });
+}
+
+// Shop item entrance animation
+function animateShopItems() {
+    anime({
+        targets: '.shop-item',
+        translateY: [20, 0],
+        opacity: [0, 1],
+        duration: 500,
+        delay: anime.stagger(50),
+        easing: 'easeOutQuad'
+    });
+}
+
+// Clothing purchase animation
+function animateClothingPurchase(itemElement) {
+    // Success animation
+    anime({
+        targets: itemElement,
+        backgroundColor: ['#ffffff', '#4CAF50', '#ffffff'],
+        duration: 1000,
+        easing: 'easeInOutQuad'
+    });
+
+    anime({
+        targets: itemElement,
+        scale: [1, 1.05, 1],
+        duration: 600,
+        easing: 'easeOutElastic(1, .5)'
+    });
+}
+
+// Tab switching animation
+function animateTabSwitch(tabContent) {
+    anime({
+        targets: tabContent,
+        translateX: [50, 0],
+        opacity: [0, 1],
+        duration: 400,
+        easing: 'easeOutCubic'
+    });
 }
 
 // ============================================
@@ -1355,6 +1638,13 @@ function init() {
 
     // Draw initial avatar
     drawAvatar();
+
+    // Start anime.js animations
+    animateUIEntrance();
+    startAvatarBreathing();
+    createDiamondSparkle();
+    setupButtonAnimations();
+    startPetAnimations(); // Start continuous pet animation loop
 }
 
 // Start the game when page loads
