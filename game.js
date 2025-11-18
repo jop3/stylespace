@@ -10,7 +10,6 @@ import { avataaars } from '@dicebear/collection';
 // ============================================
 
 const playerData = {
-    // DiceBear avatar properties
     avatar: {
         skinColor: 'light',
         top: 'longHairStraight',
@@ -26,18 +25,8 @@ const playerData = {
     },
     diamonds: 100,
     ownedClothes: [],
-    currentClothes: {
-        top: null,
-        bottom: null,
-        shoes: null,
-        accessory: null
-    },
-    tryingOn: {
-        top: null,
-        bottom: null,
-        shoes: null,
-        accessory: null
-    },
+    currentClothes: { top: null, bottom: null, shoes: null, accessory: null },
+    tryingOn: { top: null, bottom: null, shoes: null, accessory: null },
     ownedPets: [],
     activePets: [],
     savedOutfits: [],
@@ -50,15 +39,13 @@ const playerData = {
 
 function generateAvatar() {
     try {
-        // Check if DiceBear is loaded
         if (typeof createAvatar === 'undefined' || typeof avataaars === 'undefined') {
-            console.error('❌ DiceBear not loaded! createAvatar:', typeof createAvatar, 'avataaars:', typeof avataaars);
+            console.error('❌ DiceBear not loaded!');
             return null;
         }
 
-        // Build options object for DiceBear
         const options = {
-            seed: 'stylespace-' + Date.now(), // Unique seed for consistency
+            seed: 'stylespace-' + Date.now(),
             skinColor: [playerData.avatar.skinColor],
             top: [playerData.avatar.top],
             hairColor: [playerData.avatar.hairColor],
@@ -70,25 +57,12 @@ function generateAvatar() {
             backgroundColor: ['transparent']
         };
 
-        // Add accessories if selected
         if (playerData.avatar.accessories) {
             options.accessories = [playerData.avatar.accessories];
             options.accessoriesColor = ['262E33'];
         }
 
-        // Add facial hair if selected
-        if (playerData.avatar.facialHairType) {
-            options.facialHairType = [playerData.avatar.facialHairType];
-            options.facialHairColor = [playerData.avatar.facialHairColor || playerData.avatar.hairColor];
-        }
-
-        console.log('🎨 Generating avatar with options:', options);
-
-        // Create avatar using DiceBear
-        const avatar = createAvatar(avataaars, options);
-        console.log('✅ Avatar created:', avatar);
-
-        return avatar;
+        return createAvatar(avataaars, options);
     } catch (error) {
         console.error('❌ Error generating avatar:', error);
         return null;
@@ -100,36 +74,18 @@ function updateAvatar() {
         const avatarImg = document.getElementById('avatarDisplay');
         const avatar = generateAvatar();
 
-        if (!avatar) {
-            console.error('❌ Avatar generation failed - avatar is null');
-            return;
-        }
+        if (!avatar) return;
 
-        // Convert avatar to data URI
         const dataUri = avatar.toDataUri();
-        console.log('📊 Data URI length:', dataUri.length);
-        console.log('📝 Data URI preview:', dataUri.substring(0, 100) + '...');
-
-        console.log('🖼️ Updating avatar image');
         avatarImg.src = dataUri;
 
-        // Verify image loaded
-        avatarImg.onload = () => {
-            console.log('✅ Avatar image loaded successfully!');
-        };
-        avatarImg.onerror = (error) => {
-            console.error('❌ Avatar image failed to load:', error);
-        };
-
         // Update SVG renderer if available
-        if (svgAvatarRenderer && avatar) {
+        if (typeof svgAvatarRenderer !== 'undefined' && svgAvatarRenderer && avatar) {
             const svgString = avatar.toString();
             svgAvatarRenderer.parseSVG(svgString).catch(err => {
                 console.error('Failed to update SVG renderer:', err);
             });
         }
-
-        // Update pets display
         updatePetsDisplay();
     } catch (error) {
         console.error('❌ Error updating avatar:', error);
@@ -152,7 +108,7 @@ function updatePetsDisplay() {
 }
 
 // ============================================
-// PROMO CODES
+// DATA & SHOPS
 // ============================================
 
 const promoCodes = {
@@ -161,10 +117,6 @@ const promoCodes = {
     'FASHION': { diamonds: 75 },
     'AVATAR': { diamonds: 150 }
 };
-
-// ============================================
-// PETS DATABASE
-// ============================================
 
 const petsDatabase = [
     { id: 'dog', name: '🐕 Hund', emoji: '🐕', price: 50 },
@@ -176,37 +128,25 @@ const petsDatabase = [
     { id: 'dragon', name: '🐉 Drake', emoji: '🐉', price: 200 }
 ];
 
-// ============================================
-// CLOTHES DATABASE (for extra items beyond DiceBear)
-// ============================================
-
 const clothesDatabase = {
     tops: [
         { id: 'tshirt_1', name: 'Basis T-shirt', color: '#FFFFFF', price: 20 },
         { id: 'tshirt_2', name: 'Svart T-shirt', color: '#000000', price: 20 },
         { id: 'hoodie_1', name: 'Rosa Hoodie', color: '#FF6B9D', price: 50 },
-        { id: 'hoodie_2', name: 'Blå Hoodie', color: '#4169E1', price: 50 },
-        { id: 'jacket_1', name: 'Läder Jacka', color: '#2C2C2C', price: 100 },
-        { id: 'sweater_1', name: 'Varm Tröja', color: '#8B4513', price: 60 }
+        { id: 'hoodie_2', name: 'Blå Hoodie', color: '#4169E1', price: 50 }
     ],
     bottoms: [
         { id: 'jeans_1', name: 'Blå Jeans', color: '#1E3A8A', price: 40 },
         { id: 'jeans_2', name: 'Svarta Jeans', color: '#000000', price: 40 },
-        { id: 'skirt_1', name: 'Rosa Kjol', color: '#FFB6C1', price: 35 },
-        { id: 'skirt_2', name: 'Svart Kjol', color: '#000000', price: 35 },
-        { id: 'shorts_1', name: 'Denim Shorts', color: '#6B8E23', price: 30 }
+        { id: 'skirt_1', name: 'Rosa Kjol', color: '#FFB6C1', price: 35 }
     ],
     shoes: [
         { id: 'sneakers_1', name: 'Vita Sneakers', color: '#FFFFFF', price: 50 },
-        { id: 'sneakers_2', name: 'Svarta Sneakers', color: '#000000', price: 50 },
-        { id: 'boots_1', name: 'Bruna Boots', color: '#8B4513', price: 80 },
-        { id: 'sandals_1', name: 'Sandaler', color: '#F5DEB3', price: 25 }
+        { id: 'sneakers_2', name: 'Svarta Sneakers', color: '#000000', price: 50 }
     ],
     accessories: [
         { id: 'hat_1', name: 'Baseball Keps', color: '#DC143C', price: 30 },
-        { id: 'hat_2', name: 'Beanie', color: '#2C3E50', price: 25 },
-        { id: 'scarf_1', name: 'Varm Halsduk', color: '#FF6B9D', price: 20 },
-        { id: 'bag_1', name: 'Mini Väska', color: '#FFD700', price: 60 }
+        { id: 'hat_2', name: 'Beanie', color: '#2C3E50', price: 25 }
     ]
 };
 
@@ -214,27 +154,19 @@ const clothesDatabase = {
 // UI INTERACTIONS
 // ============================================
 
-// Tab switching
 document.querySelectorAll('.tab-btn').forEach(btn => {
     btn.addEventListener('click', () => {
         const tabName = btn.dataset.tab;
-
-        // Update button states
         document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
         btn.classList.add('active');
-
-        // Update content
         document.querySelectorAll('.tab-content').forEach(content => {
             content.classList.remove('active');
         });
         const activeTab = document.getElementById(`${tabName}-tab`);
         activeTab.classList.add('active');
 
-        // Animate tab switch
         if (typeof anime !== 'undefined') {
             animateTabSwitch(activeTab);
-
-            // Animate shop items if switching to clothes or pets tab
             if (tabName === 'clothes' || tabName === 'pets') {
                 setTimeout(() => animateShopItems(), 100);
             }
@@ -242,825 +174,218 @@ document.querySelectorAll('.tab-btn').forEach(btn => {
     });
 });
 
-// Avatar customization
-document.querySelectorAll('.option-btn').forEach(btn => {
+document.querySelectorAll('.option-btn, .color-btn').forEach(btn => {
     btn.addEventListener('click', () => {
         const type = btn.dataset.type;
         const value = btn.dataset.value;
-
-        console.log(`🎨 Changing ${type} to ${value}`);
-
-        // Update selection visual
-        const siblings = btn.parentElement.querySelectorAll('.option-btn');
+        const siblings = btn.parentElement.querySelectorAll(`[data-type="${type}"]`);
         siblings.forEach(s => s.classList.remove('selected'));
         btn.classList.add('selected');
-
-        // Update avatar
         playerData.avatar[type] = value;
         updateAvatar();
-
-        if (typeof anime !== 'undefined') {
-            animateAvatarChange();
-        }
-    });
-});
-
-document.querySelectorAll('.color-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-        const type = btn.dataset.type;
-        const value = btn.dataset.value;
-
-        console.log(`🎨 Changing ${type} to ${value}`);
-
-        // Update selection visual
-        const siblings = btn.parentElement.querySelectorAll('.color-btn');
-        siblings.forEach(s => s.classList.remove('selected'));
-        btn.classList.add('selected');
-
-        // Update avatar
-        playerData.avatar[type] = value;
-        updateAvatar();
-
-        if (typeof anime !== 'undefined') {
-            animateAvatarChange();
-        }
+        if (typeof anime !== 'undefined') animateAvatarChange();
     });
 });
 
 // ============================================
-// SHOP FUNCTIONALITY
+// SHOP LOGIC
 // ============================================
 
 function populateShop() {
     const shopContainer = document.getElementById('clothesShop');
     shopContainer.innerHTML = '';
-
-    // Add all clothing categories
     const categories = [
-        { name: 'Överdel', items: clothesDatabase.tops, slot: 'top' },
-        { name: 'Underdel', items: clothesDatabase.bottoms, slot: 'bottom' },
-        { name: 'Skor', items: clothesDatabase.shoes, slot: 'shoes' },
-        { name: 'Accessoarer', items: clothesDatabase.accessories, slot: 'accessory' }
+        { name: 'Överdel', items: clothesDatabase.tops },
+        { name: 'Underdel', items: clothesDatabase.bottoms },
+        { name: 'Skor', items: clothesDatabase.shoes },
+        { name: 'Accessoarer', items: clothesDatabase.accessories }
     ];
 
     categories.forEach(category => {
         const categoryDiv = document.createElement('div');
         categoryDiv.className = 'customization-section';
         categoryDiv.innerHTML = `<h3>${category.name}</h3>`;
-
+        
         category.items.forEach(item => {
             const owned = playerData.ownedClothes.includes(item.id);
             const itemDiv = document.createElement('div');
             itemDiv.className = 'shop-item';
-
             const colorPreview = `<div style="width: 30px; height: 30px; background: ${item.color}; border-radius: 50%; display: inline-block; margin-right: 10px; border: 2px solid #ddd;"></div>`;
-
+            
             itemDiv.innerHTML = `
                 <div style="display: flex; align-items: center; justify-content: space-between;">
-                    <div style="display: flex; align-items: center;">
-                        ${colorPreview}
-                        <h4 style="margin: 0;">${item.name}</h4>
-                        ${owned ? '<span class="owned-label">Ägs</span>' : ''}
-                    </div>
+                    <div style="display: flex; align-items: center;">${colorPreview} <h4 style="margin: 0;">${item.name}</h4></div>
                     <span style="color: #FFD700; font-weight: bold;">${item.price} 💎</span>
                 </div>
                 <div class="shop-item-buttons">
-                    ${!owned ? `<button class="shop-btn buy-btn" onclick="buyClothes('${item.id}', ${item.price})">Köp</button>` : '<span style="color: #4CAF50; font-size: 0.9rem;">✓ Ägs redan</span>'}
+                    ${!owned ? `<button class="shop-btn buy-btn" id="btn-${item.id}">Köp</button>` : '<span style="color: #4CAF50;">✓ Ägs</span>'}
                 </div>
             `;
-
             categoryDiv.appendChild(itemDiv);
+            
+            // Add listener manually to avoid inline string function issues
+            if(!owned) {
+                setTimeout(() => {
+                    document.getElementById(`btn-${item.id}`)?.addEventListener('click', () => buyClothes(item.id, item.price));
+                }, 0);
+            }
         });
-
         shopContainer.appendChild(categoryDiv);
     });
-
-    // Animate shop items entrance
-    if (typeof anime !== 'undefined') {
-        setTimeout(() => animateShopItems(), 100);
-    }
 }
 
 function buyClothes(itemId, price) {
-    // Check if already owned
-    if (playerData.ownedClothes.includes(itemId)) {
-        alert('Du äger redan detta plagg!');
-        return;
-    }
-
-    // Check if enough diamonds
+    if (playerData.ownedClothes.includes(itemId)) return;
     if (playerData.diamonds < price) {
         alert('Du har inte tillräckligt med diamanter!');
         return;
     }
-
-    // Buy the item
     playerData.diamonds -= price;
     playerData.ownedClothes.push(itemId);
-
-    // Find the item
-    let item = null;
-    Object.values(clothesDatabase).forEach(category => {
-        const found = category.find(i => i.id === itemId);
-        if (found) item = found;
-    });
-
     updateDiamondDisplay();
     populateShop();
-
-    // Animate diamond display on purchase
-    if (typeof anime !== 'undefined' && typeof anime.animate === 'function') {
-        anime.animate('.diamonds-display', {
-            scale: [1, 1.15, 1],
-            duration: 500,
-            easing: 'easeOutElastic(1, .5)'
-        });
-    }
-
-    alert(`Du köpte ${item.name}!`);
+    alert(`Köpt!`);
 }
-
-// ============================================
-// PETS FUNCTIONALITY
-// ============================================
 
 function populatePetsShop() {
     const shopContainer = document.getElementById('petsShop');
     shopContainer.innerHTML = '';
-
     petsDatabase.forEach(pet => {
         const owned = playerData.ownedPets.includes(pet.id);
         const active = playerData.activePets.includes(pet.id);
-
         const petDiv = document.createElement('div');
         petDiv.className = 'shop-item';
-
         petDiv.innerHTML = `
             <div style="display: flex; align-items: center; justify-content: space-between;">
-                <div style="display: flex; align-items: center; gap: 15px;">
-                    <span style="font-size: 40px;">${pet.emoji}</span>
-                    <div>
-                        <h4 style="margin: 0;">${pet.name}</h4>
-                        ${owned ? '<span class="owned-label">Ägs</span>' : ''}
-                        ${active ? '<span class="owned-label" style="background: #2196F3;">Aktiv</span>' : ''}
-                    </div>
-                </div>
-                <span style="color: #FFD700; font-weight: bold;">${pet.price} 💎</span>
+                <span style="font-size: 30px; margin-right:10px;">${pet.emoji}</span>
+                <div><h4 style="margin: 0;">${pet.name}</h4></div>
+                <span style="color: #FFD700;">${pet.price} 💎</span>
             </div>
             <div class="shop-item-buttons">
-                ${!owned ? `<button class="shop-btn buy-btn" onclick="buyPet('${pet.id}', ${pet.price})">Köp</button>` : ''}
-                ${owned && !active ? `<button class="shop-btn try-btn" onclick="activatePet('${pet.id}')">Aktivera</button>` : ''}
-                ${active ? `<button class="shop-btn remove-btn" onclick="deactivatePet('${pet.id}')">Avaktivera</button>` : ''}
+                ${!owned ? `<button class="shop-btn" onclick="window.game.buyPet('${pet.id}', ${pet.price})">Köp</button>` : ''}
+                ${owned && !active ? `<button class="shop-btn" onclick="window.game.activatePet('${pet.id}')">Aktivera</button>` : ''}
+                ${active ? `<button class="shop-btn" onclick="window.game.deactivatePet('${pet.id}')">Avaktivera</button>` : ''}
             </div>
         `;
-
         shopContainer.appendChild(petDiv);
     });
-
     updateActivePetsList();
-
-    // Animate shop items entrance
-    if (typeof anime !== 'undefined') {
-        setTimeout(() => animateShopItems(), 100);
-    }
 }
 
-function buyPet(petId, price) {
-    if (playerData.ownedPets.includes(petId)) {
-        alert('Du äger redan denna pet!');
-        return;
-    }
-
-    if (playerData.diamonds < price) {
-        alert('Du har inte tillräckligt med diamanter!');
-        return;
-    }
-
-    playerData.diamonds -= price;
-    playerData.ownedPets.push(petId);
-
-    const pet = petsDatabase.find(p => p.id === petId);
-
-    updateDiamondDisplay();
-    populatePetsShop();
-
-    // Animate diamond display on purchase
-    if (typeof anime !== 'undefined' && typeof anime.animate === 'function') {
-        anime.animate('.diamonds-display', {
-            scale: [1, 1.15, 1],
-            duration: 500,
-            easing: 'easeOutElastic(1, .5)'
-        });
-    }
-
-    alert(`Du köpte ${pet.name}!`);
-}
-
-function activatePet(petId) {
-    if (playerData.activePets.length >= 3) {
-        alert('Du kan bara ha 3 aktiva pets!');
-        return;
-    }
-
-    if (!playerData.activePets.includes(petId)) {
-        playerData.activePets.push(petId);
+// Global scope exports for inline HTML onclicks (temporary fix for module scope)
+window.game = {
+    buyPet: (id, price) => {
+        if (playerData.diamonds >= price && !playerData.ownedPets.includes(id)) {
+            playerData.diamonds -= price;
+            playerData.ownedPets.push(id);
+            updateDiamondDisplay();
+            populatePetsShop();
+        }
+    },
+    activatePet: (id) => {
+        if (playerData.activePets.length < 3 && !playerData.activePets.includes(id)) {
+            playerData.activePets.push(id);
+            populatePetsShop();
+            updatePetsDisplay();
+        }
+    },
+    deactivatePet: (id) => {
+        playerData.activePets = playerData.activePets.filter(p => p !== id);
         populatePetsShop();
         updatePetsDisplay();
-
-        if (typeof anime !== 'undefined') {
-            animateAvatarChange();
-        }
     }
-}
-
-function deactivatePet(petId) {
-    playerData.activePets = playerData.activePets.filter(id => id !== petId);
-    populatePetsShop();
-    updatePetsDisplay();
-
-    if (typeof anime !== 'undefined') {
-        animateAvatarChange();
-    }
-}
+};
 
 function updateActivePetsList() {
     const listContainer = document.getElementById('activePetsList');
     listContainer.innerHTML = '';
-
-    if (playerData.activePets.length === 0) {
-        listContainer.innerHTML = '<p style="color: #999; font-size: 0.9rem;">Inga aktiva pets</p>';
-        return;
-    }
-
     playerData.activePets.forEach(petId => {
         const pet = petsDatabase.find(p => p.id === petId);
         if (pet) {
             const badge = document.createElement('div');
             badge.className = 'pet-badge';
-            badge.innerHTML = `
-                <span style="font-size: 24px;">${pet.emoji}</span>
-                <button class="remove-pet-btn" onclick="deactivatePet('${pet.id}')">×</button>
-            `;
+            badge.innerHTML = `${pet.emoji} <span style="cursor:pointer; margin-left:5px;" onclick="window.game.deactivatePet('${pet.id}')">×</span>`;
             listContainer.appendChild(badge);
         }
     });
 }
 
 // ============================================
-// OUTFITS FUNCTIONALITY
-// ============================================
-
-function populateOutfitsList() {
-    const listContainer = document.getElementById('outfitsList');
-    listContainer.innerHTML = '';
-
-    if (playerData.savedOutfits.length === 0) {
-        listContainer.innerHTML = '<p style="color: #999; text-align: center; padding: 20px;">Inga sparade outfits än</p>';
-        return;
-    }
-
-    playerData.savedOutfits.forEach((outfit, index) => {
-        const petsList = outfit.pets.map(petId => {
-            const pet = petsDatabase.find(p => p.id === petId);
-            return pet ? pet.emoji : '';
-        }).join(' ');
-
-        const outfitDiv = document.createElement('div');
-        outfitDiv.className = 'outfit-item';
-
-        outfitDiv.innerHTML = `
-            <h4>${outfit.name}</h4>
-            <p style="color: #666; font-size: 0.9rem; margin: 5px 0;">
-                Avatar anpassning sparad
-            </p>
-            ${petsList ? `<p style="font-size: 24px; margin: 5px 0;">${petsList}</p>` : ''}
-            <div class="outfit-buttons">
-                <button class="shop-btn load-btn" onclick="loadOutfit(${index})">Ladda</button>
-                <button class="shop-btn delete-btn" onclick="deleteOutfit(${index})">Ta bort</button>
-            </div>
-        `;
-
-        listContainer.appendChild(outfitDiv);
-    });
-}
-
-document.getElementById('saveOutfitBtn').addEventListener('click', () => {
-    if (playerData.savedOutfits.length >= 25) {
-        alert('Du har redan 25 sparade outfits! Ta bort en för att spara fler.');
-        return;
-    }
-
-    if (playerData.diamonds < 5) {
-        alert('Du behöver 5 diamanter för att spara en outfit!');
-        return;
-    }
-
-    const name = prompt('Namnge din outfit:');
-    if (!name) return;
-
-    const outfit = {
-        name: name,
-        avatar: { ...playerData.avatar },
-        clothes: { ...playerData.currentClothes },
-        pets: [...playerData.activePets]
-    };
-
-    playerData.savedOutfits.push(outfit);
-    playerData.diamonds -= 5;
-
-    updateDiamondDisplay();
-    populateOutfitsList();
-
-    alert('Outfit sparad!');
-});
-
-function loadOutfit(index) {
-    const outfit = playerData.savedOutfits[index];
-    if (!outfit) return;
-
-    playerData.avatar = { ...outfit.avatar };
-    playerData.currentClothes = { ...outfit.clothes };
-    playerData.activePets = [...outfit.pets];
-
-    // Clear trying on
-    playerData.tryingOn = { top: null, bottom: null, shoes: null, accessory: null };
-
-    updateAvatar();
-    populatePetsShop();
-
-    if (typeof anime !== 'undefined') {
-        animateAvatarChange();
-    }
-
-    alert(`Outfit "${outfit.name}" laddad!`);
-}
-
-function deleteOutfit(index) {
-    if (confirm('Är du säker på att du vill ta bort denna outfit?')) {
-        playerData.savedOutfits.splice(index, 1);
-        populateOutfitsList();
-    }
-}
-
-// ============================================
-// CODES FUNCTIONALITY
-// ============================================
-
-document.getElementById('redeemCodeBtn').addEventListener('click', () => {
-    const input = document.getElementById('codeInput');
-    const code = input.value.trim().toUpperCase();
-
-    if (!code) {
-        alert('Ange en kod!');
-        return;
-    }
-
-    if (!promoCodes[code]) {
-        alert('Ogiltig kod!');
-        return;
-    }
-
-    if (playerData.usedCodes.includes(code)) {
-        alert('Du har redan använt denna kod!');
-        return;
-    }
-
-    const diamonds = promoCodes[code].diamonds;
-    playerData.diamonds += diamonds;
-    playerData.usedCodes.push(code);
-
-    updateDiamondDisplay();
-    input.value = '';
-
-    // Celebrate with animation!
-    if (typeof anime !== 'undefined' && typeof anime.animate === 'function') {
-        anime.animate('.diamonds-display', {
-            scale: [1, 1.3, 1],
-            rotate: [0, 15, -15, 0],
-            duration: 800,
-            easing: 'easeOutElastic(1, .5)'
-        });
-
-        anime.animate('.diamond-icon', {
-            scale: [1, 1.5, 1],
-            duration: 600,
-            easing: 'easeOutBack'
-        });
-    }
-
-    alert(`Du fick ${diamonds} diamanter! 💎`);
-});
-
-// ============================================
-// UTILITY FUNCTIONS
+// UTILS & ANIMATION
 // ============================================
 
 function updateDiamondDisplay() {
     document.getElementById('diamondCount').textContent = playerData.diamonds;
-}
-
-// ============================================
-// ANIMATIONS WITH ANIME.JS
-// ============================================
-
-// Avatar animation
-let avatarBreathingAnimation = null;
-
-function startAvatarBreathing() {
-    console.log('💨 Starting avatar breathing animation...');
-
-    if (typeof anime === 'undefined' || typeof anime.animate !== 'function') {
-        console.log('⚠️ Anime.js not available, skipping breathing animation');
-        return;
-    }
-
-    if (avatarBreathingAnimation) {
-        avatarBreathingAnimation.pause();
-    }
-
-    avatarBreathingAnimation = anime.animate('#avatarDisplay', {
-        translateY: [0, -10, 0],
-        scale: [1, 1.01, 1],
-        duration: 3000,
-        easing: 'easeInOutSine',
-        loop: true
-    });
-    console.log('💨 Avatar breathing animation created');
-}
-
-function animateAvatarChange() {
-    // Stop breathing temporarily
-    if (avatarBreathingAnimation) {
-        avatarBreathingAnimation.pause();
-    }
-
-    // Quick fade + scale effect
-    if (typeof anime !== 'undefined' && typeof anime.animate === 'function') {
-        anime.animate('#avatarDisplay', {
-            opacity: [0.7, 1],
-            scale: [0.95, 1],
-            duration: 400,
-            easing: 'easeOutCubic',
-            onComplete: () => {
-                // Resume breathing after change
-                startAvatarBreathing();
-            }
+    if (typeof anime !== 'undefined') {
+        anime({
+            targets: '.diamonds-display',
+            scale: [1, 1.2, 1],
+            duration: 300
         });
     }
 }
 
-// UI entrance animations
-function animateUIEntrance() {
-    console.log('🎨 Starting UI entrance animations...');
-
-    if (typeof anime === 'undefined' || typeof anime.animate !== 'function') {
-        console.log('⚠️ Anime.js not available, skipping animations');
-        return;
-    }
-
-    // Animate header
-    anime.animate('.game-header', {
-        translateY: [-50, 0],
-        opacity: [0, 1],
-        duration: 800,
-        easing: 'easeOutExpo'
-    });
-
-    // Animate left panel
-    anime.animate('.left-panel', {
-        translateX: [-100, 0],
-        opacity: [0, 1],
-        duration: 1000,
-        delay: 200,
-        easing: 'easeOutExpo'
-    });
-
-    // Animate right panel (avatar)
-    anime.animate('.right-panel', {
-        translateX: [100, 0],
-        opacity: [0, 1],
-        duration: 1000,
-        delay: 200,
-        easing: 'easeOutExpo'
-    });
-
-    // Stagger animate customization sections
-    anime.animate('.customization-section', {
-        translateY: [30, 0],
-        opacity: [0, 1],
-        duration: 600,
-        delay: anime.stagger(100, {start: 400}),
-        easing: 'easeOutQuad'
-    });
-
-    console.log('🎨 UI entrance animations created');
+function animateTabSwitch(target) {
+    anime({ targets: target, opacity: [0, 1], translateY: [10, 0], duration: 400, easing: 'easeOutQuad' });
 }
-
-// Button hover animations
-function setupButtonAnimations() {
-    console.log('🔘 Setting up button animations...');
-
-    if (typeof anime === 'undefined' || typeof anime.animate !== 'function') {
-        console.log('⚠️ Anime.js not available, skipping button animations');
-        return;
-    }
-
-    const buttons = document.querySelectorAll('.option-btn, .color-btn, .shop-btn, .tab-btn');
-    console.log(`🔘 Found ${buttons.length} buttons to animate`);
-
-    buttons.forEach(btn => {
-        btn.addEventListener('mouseenter', function() {
-            anime.animate(this, {
-                scale: 1.08,
-                duration: 300,
-                easing: 'easeOutCubic'
-            });
-        });
-
-        btn.addEventListener('mouseleave', function() {
-            anime.animate(this, {
-                scale: 1,
-                duration: 300,
-                easing: 'easeOutCubic'
-            });
-        });
-
-        btn.addEventListener('click', function() {
-            anime.animate(this, {
-                scale: [1, 0.9, 1.05, 1],
-                duration: 400,
-                easing: 'easeOutElastic(1, .6)'
-            });
-        });
-    });
-}
-
-// Diamond sparkle effect
-function createDiamondSparkle() {
-    console.log('💎 Starting diamond sparkle animation...');
-
-    if (typeof anime === 'undefined' || typeof anime.animate !== 'function') {
-        console.log('⚠️ Anime.js not available, skipping diamond sparkle');
-        return;
-    }
-
-    anime.animate('.diamond-icon', {
-        rotate: [0, 360],
-        duration: 2000,
-        easing: 'linear',
-        loop: true
-    });
-
-    anime.animate('.diamonds-display', {
-        scale: [1, 1.1, 1],
-        duration: 2000,
-        easing: 'easeInOutSine',
-        loop: true
-    });
-    console.log('💎 Diamond animations started');
-}
-
-// Shop item entrance animation
 function animateShopItems() {
-    if (typeof anime === 'undefined' || typeof anime.animate !== 'function') {
-        return;
-    }
-
-    anime.animate('.shop-item', {
-        translateY: [20, 0],
-        opacity: [0, 1],
-        duration: 500,
-        delay: anime.stagger(50),
-        easing: 'easeOutQuad'
-    });
+    anime({ targets: '.shop-item', opacity: [0, 1], translateY: [20, 0], delay: anime.stagger(50) });
 }
-
-// Tab switching animation
-function animateTabSwitch(tabContent) {
-    if (typeof anime === 'undefined' || typeof anime.animate !== 'function') {
-        return;
-    }
-
-    anime.animate(tabContent, {
-        translateX: [50, 0],
-        opacity: [0, 1],
-        duration: 400,
-        easing: 'easeOutCubic'
-    });
+function animateAvatarChange() {
+    anime({ targets: '#avatarDisplay', scale: [0.9, 1], opacity: [0.5, 1], duration: 400 });
 }
 
 // ============================================
 // INITIALIZATION
 // ============================================
 
-// Global SVG Avatar Renderer instance
 let svgAvatarRenderer = null;
 
 function initializeSVGRenderer() {
-    // Check if SVG.js is loaded
-    if (typeof SVG === 'undefined') {
-        console.error('❌ SVG.js not loaded! SVG manipulation will not work.');
-        return null;
-    }
-
-    // We'll use the main avatar for SVG manipulation
-    // For now, create a hidden container for SVG operations
-    const svgContainer = document.createElement('div');
-    svgContainer.id = 'svg-manipulation-container';
-    svgContainer.style.display = 'none';
-    document.body.appendChild(svgContainer);
-
+    if (typeof SVG === 'undefined') return;
     try {
+        // Ensure container exists
+        let container = document.getElementById('svg-manipulation-container');
+        if (!container) {
+            container = document.createElement('div');
+            container.id = 'svg-manipulation-container';
+            container.style.display = 'none';
+            document.body.appendChild(container);
+        }
         svgAvatarRenderer = new SVGAvatarRenderer('svg-manipulation-container');
-        console.log('✅ SVG Avatar Renderer initialized');
-        return svgAvatarRenderer;
+        console.log('✅ SVG Renderer initialized');
     } catch (error) {
         console.error('❌ Failed to initialize SVG renderer:', error);
-        return null;
     }
 }
-
-// ============================================
-// CUSTOM DESIGN FUNCTIONS
-// ============================================
-
-function applyMultiPartColoring() {
-    if (!svgAvatarRenderer) {
-        alert('SVG Renderer inte initierad än. Prova igen om en stund!');
-        return;
-    }
-
-    try {
-        // Example multi-part coloring for hoodie
-        svgAvatarRenderer.colorClothingParts({
-            'hoodie': '#DC143C',      // Red body
-            'hood': '#FF6347',        // Tomato hood
-            'pocket': '#FFD700',      // Gold pockets
-            'zipper': '#4169E1',      // Blue zipper
-            'string': '#00CED1'       // Turquoise strings
-        });
-
-        alert('🌈 Multi-part färgning applicerad!\nOlika delar av plagget har nu olika färger.');
-    } catch (error) {
-        console.error('Error applying multi-part coloring:', error);
-        alert('⚠️ Kunde inte applicera multi-part färgning: ' + error.message);
-    }
-}
-
-function applyPattern(patternType) {
-    if (!svgAvatarRenderer) {
-        alert('SVG Renderer inte initierad än. Prova igen om en stund!');
-        return;
-    }
-
-    try {
-        const colors = ['#FF6B9D', '#4169E1']; // Pink and blue
-
-        const success = svgAvatarRenderer.applyPattern(
-            '[id*="clothes"]',
-            patternType,
-            colors
-        );
-
-        if (success) {
-            alert(`✅ ${patternType} mönster applicerat på kläder!`);
-        } else {
-            alert('⚠️ Kunde inte applicera mönster. Kontrollera att avatar är laddad.');
-        }
-    } catch (error) {
-        console.error('Error applying pattern:', error);
-        alert('⚠️ Kunde inte applicera mönster: ' + error.message);
-    }
-}
-
-function applyGlowEffect() {
-    if (!svgAvatarRenderer) {
-        alert('SVG Renderer inte initierad än. Prova igen om en stund!');
-        return;
-    }
-
-    try {
-        svgAvatarRenderer.applyGlow(
-            '[id*="hair"], [id*="clothes"]',
-            '#FF6B9D',
-            4
-        );
-
-        alert('💫 Glow-effekt applicerad på hår och kläder!');
-    } catch (error) {
-        console.error('Error applying glow:', error);
-        alert('⚠️ Kunde inte applicera glow: ' + error.message);
-    }
-}
-
-function clearEffects() {
-    if (!svgAvatarRenderer) {
-        alert('SVG Renderer inte initierad än. Prova igen om en stund!');
-        return;
-    }
-
-    try {
-        svgAvatarRenderer.clearLayer('effects');
-        alert('🧹 Effekter rensade!');
-    } catch (error) {
-        console.error('Error clearing effects:', error);
-        alert('⚠️ Kunde inte rensa effekter: ' + error.message);
-    }
-}
-
-function exportAvatarSVG() {
-    if (!svgAvatarRenderer) {
-        alert('SVG Renderer inte initierad än. Öppna demo-svg-manipulation.html för full export-funktionalitet!');
-        return;
-    }
-
-    try {
-        svgAvatarRenderer.downloadSVG('stylespace-avatar.svg');
-        alert('💾 SVG-fil nedladdad!');
-    } catch (error) {
-        console.error('Error exporting SVG:', error);
-        alert('⚠️ Kunde inte exportera SVG: ' + error.message);
-    }
-}
-
-async function exportAvatarPNG() {
-    if (!svgAvatarRenderer) {
-        alert('SVG Renderer inte initierad än. Öppna demo-svg-manipulation.html för full export-funktionalitet!');
-        return;
-    }
-
-    try {
-        await svgAvatarRenderer.downloadPNG('stylespace-avatar.png');
-        alert('💾 PNG-fil nedladdad!');
-    } catch (error) {
-        console.error('Error exporting PNG:', error);
-        alert('⚠️ Kunde inte exportera PNG: ' + error.message);
-    }
-}
-
-// ============================================
-// INITIALIZATION
-// ============================================
 
 function init() {
-    console.log('🎮 Initializing StyleSpace with DiceBear...');
-    console.log('📦 Anime.js loaded:', typeof anime !== 'undefined');
-    if (typeof anime !== 'undefined') {
-        console.log('✨ Anime.js version:', anime.version);
-    }
+    console.log('🎮 Initializing StyleSpace...');
+    
+    // Corrected Case Sensitivity for default selections matching HTML values (lowercase)
+    document.querySelector('[data-type="skinColor"][data-value="light"]')?.classList.add('selected');
+    document.querySelector('[data-type="top"][data-value="longHairStraight"]')?.classList.add('selected');
+    document.querySelector('[data-type="eyes"][data-value="default"]')?.classList.add('selected');
+    document.querySelector('[data-type="eyebrow"][data-value="default"]')?.classList.add('selected');
+    document.querySelector('[data-type="mouth"][data-value="smile"]')?.classList.add('selected');
+    document.querySelector('[data-type="clotheType"][data-value="hoodie"]')?.classList.add('selected');
 
-    // Check DiceBear loading
-    console.log('📦 DiceBear createAvatar loaded:', typeof createAvatar !== 'undefined');
-    console.log('📦 DiceBear avataaars loaded:', typeof avataaars !== 'undefined');
-
-    if (typeof createAvatar === 'undefined' || typeof avataaars === 'undefined') {
-        console.error('❌ DiceBear library not loaded! Check import map and network.');
-    }
-
-    // Set default selections
-    document.querySelector('[data-type="skinColor"][data-value="Light"]')?.classList.add('selected');
-    document.querySelector('[data-type="top"][data-value="LongHairStraight"]')?.classList.add('selected');
-    document.querySelector('[data-type="eyes"][data-value="Default"]')?.classList.add('selected');
-    document.querySelector('[data-type="eyebrow"][data-value="Default"]')?.classList.add('selected');
-    document.querySelector('[data-type="mouth"][data-value="Smile"]')?.classList.add('selected');
-    document.querySelector('[data-type="clotheType"][data-value="Hoodie"]')?.classList.add('selected');
-
-    // Initialize shops and lists
     populateShop();
     populatePetsShop();
-    populateOutfitsList();
-
-    // Generate initial avatar
     updateAvatar();
 
-    // Initialize SVG Avatar Renderer for Custom Design features
-    setTimeout(() => {
+    // Initialize SVG logic safely
+    if (document.readyState === 'complete') {
         initializeSVGRenderer();
-
-        // Load current avatar into SVG renderer if available
-        if (svgAvatarRenderer) {
-            const avatar = generateAvatar();
-            if (avatar) {
-                const svgString = avatar.toString();
-                svgAvatarRenderer.parseSVG(svgString).catch(err => {
-                    console.error('Failed to load avatar into SVG renderer:', err);
-                });
-            }
-        }
-    }, 500); // Delay to ensure everything is loaded
-
-    // Start anime.js animations
-    console.log('🎬 Starting animations...');
-    if (typeof anime !== 'undefined') {
-        animateUIEntrance();
-        startAvatarBreathing();
-        createDiamondSparkle();
-        setupButtonAnimations();
-        console.log('✅ All animations started!');
     } else {
-        console.error('❌ Anime.js not loaded! Animations will not work.');
+        window.addEventListener('load', initializeSVGRenderer);
+    }
+    
+    // Animations
+    if (typeof anime !== 'undefined') {
+        anime({ targets: '.game-container', opacity: [0, 1], duration: 1000, easing: 'easeOutExpo' });
     }
 }
 
-// Start the game when page loads
-window.addEventListener('load', init);
+// Initialize when module loads
+init();
