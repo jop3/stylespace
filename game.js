@@ -8,8 +8,8 @@ const playerData = {
         skinColor: 'Light',
         top: 'LongHairStraight',
         hairColor: '724133',
-        eyes: 'Default',
-        eyebrow: 'Default',
+        eyes: 'default',
+        eyebrow: 'default',
         mouth: 'Smile',
         accessories: '',
         clotheType: 'Hoodie',
@@ -318,9 +318,8 @@ function buyClothes(itemId, price) {
     populateShop();
 
     // Animate diamond display on purchase
-    if (typeof anime !== 'undefined') {
-        anime({
-            targets: '.diamonds-display',
+    if (typeof anime !== 'undefined' && typeof anime.animate === 'function') {
+        anime.animate('.diamonds-display', {
             scale: [1, 1.15, 1],
             duration: 500,
             easing: 'easeOutElastic(1, .5)'
@@ -395,9 +394,8 @@ function buyPet(petId, price) {
     populatePetsShop();
 
     // Animate diamond display on purchase
-    if (typeof anime !== 'undefined') {
-        anime({
-            targets: '.diamonds-display',
+    if (typeof anime !== 'undefined' && typeof anime.animate === 'function') {
+        anime.animate('.diamonds-display', {
             scale: [1, 1.15, 1],
             duration: 500,
             easing: 'easeOutElastic(1, .5)'
@@ -584,17 +582,15 @@ document.getElementById('redeemCodeBtn').addEventListener('click', () => {
     input.value = '';
 
     // Celebrate with animation!
-    if (typeof anime !== 'undefined') {
-        anime({
-            targets: '.diamonds-display',
+    if (typeof anime !== 'undefined' && typeof anime.animate === 'function') {
+        anime.animate('.diamonds-display', {
             scale: [1, 1.3, 1],
             rotate: [0, 15, -15, 0],
             duration: 800,
             easing: 'easeOutElastic(1, .5)'
         });
 
-        anime({
-            targets: '.diamond-icon',
+        anime.animate('.diamond-icon', {
             scale: [1, 1.5, 1],
             duration: 600,
             easing: 'easeOutBack'
@@ -621,12 +617,17 @@ let avatarBreathingAnimation = null;
 
 function startAvatarBreathing() {
     console.log('💨 Starting avatar breathing animation...');
+
+    if (typeof anime === 'undefined' || typeof anime.animate !== 'function') {
+        console.log('⚠️ Anime.js not available, skipping breathing animation');
+        return;
+    }
+
     if (avatarBreathingAnimation) {
         avatarBreathingAnimation.pause();
     }
 
-    avatarBreathingAnimation = anime({
-        targets: '#avatarDisplay',
+    avatarBreathingAnimation = anime.animate('#avatarDisplay', {
         translateY: [0, -10, 0],
         scale: [1, 1.01, 1],
         duration: 3000,
@@ -643,26 +644,31 @@ function animateAvatarChange() {
     }
 
     // Quick fade + scale effect
-    anime({
-        targets: '#avatarDisplay',
-        opacity: [0.7, 1],
-        scale: [0.95, 1],
-        duration: 400,
-        easing: 'easeOutCubic',
-        complete: () => {
-            // Resume breathing after change
-            startAvatarBreathing();
-        }
-    });
+    if (typeof anime !== 'undefined' && typeof anime.animate === 'function') {
+        anime.animate('#avatarDisplay', {
+            opacity: [0.7, 1],
+            scale: [0.95, 1],
+            duration: 400,
+            easing: 'easeOutCubic',
+            complete: () => {
+                // Resume breathing after change
+                startAvatarBreathing();
+            }
+        });
+    }
 }
 
 // UI entrance animations
 function animateUIEntrance() {
     console.log('🎨 Starting UI entrance animations...');
 
+    if (typeof anime === 'undefined' || typeof anime.animate !== 'function') {
+        console.log('⚠️ Anime.js not available, skipping animations');
+        return;
+    }
+
     // Animate header
-    anime({
-        targets: '.game-header',
+    anime.animate('.game-header', {
         translateY: [-50, 0],
         opacity: [0, 1],
         duration: 800,
@@ -670,8 +676,7 @@ function animateUIEntrance() {
     });
 
     // Animate left panel
-    anime({
-        targets: '.left-panel',
+    anime.animate('.left-panel', {
         translateX: [-100, 0],
         opacity: [0, 1],
         duration: 1000,
@@ -680,8 +685,7 @@ function animateUIEntrance() {
     });
 
     // Animate right panel (avatar)
-    anime({
-        targets: '.right-panel',
+    anime.animate('.right-panel', {
         translateX: [100, 0],
         opacity: [0, 1],
         duration: 1000,
@@ -690,8 +694,7 @@ function animateUIEntrance() {
     });
 
     // Stagger animate customization sections
-    anime({
-        targets: '.customization-section',
+    anime.animate('.customization-section', {
         translateY: [30, 0],
         opacity: [0, 1],
         duration: 600,
@@ -705,13 +708,18 @@ function animateUIEntrance() {
 // Button hover animations
 function setupButtonAnimations() {
     console.log('🔘 Setting up button animations...');
+
+    if (typeof anime === 'undefined' || typeof anime.animate !== 'function') {
+        console.log('⚠️ Anime.js not available, skipping button animations');
+        return;
+    }
+
     const buttons = document.querySelectorAll('.option-btn, .color-btn, .shop-btn, .tab-btn');
     console.log(`🔘 Found ${buttons.length} buttons to animate`);
 
     buttons.forEach(btn => {
         btn.addEventListener('mouseenter', function() {
-            anime({
-                targets: this,
+            anime.animate(this, {
                 scale: 1.08,
                 duration: 300,
                 easing: 'easeOutCubic'
@@ -719,8 +727,7 @@ function setupButtonAnimations() {
         });
 
         btn.addEventListener('mouseleave', function() {
-            anime({
-                targets: this,
+            anime.animate(this, {
                 scale: 1,
                 duration: 300,
                 easing: 'easeOutCubic'
@@ -728,8 +735,7 @@ function setupButtonAnimations() {
         });
 
         btn.addEventListener('click', function() {
-            anime({
-                targets: this,
+            anime.animate(this, {
                 scale: [1, 0.9, 1.05, 1],
                 duration: 400,
                 easing: 'easeOutElastic(1, .6)'
@@ -742,16 +748,19 @@ function setupButtonAnimations() {
 function createDiamondSparkle() {
     console.log('💎 Starting diamond sparkle animation...');
 
-    anime({
-        targets: '.diamond-icon',
+    if (typeof anime === 'undefined' || typeof anime.animate !== 'function') {
+        console.log('⚠️ Anime.js not available, skipping diamond sparkle');
+        return;
+    }
+
+    anime.animate('.diamond-icon', {
         rotate: [0, 360],
         duration: 2000,
         easing: 'linear',
         loop: true
     });
 
-    anime({
-        targets: '.diamonds-display',
+    anime.animate('.diamonds-display', {
         scale: [1, 1.1, 1],
         duration: 2000,
         easing: 'easeInOutSine',
@@ -762,8 +771,11 @@ function createDiamondSparkle() {
 
 // Shop item entrance animation
 function animateShopItems() {
-    anime({
-        targets: '.shop-item',
+    if (typeof anime === 'undefined' || typeof anime.animate !== 'function') {
+        return;
+    }
+
+    anime.animate('.shop-item', {
         translateY: [20, 0],
         opacity: [0, 1],
         duration: 500,
@@ -774,8 +786,11 @@ function animateShopItems() {
 
 // Tab switching animation
 function animateTabSwitch(tabContent) {
-    anime({
-        targets: tabContent,
+    if (typeof anime === 'undefined' || typeof anime.animate !== 'function') {
+        return;
+    }
+
+    anime.animate(tabContent, {
         translateX: [50, 0],
         opacity: [0, 1],
         duration: 400,
