@@ -1,4 +1,11 @@
 // ============================================
+// IMPORTS - DiceBear Library
+// ============================================
+
+import { createAvatar } from '@dicebear/core';
+import { avataaars } from '@dicebear/collection';
+
+// ============================================
 // PLAYER DATA
 // ============================================
 
@@ -41,45 +48,50 @@ const playerData = {
 // DICEBEAR AVATAR GENERATION
 // ============================================
 
-function generateAvatarURL() {
-    const baseURL = 'https://api.dicebear.com/9.x/avataaars/svg';
-
-    const params = new URLSearchParams({
-        seed: 'stylespace-' + Date.now(), // Unique seed
-        skinColor: playerData.avatar.skinColor,
-        top: playerData.avatar.top,
-        hairColor: playerData.avatar.hairColor,
-        eyes: playerData.avatar.eyes,
-        eyebrow: playerData.avatar.eyebrow,
-        mouth: playerData.avatar.mouth,
-        clotheType: playerData.avatar.clotheType,
-        clotheColor: playerData.avatar.clotheColor,
-        backgroundColor: 'transparent'
-    });
+function generateAvatar() {
+    // Build options object for DiceBear
+    const options = {
+        seed: 'stylespace-' + Date.now(), // Unique seed for consistency
+        skinColor: [playerData.avatar.skinColor],
+        top: [playerData.avatar.top],
+        hairColor: [playerData.avatar.hairColor],
+        eyes: [playerData.avatar.eyes],
+        eyebrow: [playerData.avatar.eyebrow],
+        mouth: [playerData.avatar.mouth],
+        clothesType: [playerData.avatar.clotheType],
+        clothesColor: [playerData.avatar.clotheColor],
+        backgroundColor: ['transparent']
+    };
 
     // Add accessories if selected
     if (playerData.avatar.accessories) {
-        params.append('accessories', playerData.avatar.accessories);
-        params.append('accessoriesColor', '262E33');
+        options.accessories = [playerData.avatar.accessories];
+        options.accessoriesColor = ['262E33'];
     }
 
     // Add facial hair if selected
     if (playerData.avatar.facialHairType) {
-        params.append('facialHairType', playerData.avatar.facialHairType);
-        params.append('facialHairColor', playerData.avatar.facialHairColor || playerData.avatar.hairColor);
+        options.facialHairType = [playerData.avatar.facialHairType];
+        options.facialHairColor = [playerData.avatar.facialHairColor || playerData.avatar.hairColor];
     }
 
-    console.log('🎨 Generating avatar URL with params:', Object.fromEntries(params));
+    console.log('🎨 Generating avatar with options:', options);
 
-    return `${baseURL}?${params.toString()}`;
+    // Create avatar using DiceBear
+    const avatar = createAvatar(avataaars, options);
+
+    return avatar;
 }
 
 function updateAvatar() {
     const avatarImg = document.getElementById('avatarDisplay');
-    const avatarURL = generateAvatarURL();
+    const avatar = generateAvatar();
 
-    console.log('🖼️ Updating avatar image:', avatarURL);
-    avatarImg.src = avatarURL;
+    // Convert avatar to data URI
+    const dataUri = avatar.toDataUri();
+
+    console.log('🖼️ Updating avatar image');
+    avatarImg.src = dataUri;
 
     // Update pets display
     updatePetsDisplay();

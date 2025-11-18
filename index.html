@@ -9,6 +9,16 @@
     <script src="https://cdn.jsdelivr.net/npm/animejs@4.2.2/dist/bundles/anime.umd.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/pixi.js@7.4.2/dist/pixi.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/tinycolor2@1.6.0/dist/tinycolor-min.js"></script>
+
+    <!-- DiceBear Avatar Library (ESM) -->
+    <script type="importmap">
+    {
+      "imports": {
+        "@dicebear/core": "https://esm.sh/@dicebear/core@9",
+        "@dicebear/collection": "https://esm.sh/@dicebear/collection@9"
+      }
+    }
+    </script>
 </head>
 <body>
     <div class="game-container">
@@ -238,6 +248,6 @@
     </div>
 
     <script src="avatar-renderer.js"></script>
-    <script src="game.js"></script>
+    <script type="module" src="game.js"></script>
 </body>
 </html>
