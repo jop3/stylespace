@@ -4,6 +4,17 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>SVG Manipulation Demo - StyleSpace</title>
+
+    <!-- DiceBear Avatar Library (ESM) -->
+    <script type="importmap">
+    {
+      "imports": {
+        "@dicebear/core": "https://esm.sh/@dicebear/core@9",
+        "@dicebear/collection": "https://esm.sh/@dicebear/collection@9"
+      }
+    }
+    </script>
+
     <!-- SVG.js for SVG manipulation -->
     <script src="https://cdn.jsdelivr.net/npm/@svgdotjs/svg.js@3.2.0/dist/svg.min.js"></script>
     <!-- TinyColor for color manipulation -->
@@ -214,9 +225,13 @@
     <!-- Load SVG Avatar Renderer -->
     <script src="svg-avatar-renderer.js"></script>
 
-    <script>
+    <script type="module">
+        // Import DiceBear
+        import { createAvatar } from '@dicebear/core';
+        import { avataaars } from '@dicebear/collection';
+
         let renderer = null;
-        let currentAvatarURL = null;
+        let currentAvatar = null;
 
         // Wait for everything to load
         window.addEventListener('load', () => {
@@ -252,28 +267,36 @@
             }
 
             try {
-                updateStatus('📥 Laddar DiceBear avatar...', 'info');
+                updateStatus('📥 Genererar DiceBear avatar...', 'info');
 
-                // Generate DiceBear URL
-                currentAvatarURL = 'https://api.dicebear.com/9.x/avataaars/svg?' + new URLSearchParams({
+                // Generate avatar using DiceBear JS library
+                const options = {
                     seed: 'svg-demo-' + Date.now(),
-                    skinColor: 'Light',
-                    top: 'LongHairStraight',
-                    hairColor: '724133',
-                    eyes: 'Happy',
-                    eyebrow: 'Default',
-                    mouth: 'Smile',
-                    clotheType: 'Hoodie',
-                    clotheColor: '4169E1',
-                    backgroundColor: 'transparent'
-                });
+                    skinColor: ['light'],
+                    top: ['longHairStraight'],
+                    hairColor: ['724133'],
+                    eyes: ['happy'],
+                    eyebrow: ['default'],
+                    mouth: ['smile'],
+                    clothesType: ['hoodie'],
+                    clothesColor: ['4169E1'],
+                    backgroundColor: ['transparent']
+                };
 
-                await renderer.loadDicebearSVG(currentAvatarURL);
+                console.log('🎨 Creating avatar with options:', options);
+                currentAvatar = createAvatar(avataaars, options);
+
+                // Get SVG string
+                const svgString = currentAvatar.toString();
+                console.log('✅ Avatar SVG generated, length:', svgString.length);
+
+                // Load SVG into renderer
+                await renderer.parseSVG(svgString);
                 updateStatus('✅ Avatar laddad! Nu kan du manipulera SVG:en.', 'success');
                 animateSuccess();
             } catch (error) {
                 updateStatus('❌ Fel vid laddning: ' + error.message, 'danger');
-                console.error(error);
+                console.error('❌ Error loading avatar:', error);
             }
         }
 

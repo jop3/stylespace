@@ -1,6 +1,10 @@
 // ============================================
 // SVG AVATAR RENDERER (SVG.js + TinyColor)
 // Full control over DiceBear SVG with direct manipulation
+//
+// Works with:
+// - DiceBear HTTP API (legacy)
+// - DiceBear JavaScript Library (recommended)
 // ============================================
 
 class SVGAvatarRenderer {
