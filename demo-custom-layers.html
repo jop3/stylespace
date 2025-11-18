@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Custom Layers Demo - StyleSpace</title>
+    <script src="https://cdn.jsdelivr.net/npm/pixi.js@7.4.2/dist/pixi.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/tinycolor2@1.6.0/dist/tinycolor-min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/animejs@4.2.2/lib/anime.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+        h1 {
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        #demo-container {
+            background: rgba(255,255,255,0.1);
+            padding: 30px;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            margin-bottom: 20px;
+        }
+        .controls {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin-top: 20px;
+        }
+        button {
+            background: linear-gradient(135deg, #FF6B9D, #FFC371);
+            border: none;
+            padding: 12px 24px;
+            border-radius: 25px;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            transition: transform 0.2s;
+        }
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+        }
+        .status {
+            background: rgba(0,0,0,0.3);
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
+            max-width: 600px;
+        }
+        .success { color: #4ade80; }
+        .info { color: #fbbf24; }
+    </style>
+</head>
+<body>
+    <h1>🎨 Custom Layers Demo</h1>
+
+    <div id="demo-container">
+        <!-- DiceBear Avatar -->
+        <img id="dicebearAvatar" src="" alt="Avatar" style="width: 400px; height: 400px; display: block;">
+
+        <!-- PixiJS Container -->
+        <div id="pixiContainer" style="position: absolute; width: 400px; height: 400px;"></div>
+    </div>
+
+    <div class="controls">
+        <button onclick="loadUnicornTee()">🦄 Load Unicorn Tee</button>
+        <button onclick="loadDragonTee()">🐉 Load Dragon Tee</button>
+        <button onclick="loadStarPattern()">⭐ Load Star Pattern</button>
+        <button onclick="loadCrown()">👑 Load Crown</button>
+        <button onclick="loadWings()">👼 Load Wings</button>
+        <button onclick="addSparkles()">✨ Add Sparkles</button>
+        <button onclick="addStripes()">📏 Add Stripes</button>
+        <button onclick="clearAll()">🧹 Clear All</button>
+    </div>
+
+    <div class="status">
+        <p class="success" id="status">Väntar på bibliotek...</p>
+        <p class="info" id="info"></p>
+    </div>
+
+    <script src="avatar-renderer.js"></script>
+    <script>
+        // Wait for everything to load
+        window.addEventListener('load', () => {
+            // Load a DiceBear avatar
+            const dicebearURL = 'https://api.dicebear.com/9.x/avataaars/svg?skinColor=Light&top=LongHairStraight&hairColor=724133&eyes=Happy&eyebrow=Default&mouth=Smile&clotheType=Hoodie&clotheColor=4169E1&backgroundColor=transparent';
+
+            document.getElementById('dicebearAvatar').src = dicebearURL;
+            document.getElementById('status').textContent = '✅ Ready! Click buttons to test custom layers!';
+            document.getElementById('info').textContent = 'PixiJS: ' + (typeof PIXI !== 'undefined' ? PIXI.VERSION : 'Not loaded') + ' | TinyColor: ' + (typeof tinycolor !== 'undefined' ? '✓' : '✗');
+        });
+
+        function loadUnicornTee() {
+            avatarRenderer.addCustomClothing('assets/tshirts/unicorn.svg', {
+                width: 280,
+                height: 180,
+                y: 270
+            }).then(() => {
+                document.getElementById('status').textContent = '🦄 Unicorn Tee loaded!';
+                animateSuccess();
+            });
+        }
+
+        function loadDragonTee() {
+            avatarRenderer.clearLayer('clothing');
+            avatarRenderer.addCustomClothing('assets/tshirts/dragon.svg', {
+                width: 280,
+                height: 180,
+                y: 270,
+                color: '#DC143C' // Red tint
+            }).then(() => {
+                document.getElementById('status').textContent = '🐉 Dragon Tee loaded!';
+                animateSuccess();
+            });
+        }
+
+        function loadStarPattern() {
+            avatarRenderer.clearLayer('clothing');
+            avatarRenderer.addCustomClothing('assets/tshirts/stars.svg', {
+                width: 280,
+                height: 180,
+                y: 270,
+                glow: true,
+                glowColor: '#FFD700'
+            }).then(() => {
+                document.getElementById('status').textContent = '⭐ Star Pattern loaded with glow!';
+                animateSuccess();
+            });
+        }
+
+        function loadCrown() {
+            avatarRenderer.addAccessory('assets/accessories/crown.svg', {
+                x: 200,
+                y: 80
+            }).then(() => {
+                document.getElementById('status').textContent = '👑 Crown loaded!';
+                animateSuccess();
+            });
+        }
+
+        function loadWings() {
+            avatarRenderer.addAccessory('assets/accessories/wings.svg', {
+                x: 200,
+                y: 200
+            }).then(() => {
+                document.getElementById('status').textContent = '👼 Wings loaded!';
+                animateSuccess();
+            });
+        }
+
+        function addSparkles() {
+            avatarRenderer.addSparkles();
+            document.getElementById('status').textContent = '✨ Sparkles added!';
+            animateSuccess();
+        }
+
+        function addStripes() {
+            avatarRenderer.createPattern('stripes', '#FF6B9D', '#4169E1');
+            document.getElementById('status').textContent = '📏 Stripe pattern added!';
+            animateSuccess();
+        }
+
+        function clearAll() {
+            avatarRenderer.clearCustomLayers();
+            document.getElementById('status').textContent = '🧹 All layers cleared!';
+        }
+
+        function animateSuccess() {
+            if (typeof anime !== 'undefined') {
+                anime({
+                    targets: '#demo-container',
+                    scale: [1, 1.05, 1],
+                    duration: 400,
+                    easing: 'easeOutElastic(1, .5)'
+                });
+            }
+        }
+    </script>
+</body>
+</html>

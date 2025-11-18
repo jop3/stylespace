@@ -576,3 +576,105 @@ body {
 #petsContainer span:hover {
     transform: scale(1.2);
 }
+
+/* ============================================
+   HYBRID PIXI + DICEBEAR AVATAR SYSTEM
+   ============================================ */
+
+/* Avatar Container - Layered System */
+.avatar-container {
+    position: relative !important;
+    width: 400px;
+    height: 480px; /* Extra height for pets */
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%) !important;
+    padding: 20px !important;
+}
+
+/* Avatar Layers - Absolute Positioning for Stacking */
+.avatar-layer {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    width: 400px;
+    height: 400px;
+}
+
+.avatar-base {
+    border: 3px solid rgba(255, 255, 255, 0.5);
+    border-radius: 10px;
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+}
+
+.avatar-custom {
+    z-index: 2; /* Custom PixiJS layers on top */
+    pointer-events: auto;
+}
+
+.avatar-custom canvas {
+    border-radius: 10px;
+}
+
+/* Pets Display */
+.pets-display {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 3;
+    display: flex;
+    justify-content: center;
+    gap: 20px;
+    font-size: 48px;
+    width: 100%;
+}
+
+#petsContainer span {
+    display: inline-block;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+    animation: petBounce 2s ease-in-out infinite;
+}
+
+#petsContainer span:nth-child(2) {
+    animation-delay: 0.3s;
+}
+
+#petsContainer span:nth-child(3) {
+    animation-delay: 0.6s;
+}
+
+#petsContainer span:hover {
+    transform: scale(1.3) !important;
+}
+
+/* Custom Layer Glow Effect */
+.custom-layer-glow {
+    filter: drop-shadow(0 0 10px rgba(255, 107, 157, 0.5));
+}
+
+/* Loading State */
+.avatar-loading {
+    opacity: 0.5;
+    filter: blur(2px);
+}
+
+@media (max-width: 768px) {
+    .avatar-container {
+        width: 300px;
+        height: 380px;
+    }
+    
+    .avatar-layer {
+        width: 300px;
+        height: 300px;
+    }
+    
+    .pets-display {
+        font-size: 36px;
+    }
+}

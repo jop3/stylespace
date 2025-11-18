@@ -1,0 +1,26 @@
+<svg width="300" height="200" xmlns="http://www.w3.org/2000/svg">
+  <!-- Star Pattern Design -->
+  <defs>
+    <radialGradient id="starGradient">
+      <stop offset="0%" stop-color="#FFD700"/>
+      <stop offset="100%" stop-color="#FFA500"/>
+    </radialGradient>
+  </defs>
+
+  <g>
+    <!-- Multiple stars scattered -->
+    <text x="30" y="40" font-size="30" fill="url(#starGradient)">★</text>
+    <text x="180" y="50" font-size="25" fill="url(#starGradient)">★</text>
+    <text x="80" y="80" font-size="35" fill="url(#starGradient)">★</text>
+    <text x="220" y="100" font-size="20" fill="url(#starGradient)">★</text>
+    <text x="120" y="130" font-size="28" fill="url(#starGradient)">★</text>
+    <text x="50" y="160" font-size="22" fill="url(#starGradient)">★</text>
+    <text x="200" y="170" font-size="30" fill="url(#starGradient)">★</text>
+
+    <!-- Small sparkles -->
+    <circle cx="100" cy="50" r="2" fill="#FFFFFF"/>
+    <circle cx="150" cy="90" r="2" fill="#FFFFFF"/>
+    <circle cx="70" cy="120" r="2" fill="#FFFFFF"/>
+    <circle cx="180" cy="140" r="2" fill="#FFFFFF"/>
+  </g>
+</svg>

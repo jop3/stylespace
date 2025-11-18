@@ -1,0 +1,42 @@
+<svg width="150" height="150" xmlns="http://www.w3.org/2000/svg">
+  <!-- Angel Wings -->
+  <defs>
+    <radialGradient id="wingGradient">
+      <stop offset="0%" stop-color="#FFFFFF"/>
+      <stop offset="50%" stop-color="#F0F0F0"/>
+      <stop offset="100%" stop-color="#E0E0E0"/>
+    </radialGradient>
+  </defs>
+
+  <g transform="translate(75, 75)">
+    <!-- Left Wing -->
+    <g>
+      <!-- Main feathers -->
+      <ellipse cx="-40" cy="0" rx="30" ry="50" fill="url(#wingGradient)" stroke="#D3D3D3" stroke-width="1"/>
+      <ellipse cx="-55" cy="5" rx="25" ry="45" fill="url(#wingGradient)" stroke="#D3D3D3" stroke-width="1"/>
+      <ellipse cx="-65" cy="10" rx="20" ry="40" fill="url(#wingGradient)" stroke="#D3D3D3" stroke-width="1"/>
+
+      <!-- Feather details -->
+      <path d="M -40,-30 Q -45,-20 -40,-10" stroke="#C0C0C0" stroke-width="1" fill="none"/>
+      <path d="M -40,-20 Q -45,-10 -40,0" stroke="#C0C0C0" stroke-width="1" fill="none"/>
+      <path d="M -40,-10 Q -45,0 -40,10" stroke="#C0C0C0" stroke-width="1" fill="none"/>
+    </g>
+
+    <!-- Right Wing -->
+    <g>
+      <!-- Main feathers -->
+      <ellipse cx="40" cy="0" rx="30" ry="50" fill="url(#wingGradient)" stroke="#D3D3D3" stroke-width="1"/>
+      <ellipse cx="55" cy="5" rx="25" ry="45" fill="url(#wingGradient)" stroke="#D3D3D3" stroke-width="1"/>
+      <ellipse cx="65" cy="10" rx="20" ry="40" fill="url(#wingGradient)" stroke="#D3D3D3" stroke-width="1"/>
+
+      <!-- Feather details -->
+      <path d="M 40,-30 Q 45,-20 40,-10" stroke="#C0C0C0" stroke-width="1" fill="none"/>
+      <path d="M 40,-20 Q 45,-10 40,0" stroke="#C0C0C0" stroke-width="1" fill="none"/>
+      <path d="M 40,-10 Q 45,0 40,10" stroke="#C0C0C0" stroke-width="1" fill="none"/>
+    </g>
+
+    <!-- Sparkles -->
+    <text x="-70" y="-30" font-size="12" fill="#FFD700">✨</text>
+    <text x="60" y="-30" font-size="12" fill="#FFD700">✨</text>
+  </g>
+</svg>
