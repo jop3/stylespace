@@ -125,26 +125,31 @@ const promoCodes = {
 const canvas = document.getElementById('avatarCanvas');
 const ctx = canvas.getContext('2d');
 
+// Enable anti-aliasing
+ctx.imageSmoothingEnabled = true;
+ctx.imageSmoothingQuality = 'high';
+
 function drawAvatar() {
     // Clear canvas
     ctx.clearRect(0, 0, canvas.width, canvas.height);
 
     const centerX = canvas.width / 2;
 
-    // Get body height scale
-    const heightScale = playerData.avatar.bodyHeight === 'short' ? 0.85 :
-                       playerData.avatar.bodyHeight === 'tall' ? 1.15 : 1.0;
+    // Chibi proportions - bigger head, smaller body
+    const heightScale = playerData.avatar.bodyHeight === 'short' ? 0.75 :
+                       playerData.avatar.bodyHeight === 'tall' ? 1.0 : 0.85;
 
-    const bodyY = 400 * heightScale;
+    const headY = 220;
+    const bodyY = 480 * heightScale;
 
-    // Draw body
+    // Draw body first (behind head)
     drawBody(centerX, bodyY, heightScale);
 
-    // Draw head
-    drawHead(centerX, 200, heightScale);
+    // Draw head (larger, more anime-style)
+    drawHead(centerX, headY, heightScale);
 
     // Draw pets
-    drawPets(centerX, bodyY + 200);
+    drawPets(centerX, bodyY + 180);
 }
 
 function drawBody(x, y, scale) {
@@ -312,11 +317,18 @@ function drawBody(x, y, scale) {
 function drawHead(x, y, scale) {
     ctx.save();
 
-    // Face shape
-    ctx.fillStyle = playerData.avatar.skinTone;
+    // Larger head for anime/chibi style
+    const faceWidth = 120;
+    const faceHeight = 130;
 
-    const faceWidth = 80;
-    const faceHeight = 100;
+    // Draw hair (behind head) first
+    drawHairBack(x, y, faceWidth, faceHeight);
+
+    // Face shape with gradient shading
+    const skinGradient = ctx.createRadialGradient(x, y - 10, 0, x, y, faceHeight/1.5);
+    skinGradient.addColorStop(0, lightenColor(playerData.avatar.skinTone, 10));
+    skinGradient.addColorStop(1, playerData.avatar.skinTone);
+    ctx.fillStyle = skinGradient;
 
     ctx.beginPath();
 
@@ -325,10 +337,10 @@ function drawHead(x, y, scale) {
             ctx.ellipse(x, y, faceWidth/2, faceHeight/2, 0, 0, 2 * Math.PI);
             break;
         case 'square':
-            ctx.roundRect(x - faceWidth/2, y - faceHeight/2, faceWidth, faceHeight, 10);
+            ctx.roundRect(x - faceWidth/2, y - faceHeight/2, faceWidth, faceHeight, 15);
             break;
         case 'oval':
-            ctx.ellipse(x, y, faceWidth/2 - 5, faceHeight/2, 0, 0, 2 * Math.PI);
+            ctx.ellipse(x, y, faceWidth/2 - 8, faceHeight/2 + 5, 0, 0, 2 * Math.PI);
             break;
         case 'heart':
             ctx.moveTo(x, y + faceHeight/2);
@@ -337,53 +349,70 @@ function drawHead(x, y, scale) {
             break;
         case 'diamond':
             ctx.moveTo(x, y - faceHeight/2);
-            ctx.lineTo(x + faceWidth/2, y);
-            ctx.lineTo(x, y + faceHeight/2);
-            ctx.lineTo(x - faceWidth/2, y);
-            ctx.closePath();
+            ctx.quadraticCurveTo(x + faceWidth/2, y, x, y + faceHeight/2);
+            ctx.quadraticCurveTo(x - faceWidth/2, y, x, y - faceHeight/2);
             break;
     }
 
     ctx.fill();
 
-    // Face shading
-    ctx.fillStyle = 'rgba(0,0,0,0.05)';
+    // Soft face contour shading
+    ctx.fillStyle = 'rgba(0,0,0,0.04)';
     ctx.beginPath();
-    ctx.ellipse(x - 15, y + 10, 8, 15, 0, 0, 2 * Math.PI);
+    ctx.ellipse(x - 20, y + 15, 12, 20, -0.2, 0, 2 * Math.PI);
     ctx.fill();
     ctx.beginPath();
-    ctx.ellipse(x + 15, y + 10, 8, 15, 0, 0, 2 * Math.PI);
+    ctx.ellipse(x + 20, y + 15, 12, 20, 0.2, 0, 2 * Math.PI);
     ctx.fill();
 
-    // Draw hair (behind head)
-    drawHairBack(x, y, faceWidth, faceHeight);
-
-    // Eyes
-    drawEyes(x, y - 10);
-
-    // Nose
-    ctx.fillStyle = 'rgba(0,0,0,0.1)';
+    // Chin highlight
+    ctx.fillStyle = 'rgba(255,255,255,0.15)';
     ctx.beginPath();
-    ctx.ellipse(x, y + 10, 4, 6, 0, 0, Math.PI);
+    ctx.ellipse(x, y - 25, 25, 30, 0, 0, Math.PI);
     ctx.fill();
 
-    // Mouth
+    // Eyes - MUCH larger for anime style
+    drawAnimeEyes(x, y - 15);
+
+    // Nose - subtle
+    ctx.fillStyle = 'rgba(0,0,0,0.08)';
+    ctx.beginPath();
+    ctx.ellipse(x, y + 15, 3, 5, 0, 0, Math.PI);
+    ctx.fill();
+
+    // Mouth - cute anime style
     ctx.strokeStyle = '#FF69B4';
-    ctx.lineWidth = 3;
+    ctx.lineWidth = 2.5;
+    ctx.lineCap = 'round';
     ctx.beginPath();
-    ctx.arc(x, y + 20, 15, 0.2, Math.PI - 0.2);
+    ctx.arc(x, y + 28, 12, 0.3, Math.PI - 0.3);
     ctx.stroke();
 
-    // Blush
-    ctx.fillStyle = 'rgba(255, 182, 193, 0.5)';
+    // Lip gloss effect
+    ctx.strokeStyle = 'rgba(255,255,255,0.6)';
+    ctx.lineWidth = 1.5;
     ctx.beginPath();
-    ctx.ellipse(x - 35, y + 5, 12, 8, 0, 0, 2 * Math.PI);
-    ctx.fill();
+    ctx.arc(x - 6, y + 26, 4, 0.5, Math.PI - 0.5);
+    ctx.stroke();
+
+    // Blush - larger and softer
+    const blushGradient = ctx.createRadialGradient(x - 45, y + 10, 0, x - 45, y + 10, 18);
+    blushGradient.addColorStop(0, 'rgba(255, 182, 193, 0.6)');
+    blushGradient.addColorStop(1, 'rgba(255, 182, 193, 0)');
+    ctx.fillStyle = blushGradient;
     ctx.beginPath();
-    ctx.ellipse(x + 35, y + 5, 12, 8, 0, 0, 2 * Math.PI);
+    ctx.ellipse(x - 45, y + 10, 18, 12, 0, 0, 2 * Math.PI);
     ctx.fill();
 
-    // Draw hair (front)
+    const blushGradient2 = ctx.createRadialGradient(x + 45, y + 10, 0, x + 45, y + 10, 18);
+    blushGradient2.addColorStop(0, 'rgba(255, 182, 193, 0.6)');
+    blushGradient2.addColorStop(1, 'rgba(255, 182, 193, 0)');
+    ctx.fillStyle = blushGradient2;
+    ctx.beginPath();
+    ctx.ellipse(x + 45, y + 10, 18, 12, 0, 0, 2 * Math.PI);
+    ctx.fill();
+
+    // Draw hair (front) over everything
     drawHairFront(x, y, faceWidth, faceHeight);
 
     // Draw accessory on head (cap/hat)
@@ -393,20 +422,25 @@ function drawHead(x, y, scale) {
         if (currentAccessory.type === 'cap') {
             // Draw cap
             ctx.beginPath();
-            ctx.ellipse(x, y - faceHeight/2 - 10, faceWidth/2 + 10, 20, 0, Math.PI, 2 * Math.PI);
+            ctx.ellipse(x, y - faceHeight/2 - 15, faceWidth/2 + 15, 25, 0, Math.PI, 2 * Math.PI);
             ctx.fill();
             // Visor
             ctx.beginPath();
-            ctx.ellipse(x + 20, y - faceHeight/2 + 5, 35, 8, 0, 0, Math.PI);
+            ctx.ellipse(x + 25, y - faceHeight/2 + 8, 40, 10, 0, 0, Math.PI);
+            ctx.fill();
+            // Cap shading
+            ctx.fillStyle = 'rgba(0,0,0,0.1)';
+            ctx.beginPath();
+            ctx.ellipse(x - 10, y - faceHeight/2 - 10, 15, 10, 0, 0, 2 * Math.PI);
             ctx.fill();
         } else {
             // Draw hat
             ctx.beginPath();
-            ctx.ellipse(x, y - faceHeight/2 - 20, faceWidth/2 + 15, 25, 0, Math.PI, 2 * Math.PI);
+            ctx.ellipse(x, y - faceHeight/2 - 25, faceWidth/2 + 20, 30, 0, Math.PI, 2 * Math.PI);
             ctx.fill();
             // Brim
             ctx.beginPath();
-            ctx.ellipse(x, y - faceHeight/2 + 5, faceWidth/2 + 20, 8, 0, 0, 2 * Math.PI);
+            ctx.ellipse(x, y - faceHeight/2 + 5, faceWidth/2 + 25, 10, 0, 0, 2 * Math.PI);
             ctx.fill();
         }
     }
@@ -414,126 +448,229 @@ function drawHead(x, y, scale) {
     ctx.restore();
 }
 
-function drawEyes(x, y) {
+function drawAnimeEyes(x, y) {
     const eyeColor = playerData.avatar.eyeColor;
     const eyeShape = playerData.avatar.eyeShape;
 
+    // Eyes are MUCH bigger and more spaced for anime look
+    const eyeSpacing = 35;
+
     // Left eye
-    drawEye(x - 25, y, eyeColor, eyeShape);
+    drawAnimeEye(x - eyeSpacing, y, eyeColor, eyeShape, false);
     // Right eye
-    drawEye(x + 25, y, eyeColor, eyeShape);
+    drawAnimeEye(x + eyeSpacing, y, eyeColor, eyeShape, true);
 }
 
-function drawEye(x, y, color, shape) {
+function drawAnimeEye(x, y, color, shape, isRight) {
     ctx.save();
 
-    // White of eye
-    ctx.fillStyle = 'white';
+    // Much larger eyes for anime style
+    const eyeWidth = shape === 'round' || shape === 'bigAlmond' ? 24 : 22;
+    const eyeHeight = shape === 'round' ? 28 : shape === 'bigAlmond' ? 26 : 20;
+
+    // Eye shadow/makeup
+    ctx.fillStyle = 'rgba(200, 150, 200, 0.15)';
+    ctx.beginPath();
+    ctx.ellipse(x, y - 3, eyeWidth + 3, eyeHeight + 2, 0, 0, 2 * Math.PI);
+    ctx.fill();
+
+    // White of eye with gradient
+    const whiteGradient = ctx.createRadialGradient(x, y, 0, x, y, eyeHeight);
+    whiteGradient.addColorStop(0, '#FFFFFF');
+    whiteGradient.addColorStop(1, '#F5F5F5');
+    ctx.fillStyle = whiteGradient;
+
     ctx.beginPath();
 
     switch (shape) {
         case 'round':
-            ctx.ellipse(x, y, 15, 18, 0, 0, 2 * Math.PI);
+            ctx.ellipse(x, y, eyeWidth, eyeHeight, 0, 0, 2 * Math.PI);
             break;
         case 'almond':
-            ctx.ellipse(x, y, 14, 12, 0, 0, 2 * Math.PI);
+            ctx.ellipse(x, y, eyeWidth - 2, eyeHeight - 6, 0, 0, 2 * Math.PI);
             break;
         case 'cat':
-            ctx.moveTo(x - 15, y);
-            ctx.quadraticCurveTo(x, y - 15, x + 15, y);
-            ctx.quadraticCurveTo(x, y + 15, x - 15, y);
+            ctx.moveTo(x - eyeWidth, y);
+            ctx.quadraticCurveTo(x, y - eyeHeight, x + eyeWidth, y);
+            ctx.quadraticCurveTo(x, y + eyeHeight - 5, x - eyeWidth, y);
             break;
         case 'bigAlmond':
-            ctx.ellipse(x, y, 16, 14, 0, 0, 2 * Math.PI);
+            ctx.ellipse(x, y, eyeWidth, eyeHeight - 2, 0, 0, 2 * Math.PI);
             break;
     }
 
     ctx.fill();
 
-    // Iris
-    ctx.fillStyle = color;
+    // Iris with gradient
+    const irisSize = 14;
+    const irisGradient = ctx.createRadialGradient(x, y + 2, 0, x, y, irisSize);
+    irisGradient.addColorStop(0, lightenColor(color, 30));
+    irisGradient.addColorStop(0.5, color);
+    irisGradient.addColorStop(1, darkenColor(color, 20));
+
+    ctx.fillStyle = irisGradient;
     ctx.beginPath();
-    ctx.arc(x, y, 8, 0, 2 * Math.PI);
+    ctx.arc(x, y + 2, irisSize, 0, 2 * Math.PI);
     ctx.fill();
+
+    // Iris detail ring
+    ctx.strokeStyle = darkenColor(color, 30);
+    ctx.lineWidth = 1.5;
+    ctx.beginPath();
+    ctx.arc(x, y + 2, irisSize - 2, 0, 2 * Math.PI);
+    ctx.stroke();
 
     // Pupil
-    ctx.fillStyle = '#000';
+    const pupilGradient = ctx.createRadialGradient(x, y + 2, 0, x, y + 2, 7);
+    pupilGradient.addColorStop(0, '#000000');
+    pupilGradient.addColorStop(1, '#1a1a1a');
+    ctx.fillStyle = pupilGradient;
     ctx.beginPath();
-    ctx.arc(x, y, 4, 0, 2 * Math.PI);
+    ctx.arc(x, y + 2, 7, 0, 2 * Math.PI);
     ctx.fill();
 
-    // Highlight
-    ctx.fillStyle = 'rgba(255,255,255,0.8)';
+    // Multiple highlights for sparkly anime eyes
+    // Main highlight
+    ctx.fillStyle = 'rgba(255,255,255,0.9)';
     ctx.beginPath();
-    ctx.arc(x - 2, y - 2, 3, 0, 2 * Math.PI);
+    ctx.ellipse(x - 6, y - 6, 6, 8, -0.3, 0, 2 * Math.PI);
     ctx.fill();
 
-    // Smaller highlight
+    // Secondary highlight
+    ctx.fillStyle = 'rgba(255,255,255,0.7)';
     ctx.beginPath();
-    ctx.arc(x + 3, y + 3, 1.5, 0, 2 * Math.PI);
+    ctx.arc(x + 5, y - 2, 3, 0, 2 * Math.PI);
     ctx.fill();
 
-    // Eyelashes
-    ctx.strokeStyle = '#000';
-    ctx.lineWidth = 2;
+    // Small sparkle
+    ctx.fillStyle = 'rgba(255,255,255,0.85)';
+    ctx.beginPath();
+    ctx.arc(x - 3, y + 6, 2, 0, 2 * Math.PI);
+    ctx.fill();
+
+    // Bottom shine
+    ctx.fillStyle = 'rgba(255,255,255,0.4)';
+    ctx.beginPath();
+    ctx.ellipse(x, y + irisSize - 3, irisSize - 4, 3, 0, 0, Math.PI);
+    ctx.fill();
+
+    // Upper eyelid
+    ctx.strokeStyle = '#000000';
+    ctx.lineWidth = 3;
+    ctx.lineCap = 'round';
+    ctx.beginPath();
+
+    if (shape === 'cat') {
+        ctx.moveTo(x - eyeWidth - 4, y);
+        ctx.quadraticCurveTo(x, y - eyeHeight - 5, x + eyeWidth + 4, y);
+    } else {
+        ctx.ellipse(x, y, eyeWidth + 2, eyeHeight + 2, 0, Math.PI, 2 * Math.PI);
+    }
+    ctx.stroke();
+
+    // Lower eyelid (thinner)
+    ctx.lineWidth = 1.5;
+    ctx.beginPath();
+    ctx.ellipse(x, y, eyeWidth - 2, eyeHeight - 2, 0, 0, Math.PI);
+    ctx.stroke();
+
+    // Eyelashes - longer and more dramatic
+    ctx.strokeStyle = '#000000';
+    ctx.lineWidth = 2.5;
     ctx.lineCap = 'round';
 
-    for (let i = 0; i < 5; i++) {
+    // Upper lashes
+    for (let i = 0; i < 7; i++) {
         ctx.beginPath();
-        const angle = (Math.PI / 6) * (i - 2);
-        const startX = x + Math.cos(angle - Math.PI / 2) * 15;
-        const startY = y + Math.sin(angle - Math.PI / 2) * 15;
-        const endX = startX + Math.cos(angle - Math.PI / 2) * 6;
-        const endY = startY + Math.sin(angle - Math.PI / 2) * 6;
+        const angle = (Math.PI / 7) * i - Math.PI/2;
+        const startX = x + Math.cos(angle - Math.PI / 2) * eyeWidth;
+        const startY = y + Math.sin(angle - Math.PI / 2) * eyeHeight;
+        const lashLength = i === 1 || i === 5 ? 12 : i === 3 ? 14 : 10;
+        const endX = startX + Math.cos(angle - Math.PI / 2) * lashLength;
+        const endY = startY + Math.sin(angle - Math.PI / 2) * lashLength;
         ctx.moveTo(startX, startY);
         ctx.lineTo(endX, endY);
         ctx.stroke();
     }
 
+    // Corner highlight (inner eye)
+    ctx.fillStyle = 'rgba(255, 200, 220, 0.6)';
+    ctx.beginPath();
+    ctx.arc(isRight ? x - eyeWidth + 3 : x + eyeWidth - 3, y, 2, 0, 2 * Math.PI);
+    ctx.fill();
+
     ctx.restore();
+}
+
+// Keep old function for compatibility, redirect to new one
+function drawEyes(x, y) {
+    drawAnimeEyes(x, y);
 }
 
 function drawHairBack(x, y, faceWidth, faceHeight) {
     ctx.save();
-    ctx.fillStyle = playerData.avatar.hairColor;
 
     const hairLength = playerData.avatar.hairLength;
     const hairStyle = playerData.avatar.hairStyle;
+    const hairColor = playerData.avatar.hairColor;
 
-    // Back hair volume
+    // Create gradient for more depth
+    const hairGradient = ctx.createLinearGradient(x - faceWidth, y - faceHeight/2, x + faceWidth, y + 100);
+    hairGradient.addColorStop(0, lightenColor(hairColor, 15));
+    hairGradient.addColorStop(0.5, hairColor);
+    hairGradient.addColorStop(1, darkenColor(hairColor, 10));
+    ctx.fillStyle = hairGradient;
+
+    // Back hair volume - bigger for anime style
     ctx.beginPath();
-    ctx.ellipse(x, y - faceHeight/2, faceWidth/2 + 20, 35, 0, Math.PI, 2 * Math.PI);
+    ctx.ellipse(x, y - faceHeight/2 - 5, faceWidth/2 + 30, 45, 0, Math.PI, 2 * Math.PI);
     ctx.fill();
+
+    // Shadow under top hair
+    ctx.fillStyle = darkenColor(hairColor, 15);
+    ctx.globalAlpha = 0.3;
+    ctx.beginPath();
+    ctx.ellipse(x, y - faceHeight/2 + 30, faceWidth/2 + 25, 15, 0, 0, Math.PI);
+    ctx.fill();
+    ctx.globalAlpha = 1;
 
     // Side hair
     let sideHairLength = 0;
     switch (hairLength) {
-        case 'short': sideHairLength = 60; break;
-        case 'shoulder': sideHairLength = 120; break;
-        case 'long': sideHairLength = 180; break;
-        case 'veryLong': sideHairLength = 240; break;
+        case 'short': sideHairLength = 70; break;
+        case 'shoulder': sideHairLength = 140; break;
+        case 'long': sideHairLength = 210; break;
+        case 'veryLong': sideHairLength = 280; break;
     }
+
+    // Hair strands with gradient
+    ctx.fillStyle = hairGradient;
 
     // Left side
     ctx.beginPath();
     if (hairStyle === 'straight') {
-        ctx.moveTo(x - faceWidth/2 - 15, y - faceHeight/2 + 10);
-        ctx.lineTo(x - faceWidth/2 - 15, y + sideHairLength);
-        ctx.lineTo(x - faceWidth/2 + 5, y + sideHairLength);
-        ctx.lineTo(x - faceWidth/2 + 5, y - faceHeight/2 + 10);
+        ctx.moveTo(x - faceWidth/2 - 20, y - faceHeight/2 + 15);
+        ctx.lineTo(x - faceWidth/2 - 18, y + sideHairLength);
+        ctx.lineTo(x - faceWidth/2 + 8, y + sideHairLength - 5);
+        ctx.lineTo(x - faceWidth/2 + 5, y - faceHeight/2 + 15);
     } else if (hairStyle === 'wavy') {
-        ctx.moveTo(x - faceWidth/2 - 15, y - faceHeight/2 + 10);
-        ctx.quadraticCurveTo(x - faceWidth/2 - 25, y + sideHairLength/2, x - faceWidth/2 - 15, y + sideHairLength);
-        ctx.lineTo(x - faceWidth/2 + 5, y + sideHairLength);
-        ctx.quadraticCurveTo(x - faceWidth/2 - 5, y + sideHairLength/2, x - faceWidth/2 + 5, y - faceHeight/2 + 10);
+        ctx.moveTo(x - faceWidth/2 - 20, y - faceHeight/2 + 15);
+        ctx.quadraticCurveTo(x - faceWidth/2 - 32, y + sideHairLength/2, x - faceWidth/2 - 18, y + sideHairLength);
+        ctx.lineTo(x - faceWidth/2 + 8, y + sideHairLength - 5);
+        ctx.quadraticCurveTo(x - faceWidth/2 - 8, y + sideHairLength/2, x - faceWidth/2 + 5, y - faceHeight/2 + 15);
     } else if (hairStyle === 'curly') {
-        ctx.moveTo(x - faceWidth/2 - 15, y - faceHeight/2 + 10);
-        for (let i = 0; i < 5; i++) {
-            const curveY = y - faceHeight/2 + 10 + (sideHairLength / 5) * i;
-            ctx.quadraticCurveTo(x - faceWidth/2 - 25, curveY + sideHairLength/10, x - faceWidth/2 - 15, curveY + sideHairLength/5);
+        ctx.moveTo(x - faceWidth/2 - 20, y - faceHeight/2 + 15);
+        for (let i = 0; i < 6; i++) {
+            const curveY = y - faceHeight/2 + 15 + (sideHairLength / 6) * i;
+            ctx.quadraticCurveTo(x - faceWidth/2 - 32, curveY + sideHairLength/12, x - faceWidth/2 - 20, curveY + sideHairLength/6);
         }
-        ctx.lineTo(x - faceWidth/2 + 5, y + sideHairLength);
-        ctx.lineTo(x - faceWidth/2 + 5, y - faceHeight/2 + 10);
+        ctx.lineTo(x - faceWidth/2 + 8, y + sideHairLength - 5);
+        ctx.lineTo(x - faceWidth/2 + 5, y - faceHeight/2 + 15);
+    } else if (hairStyle === 'bangs') {
+        ctx.moveTo(x - faceWidth/2 - 20, y - faceHeight/2 + 15);
+        ctx.lineTo(x - faceWidth/2 - 18, y + sideHairLength);
+        ctx.lineTo(x - faceWidth/2 + 8, y + sideHairLength - 5);
+        ctx.lineTo(x - faceWidth/2 + 5, y - faceHeight/2 + 15);
     }
     ctx.closePath();
     ctx.fill();
@@ -541,63 +678,115 @@ function drawHairBack(x, y, faceWidth, faceHeight) {
     // Right side (mirror)
     ctx.beginPath();
     if (hairStyle === 'straight') {
-        ctx.moveTo(x + faceWidth/2 + 15, y - faceHeight/2 + 10);
-        ctx.lineTo(x + faceWidth/2 + 15, y + sideHairLength);
-        ctx.lineTo(x + faceWidth/2 - 5, y + sideHairLength);
-        ctx.lineTo(x + faceWidth/2 - 5, y - faceHeight/2 + 10);
+        ctx.moveTo(x + faceWidth/2 + 20, y - faceHeight/2 + 15);
+        ctx.lineTo(x + faceWidth/2 + 18, y + sideHairLength);
+        ctx.lineTo(x + faceWidth/2 - 8, y + sideHairLength - 5);
+        ctx.lineTo(x + faceWidth/2 - 5, y - faceHeight/2 + 15);
     } else if (hairStyle === 'wavy') {
-        ctx.moveTo(x + faceWidth/2 + 15, y - faceHeight/2 + 10);
-        ctx.quadraticCurveTo(x + faceWidth/2 + 25, y + sideHairLength/2, x + faceWidth/2 + 15, y + sideHairLength);
-        ctx.lineTo(x + faceWidth/2 - 5, y + sideHairLength);
-        ctx.quadraticCurveTo(x + faceWidth/2 + 5, y + sideHairLength/2, x + faceWidth/2 - 5, y - faceHeight/2 + 10);
+        ctx.moveTo(x + faceWidth/2 + 20, y - faceHeight/2 + 15);
+        ctx.quadraticCurveTo(x + faceWidth/2 + 32, y + sideHairLength/2, x + faceWidth/2 + 18, y + sideHairLength);
+        ctx.lineTo(x + faceWidth/2 - 8, y + sideHairLength - 5);
+        ctx.quadraticCurveTo(x + faceWidth/2 + 8, y + sideHairLength/2, x + faceWidth/2 - 5, y - faceHeight/2 + 15);
     } else if (hairStyle === 'curly') {
-        ctx.moveTo(x + faceWidth/2 + 15, y - faceHeight/2 + 10);
-        for (let i = 0; i < 5; i++) {
-            const curveY = y - faceHeight/2 + 10 + (sideHairLength / 5) * i;
-            ctx.quadraticCurveTo(x + faceWidth/2 + 25, curveY + sideHairLength/10, x + faceWidth/2 + 15, curveY + sideHairLength/5);
+        ctx.moveTo(x + faceWidth/2 + 20, y - faceHeight/2 + 15);
+        for (let i = 0; i < 6; i++) {
+            const curveY = y - faceHeight/2 + 15 + (sideHairLength / 6) * i;
+            ctx.quadraticCurveTo(x + faceWidth/2 + 32, curveY + sideHairLength/12, x + faceWidth/2 + 20, curveY + sideHairLength/6);
         }
-        ctx.lineTo(x + faceWidth/2 - 5, y + sideHairLength);
-        ctx.lineTo(x + faceWidth/2 - 5, y - faceHeight/2 + 10);
+        ctx.lineTo(x + faceWidth/2 - 8, y + sideHairLength - 5);
+        ctx.lineTo(x + faceWidth/2 - 5, y - faceHeight/2 + 15);
+    } else if (hairStyle === 'bangs') {
+        ctx.moveTo(x + faceWidth/2 + 20, y - faceHeight/2 + 15);
+        ctx.lineTo(x + faceWidth/2 + 18, y + sideHairLength);
+        ctx.lineTo(x + faceWidth/2 - 8, y + sideHairLength - 5);
+        ctx.lineTo(x + faceWidth/2 - 5, y - faceHeight/2 + 15);
     }
     ctx.closePath();
     ctx.fill();
 
-    // Add hair highlights
-    ctx.fillStyle = lightenColor(playerData.avatar.hairColor, 40);
-    ctx.globalAlpha = 0.3;
-    ctx.beginPath();
-    ctx.ellipse(x - 20, y - faceHeight/2 + 10, 15, 25, -0.3, 0, 2 * Math.PI);
-    ctx.fill();
-    ctx.beginPath();
-    ctx.ellipse(x + 20, y - faceHeight/2 + 10, 15, 25, 0.3, 0, 2 * Math.PI);
-    ctx.fill();
-    ctx.globalAlpha = 1;
+    // Add multiple hair highlights for depth
+    ctx.fillStyle = lightenColor(hairColor, 50);
+    ctx.globalAlpha = 0.35;
 
+    // Main highlights on top
+    ctx.beginPath();
+    ctx.ellipse(x - 25, y - faceHeight/2 + 5, 20, 35, -0.4, 0, 2 * Math.PI);
+    ctx.fill();
+    ctx.beginPath();
+    ctx.ellipse(x + 25, y - faceHeight/2 + 5, 20, 35, 0.4, 0, 2 * Math.PI);
+    ctx.fill();
+
+    // Secondary highlights
+    ctx.fillStyle = lightenColor(hairColor, 35);
+    ctx.globalAlpha = 0.25;
+    ctx.beginPath();
+    ctx.ellipse(x - 35, y + sideHairLength/3, 12, 40, -0.2, 0, 2 * Math.PI);
+    ctx.fill();
+    ctx.beginPath();
+    ctx.ellipse(x + 35, y + sideHairLength/3, 12, 40, 0.2, 0, 2 * Math.PI);
+    ctx.fill();
+
+    ctx.globalAlpha = 1;
     ctx.restore();
 }
 
 function drawHairFront(x, y, faceWidth, faceHeight) {
     ctx.save();
-    ctx.fillStyle = playerData.avatar.hairColor;
 
     const hairStyle = playerData.avatar.hairStyle;
+    const hairColor = playerData.avatar.hairColor;
 
     // Draw bangs if style includes them
     if (hairStyle === 'bangs') {
-        // Bangs
-        ctx.beginPath();
-        ctx.moveTo(x - faceWidth/2 - 10, y - faceHeight/2);
+        // Gradient for bangs
+        const bangGradient = ctx.createLinearGradient(x, y - faceHeight/2, x, y - faceHeight/2 + 60);
+        bangGradient.addColorStop(0, lightenColor(hairColor, 20));
+        bangGradient.addColorStop(1, hairColor);
+        ctx.fillStyle = bangGradient;
 
-        // Draw individual bang strands
-        for (let i = -3; i <= 3; i++) {
-            const bangX = x + i * 12;
-            const bangY = y - faceHeight/2 + 40 + Math.abs(i) * 5;
-            ctx.lineTo(bangX, bangY);
+        // Main bangs shape
+        ctx.beginPath();
+        ctx.moveTo(x - faceWidth/2 - 15, y - faceHeight/2 - 5);
+
+        // Draw individual bang strands with more detail
+        for (let i = -4; i <= 4; i++) {
+            const bangX = x + i * 15;
+            const bangY = y - faceHeight/2 + 45 + Math.abs(i) * 6;
+            // Add curve to each strand
+            if (i < 4) {
+                ctx.quadraticCurveTo(bangX - 5, bangY - 10, bangX, bangY);
+            } else {
+                ctx.lineTo(bangX, bangY);
+            }
         }
 
-        ctx.lineTo(x + faceWidth/2 + 10, y - faceHeight/2);
+        ctx.lineTo(x + faceWidth/2 + 15, y - faceHeight/2 - 5);
         ctx.closePath();
         ctx.fill();
+
+        // Add highlights to bangs
+        ctx.fillStyle = lightenColor(hairColor, 45);
+        ctx.globalAlpha = 0.4;
+        ctx.beginPath();
+        ctx.ellipse(x - 20, y - faceHeight/2 + 20, 15, 25, -0.2, 0, 2 * Math.PI);
+        ctx.fill();
+        ctx.beginPath();
+        ctx.ellipse(x + 15, y - faceHeight/2 + 20, 15, 25, 0.2, 0, 2 * Math.PI);
+        ctx.fill();
+        ctx.globalAlpha = 1;
+
+        // Add separation lines between bangs for more detail
+        ctx.strokeStyle = darkenColor(hairColor, 20);
+        ctx.lineWidth = 1.5;
+        ctx.globalAlpha = 0.3;
+        for (let i = -3; i <= 3; i++) {
+            const lineX = x + i * 15;
+            ctx.beginPath();
+            ctx.moveTo(lineX, y - faceHeight/2 + 5);
+            ctx.lineTo(lineX, y - faceHeight/2 + 40 + Math.abs(i) * 5);
+            ctx.stroke();
+        }
+        ctx.globalAlpha = 1;
     }
 
     ctx.restore();
@@ -636,6 +825,19 @@ function lightenColor(color, percent) {
     return "#" + (0x1000000 + (R<255?R<1?0:R:255)*0x10000 +
            (G<255?G<1?0:G:255)*0x100 +
            (B<255?B<1?0:B:255))
+           .toString(16).slice(1);
+}
+
+// Helper function to darken colors
+function darkenColor(color, percent) {
+    const num = parseInt(color.replace("#",""), 16);
+    const amt = Math.round(2.55 * percent);
+    const R = (num >> 16) - amt;
+    const G = (num >> 8 & 0x00FF) - amt;
+    const B = (num & 0x0000FF) - amt;
+    return "#" + (0x1000000 + (R>0?R:0)*0x10000 +
+           (G>0?G:0)*0x100 +
+           (B>0?B:0))
            .toString(16).slice(1);
 }
 
