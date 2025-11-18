@@ -12,6 +12,8 @@ import { avataaars } from '@dicebear/collection';
 const playerData = {
     // DiceBear avatar properties
     avatar: {
+        seed: 'stylespace-user', // Static seed - won't randomize on updates
+        sex: 'female', // 'male' or 'female'
         skinColor: 'light',
         top: 'longHairStraight',
         hairColor: '724133',
@@ -22,7 +24,8 @@ const playerData = {
         clotheType: 'hoodie',
         clotheColor: '4169E1',
         facialHairType: '',
-        facialHairColor: ''
+        facialHairColor: '',
+        backgroundColor: 'linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%)' // Avatar container background
     },
     diamonds: 100,
     ownedClothes: [],
@@ -58,7 +61,7 @@ function generateAvatar() {
 
         // Build options object for DiceBear
         const options = {
-            seed: 'stylespace-' + Date.now(), // Unique seed for consistency
+            seed: playerData.avatar.seed, // Static seed - prevents randomization
             skinColor: [playerData.avatar.skinColor],
             top: [playerData.avatar.top],
             hairColor: [playerData.avatar.hairColor],
@@ -127,6 +130,12 @@ function updateAvatar() {
             svgAvatarRenderer.parseSVG(svgString).catch(err => {
                 console.error('Failed to update SVG renderer:', err);
             });
+        }
+
+        // Update avatar container background color
+        const avatarContainer = document.getElementById('avatarContainer');
+        if (avatarContainer && playerData.avatar.backgroundColor) {
+            avatarContainer.style.background = playerData.avatar.backgroundColor;
         }
 
         // Update pets display
@@ -255,8 +264,27 @@ document.querySelectorAll('.option-btn').forEach(btn => {
         siblings.forEach(s => s.classList.remove('selected'));
         btn.classList.add('selected');
 
-        // Update avatar
-        playerData.avatar[type] = value;
+        // Special handling for sex changes
+        if (type === 'sex') {
+            playerData.avatar.sex = value;
+
+            // Update hair to match gender (optional, for better defaults)
+            if (value === 'male') {
+                // Default male hairstyles
+                if (playerData.avatar.top.includes('long')) {
+                    playerData.avatar.top = 'shortHairShortFlat';
+                }
+            } else if (value === 'female') {
+                // Default female hairstyles
+                if (!playerData.avatar.top.includes('long')) {
+                    playerData.avatar.top = 'longHairStraight';
+                }
+            }
+        } else {
+            // Normal update for other attributes
+            playerData.avatar[type] = value;
+        }
+
         updateAvatar();
 
         if (typeof anime !== 'undefined') {
