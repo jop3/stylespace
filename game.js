@@ -55,47 +55,125 @@ const playerData = {
     usedCodes: []
 };
 
-// Clothes database
+// Clothes database - MASSIVELY EXPANDED
 const clothesDatabase = {
     tops: [
+        // T-shirts - Basic Colors
         { id: 't1', name: 'Röd T-shirt', price: 50, color: '#DC143C', type: 'tshirt' },
         { id: 't2', name: 'Blå T-shirt', price: 50, color: '#4169E1', type: 'tshirt' },
         { id: 't3', name: 'Grön T-shirt', price: 50, color: '#32CD32', type: 'tshirt' },
         { id: 't4', name: 'Lila T-shirt', price: 50, color: '#9370DB', type: 'tshirt' },
         { id: 't5', name: 'Vit T-shirt', price: 40, color: '#FFFFFF', type: 'tshirt' },
         { id: 't6', name: 'Gul T-shirt', price: 50, color: '#FFD700', type: 'tshirt' },
-        { id: 't7', name: 'Rosa Tröja', price: 70, color: '#FF69B4', type: 'sweater' },
-        { id: 't8', name: 'Svart Tröja', price: 70, color: '#000000', type: 'sweater' }
+        { id: 't7', name: 'Svart T-shirt', price: 45, color: '#000000', type: 'tshirt' },
+        { id: 't8', name: 'Orange T-shirt', price: 50, color: '#FF8C00', type: 'tshirt' },
+        { id: 't9', name: 'Turkos T-shirt', price: 50, color: '#40E0D0', type: 'tshirt' },
+        { id: 't10', name: 'Mint T-shirt', price: 50, color: '#98FF98', type: 'tshirt' },
+        { id: 't11', name: 'Lavendel T-shirt', price: 50, color: '#E6E6FA', type: 'tshirt' },
+        { id: 't12', name: 'Persika T-shirt', price: 50, color: '#FFDAB9', type: 'tshirt' },
+
+        // Sweaters & Hoodies
+        { id: 't13', name: 'Rosa Tröja', price: 70, color: '#FF69B4', type: 'sweater' },
+        { id: 't14', name: 'Svart Tröja', price: 70, color: '#000000', type: 'sweater' },
+        { id: 't15', name: 'Grå Hoodie', price: 85, color: '#808080', type: 'sweater' },
+        { id: 't16', name: 'Blå Hoodie', price: 85, color: '#1E90FF', type: 'sweater' },
+        { id: 't17', name: 'Lila Hoodie', price: 85, color: '#8A2BE2', type: 'sweater' },
+        { id: 't18', name: 'Grön Tröja', price: 70, color: '#228B22', type: 'sweater' },
+        { id: 't19', name: 'Vit Hoodie', price: 80, color: '#F8F8FF', type: 'sweater' },
+        { id: 't20', name: 'Beige Tröja', price: 70, color: '#F5F5DC', type: 'sweater' },
+
+        // Special Tops
+        { id: 't21', name: 'Randig Topp', price: 65, color: '#FF1493', type: 'tshirt' },
+        { id: 't22', name: 'Polka Dot Blus', price: 75, color: '#FFB6C1', type: 'tshirt' },
+        { id: 't23', name: 'Neon Rosa Top', price: 60, color: '#FF006E', type: 'tshirt' },
+        { id: 't24', name: 'Denim Skjorta', price: 95, color: '#4682B4', type: 'sweater' }
     ],
     bottoms: [
+        // Kjolar
         { id: 'b1', name: 'Röd Kjol', price: 60, color: '#DC143C', type: 'skirt' },
         { id: 'b2', name: 'Blå Kjol', price: 60, color: '#4169E1', type: 'skirt' },
         { id: 'b3', name: 'Grön Kjol', price: 60, color: '#32CD32', type: 'skirt' },
         { id: 'b4', name: 'Rosa Kjol', price: 60, color: '#FF69B4', type: 'skirt' },
         { id: 'b5', name: 'Lila Kjol', price: 60, color: '#9370DB', type: 'skirt' },
         { id: 'b6', name: 'Vit Kjol', price: 55, color: '#FFFFFF', type: 'skirt' },
-        { id: 'b7', name: 'Denim Shorts', price: 75, color: '#6495ED', type: 'shorts' },
-        { id: 'b8', name: 'Svarta Shorts', price: 75, color: '#000000', type: 'shorts' },
-        { id: 'b9', name: 'Vita Shorts', price: 70, color: '#FFFFFF', type: 'shorts' },
-        { id: 'b10', name: 'Rosa Shorts', price: 75, color: '#FFB6C1', type: 'shorts' },
-        { id: 'b11', name: 'Blå Jeans', price: 90, color: '#4682B4', type: 'jeans' },
-        { id: 'b12', name: 'Svarta Byxor', price: 85, color: '#000000', type: 'pants' },
-        { id: 'b13', name:'Gråa Byxor', price: 85, color: '#808080', type: 'pants' },
-        { id: 'b14', name: 'Bruna Byxor', price: 85, color: '#8B4513', type: 'pants' }
+        { id: 'b7', name: 'Svart Kjol', price: 60, color: '#000000', type: 'skirt' },
+        { id: 'b8', name: 'Gul Kjol', price: 60, color: '#FFD700', type: 'skirt' },
+        { id: 'b9', name: 'Turkos Kjol', price: 60, color: '#40E0D0', type: 'skirt' },
+        { id: 'b10', name: 'Lavendel Kjol', price: 65, color: '#E6E6FA', type: 'skirt' },
+        { id: 'b11', name: 'Plisserad Kjol Rosa', price: 75, color: '#FFB6C1', type: 'skirt' },
+        { id: 'b12', name: 'Plisserad Kjol Blå', price: 75, color: '#87CEEB', type: 'skirt' },
+
+        // Shorts
+        { id: 'b13', name: 'Denim Shorts', price: 75, color: '#6495ED', type: 'shorts' },
+        { id: 'b14', name: 'Svarta Shorts', price: 75, color: '#000000', type: 'shorts' },
+        { id: 'b15', name: 'Vita Shorts', price: 70, color: '#FFFFFF', type: 'shorts' },
+        { id: 'b16', name: 'Rosa Shorts', price: 75, color: '#FFB6C1', type: 'shorts' },
+        { id: 'b17', name: 'Beige Shorts', price: 75, color: '#F5DEB3', type: 'shorts' },
+        { id: 'b18', name: 'Röda Shorts', price: 75, color: '#FF6347', type: 'shorts' },
+        { id: 'b19', name: 'Turkos Shorts', price: 75, color: '#48D1CC', type: 'shorts' },
+
+        // Jeans & Byxor
+        { id: 'b20', name: 'Blå Jeans', price: 90, color: '#4682B4', type: 'jeans' },
+        { id: 'b21', name: 'Svarta Jeans', price: 90, color: '#2F4F4F', type: 'jeans' },
+        { id: 'b22', name: 'Vita Jeans', price: 95, color: '#F0F8FF', type: 'jeans' },
+        { id: 'b23', name: 'Ljusa Jeans', price: 90, color: '#B0C4DE', type: 'jeans' },
+        { id: 'b24', name: 'Svarta Byxor', price: 85, color: '#000000', type: 'pants' },
+        { id: 'b25', name: 'Gråa Byxor', price: 85, color: '#808080', type: 'pants' },
+        { id: 'b26', name: 'Bruna Byxor', price: 85, color: '#8B4513', type: 'pants' },
+        { id: 'b27', name: 'Beige Byxor', price: 85, color: '#D2B48C', type: 'pants' },
+        { id: 'b28', name: 'Olivgröna Byxor', price: 90, color: '#556B2F', type: 'pants' },
+        { id: 'b29', name: 'Marinblå Byxor', price: 85, color: '#000080', type: 'pants' }
     ],
     shoes: [
+        // Sneakers
         { id: 's1', name: 'Vita Sneakers', price: 100, color: '#FFFFFF', type: 'sneakers' },
-        { id: 's2', name: 'Svarta Boots', price: 120, color: '#000000', type: 'boots' },
-        { id: 's3', name: 'Röda Skor', price: 95, color: '#DC143C', type: 'casual' },
-        { id: 's4', name: 'Rosa Skor', price: 95, color: '#FF69B4', type: 'casual' },
-        { id: 's5', name: 'Blå Sneakers', price: 100, color: '#4169E1', type: 'sneakers' }
+        { id: 's2', name: 'Svarta Sneakers', price: 100, color: '#000000', type: 'sneakers' },
+        { id: 's3', name: 'Blå Sneakers', price: 100, color: '#4169E1', type: 'sneakers' },
+        { id: 's4', name: 'Rosa Sneakers', price: 100, color: '#FF69B4', type: 'sneakers' },
+        { id: 's5', name: 'Röda Sneakers', price: 100, color: '#DC143C', type: 'sneakers' },
+        { id: 's6', name: 'Gröna Sneakers', price: 100, color: '#32CD32', type: 'sneakers' },
+        { id: 's7', name: 'Lila Sneakers', price: 100, color: '#9370DB', type: 'sneakers' },
+        { id: 's8', name: 'Turkos Sneakers', price: 100, color: '#40E0D0', type: 'sneakers' },
+
+        // Boots
+        { id: 's9', name: 'Svarta Boots', price: 120, color: '#000000', type: 'boots' },
+        { id: 's10', name: 'Bruna Boots', price: 120, color: '#8B4513', type: 'boots' },
+        { id: 's11', name: 'Vita Boots', price: 125, color: '#FFFFFF', type: 'boots' },
+        { id: 's12', name: 'Röda Boots', price: 120, color: '#8B0000', type: 'boots' },
+
+        // Casual
+        { id: 's13', name: 'Röda Skor', price: 95, color: '#DC143C', type: 'casual' },
+        { id: 's14', name: 'Rosa Skor', price: 95, color: '#FF69B4', type: 'casual' },
+        { id: 's15', name: 'Blå Loafers', price: 110, color: '#4169E1', type: 'casual' },
+        { id: 's16', name: 'Svarta Mary Janes', price: 105, color: '#000000', type: 'casual' },
+        { id: 's17', name: 'Beige Sandaler', price: 85, color: '#F5DEB3', type: 'casual' }
     ],
     accessories: [
+        // Kepsar
         { id: 'a1', name: 'Röd Keps', price: 40, color: '#DC143C', type: 'cap' },
         { id: 'a2', name: 'Blå Keps', price: 40, color: '#4169E1', type: 'cap' },
-        { id: 'a3', name: 'Svart Hatt', price: 50, color: '#000000', type: 'hat' },
-        { id: 'a4', name: 'Rosa Halsduk', price: 35, color: '#FF69B4', type: 'scarf' },
-        { id: 'a5', name: 'Lila Halsduk', price: 35, color: '#9370DB', type: 'scarf' }
+        { id: 'a3', name: 'Svart Keps', price: 40, color: '#000000', type: 'cap' },
+        { id: 'a4', name: 'Vit Keps', price: 40, color: '#FFFFFF', type: 'cap' },
+        { id: 'a5', name: 'Rosa Keps', price: 40, color: '#FF69B4', type: 'cap' },
+        { id: 'a6', name: 'Grön Keps', price: 40, color: '#32CD32', type: 'cap' },
+        { id: 'a7', name: 'Lila Keps', price: 40, color: '#9370DB', type: 'cap' },
+
+        // Hattar
+        { id: 'a8', name: 'Svart Hatt', price: 50, color: '#000000', type: 'hat' },
+        { id: 'a9', name: 'Beige Hatt', price: 50, color: '#F5DEB3', type: 'hat' },
+        { id: 'a10', name: 'Brun Hatt', price: 50, color: '#8B4513', type: 'hat' },
+        { id: 'a11', name: 'Vit Solhatt', price: 55, color: '#FFFFFF', type: 'hat' },
+        { id: 'a12', name: 'Rosa Hatt', price: 50, color: '#FFB6C1', type: 'hat' },
+
+        // Halsdukar
+        { id: 'a13', name: 'Rosa Halsduk', price: 35, color: '#FF69B4', type: 'scarf' },
+        { id: 'a14', name: 'Lila Halsduk', price: 35, color: '#9370DB', type: 'scarf' },
+        { id: 'a15', name: 'Blå Halsduk', price: 35, color: '#4169E1', type: 'scarf' },
+        { id: 'a16', name: 'Röd Halsduk', price: 35, color: '#DC143C', type: 'scarf' },
+        { id: 'a17', name: 'Grön Halsduk', price: 35, color: '#32CD32', type: 'scarf' },
+        { id: 'a18', name: 'Turkos Halsduk', price: 35, color: '#40E0D0', type: 'scarf' },
+        { id: 'a19', name: 'Gul Halsduk', price: 35, color: '#FFD700', type: 'scarf' },
+        { id: 'a20', name: 'Vit Halsduk', price: 35, color: '#FFFFFF', type: 'scarf' }
     ]
 };
 
