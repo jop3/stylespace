@@ -5,14 +5,14 @@
 const playerData = {
     // DiceBear avatar properties
     avatar: {
-        skinColor: 'Light',
-        top: 'LongHairStraight',
+        skinColor: 'light',
+        top: 'longHairStraight',
         hairColor: '724133',
         eyes: 'default',
         eyebrow: 'default',
-        mouth: 'Smile',
+        mouth: 'smile',
         accessories: '',
-        clotheType: 'Hoodie',
+        clotheType: 'hoodie',
         clotheColor: '4169E1',
         facialHairType: '',
         facialHairColor: ''
@@ -650,7 +650,7 @@ function animateAvatarChange() {
             scale: [0.95, 1],
             duration: 400,
             easing: 'easeOutCubic',
-            complete: () => {
+            onComplete: () => {
                 // Resume breathing after change
                 startAvatarBreathing();
             }
