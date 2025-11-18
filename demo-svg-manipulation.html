@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SVG Manipulation Demo - StyleSpace</title>
+    <!-- SVG.js for SVG manipulation -->
+    <script src="https://cdn.jsdelivr.net/npm/@svgdotjs/svg.js@3.2.0/dist/svg.min.js"></script>
+    <!-- TinyColor for color manipulation -->
+    <script src="https://cdn.jsdelivr.net/npm/tinycolor2@1.6.0/dist/tinycolor-min.js"></script>
+    <!-- Anime.js for animations -->
+    <script src="https://cdn.jsdelivr.net/npm/animejs@4.2.2/dist/bundles/anime.umd.min.js"></script>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+        h1 {
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+            margin-bottom: 10px;
+        }
+        .subtitle {
+            font-size: 14px;
+            opacity: 0.9;
+            margin-bottom: 20px;
+        }
+        #demo-container {
+            background: rgba(255,255,255,0.1);
+            padding: 30px;
+            border-radius: 20px;
+            backdrop-filter: blur(10px);
+            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        #svg-avatar-container {
+            width: 400px;
+            height: 400px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 15px;
+            margin-bottom: 20px;
+        }
+        .controls {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            max-width: 900px;
+            margin-top: 20px;
+        }
+        .control-section {
+            background: rgba(0,0,0,0.2);
+            padding: 15px;
+            border-radius: 10px;
+        }
+        .control-section h3 {
+            margin: 0 0 10px 0;
+            font-size: 16px;
+            border-bottom: 2px solid rgba(255,255,255,0.3);
+            padding-bottom: 5px;
+        }
+        button {
+            background: linear-gradient(135deg, #FF6B9D, #FFC371);
+            border: none;
+            padding: 10px 16px;
+            border-radius: 20px;
+            color: white;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.2);
+            transition: transform 0.2s;
+            font-size: 13px;
+            width: 100%;
+            margin: 5px 0;
+        }
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+        }
+        button.secondary {
+            background: linear-gradient(135deg, #4169E1, #00CED1);
+        }
+        button.danger {
+            background: linear-gradient(135deg, #DC143C, #FF6347);
+        }
+        .status {
+            background: rgba(0,0,0,0.3);
+            padding: 15px;
+            border-radius: 10px;
+            margin-top: 20px;
+            max-width: 800px;
+            width: 100%;
+        }
+        .success { color: #4ade80; }
+        .info { color: #fbbf24; }
+        .color-picker-row {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+            margin: 5px 0;
+        }
+        .color-picker-row input[type="color"] {
+            width: 40px;
+            height: 30px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .color-picker-row label {
+            font-size: 12px;
+            flex: 1;
+        }
+    </style>
+</head>
+<body>
+    <h1>🎨 SVG Manipulation Demo - Fas 2</h1>
+    <p class="subtitle">Direct SVG path manipulation med SVG.js + TinyColor</p>
+
+    <div id="demo-container">
+        <!-- SVG Avatar Container -->
+        <div id="svg-avatar-container"></div>
+
+        <button onclick="loadAvatar()" class="secondary" style="width: 400px;">🚀 Ladda DiceBear Avatar</button>
+    </div>
+
+    <div class="controls">
+        <!-- Color Manipulation -->
+        <div class="control-section">
+            <h3>🎨 Färgmanipulation</h3>
+            <div class="color-picker-row">
+                <label>Hår:</label>
+                <input type="color" id="hairColor" value="#724133">
+                <button onclick="colorHair()">Färga</button>
+            </div>
+            <div class="color-picker-row">
+                <label>Kläder:</label>
+                <input type="color" id="clothesColor" value="#4169E1">
+                <button onclick="colorClothes()">Färga</button>
+            </div>
+            <div class="color-picker-row">
+                <label>Hud:</label>
+                <input type="color" id="skinColor" value="#FDB98A">
+                <button onclick="colorSkin()">Färga</button>
+            </div>
+            <button onclick="colorAllParts()">🌈 Multi-Part Demo</button>
+        </div>
+
+        <!-- Patterns -->
+        <div class="control-section">
+            <h3>📐 Mönster</h3>
+            <button onclick="applyStripes()">📏 Ränder</button>
+            <button onclick="applyPolkadots()">⚪ Prickar</button>
+            <button onclick="applyCheckerboard()">🔲 Schack</button>
+            <button onclick="applyGradient()">🌈 Gradient</button>
+            <div class="color-picker-row">
+                <label>Färg 1:</label>
+                <input type="color" id="patternColor1" value="#FF6B9D">
+            </div>
+            <div class="color-picker-row">
+                <label>Färg 2:</label>
+                <input type="color" id="patternColor2" value="#4169E1">
+            </div>
+        </div>
+
+        <!-- Effects & Accessories -->
+        <div class="control-section">
+            <h3>✨ Effekter & Tillbehör</h3>
+            <button onclick="applyGlowEffect()">💫 Glow Effekt</button>
+            <button onclick="addCrown()">👑 Lägg till Krona</button>
+            <button onclick="addWings()">👼 Lägg till Vingar</button>
+            <div class="color-picker-row">
+                <label>Glow:</label>
+                <input type="color" id="glowColor" value="#FF6B9D">
+            </div>
+        </div>
+
+        <!-- Export -->
+        <div class="control-section">
+            <h3>💾 Export</h3>
+            <button onclick="exportSVG()" class="secondary">📄 Ladda ner SVG</button>
+            <button onclick="exportPNG()" class="secondary">🖼️ Ladda ner PNG</button>
+            <button onclick="showInfo()">ℹ️ Visa Info</button>
+        </div>
+
+        <!-- Layer Control -->
+        <div class="control-section">
+            <h3>🗂️ Lager</h3>
+            <button onclick="clearClothing()">🧹 Rensa Kläder</button>
+            <button onclick="clearAccessories()">🧹 Rensa Tillbehör</button>
+            <button onclick="clearEffects()">🧹 Rensa Effekter</button>
+            <button onclick="clearAllLayers()" class="danger">🧹 Rensa Allt</button>
+        </div>
+
+        <!-- Advanced -->
+        <div class="control-section">
+            <h3>🔬 Avancerat</h3>
+            <button onclick="inspectSVGParts()">🔍 Inspektera Delar</button>
+            <button onclick="testMultiPartColoring()">🎨 Test Multi-Part</button>
+            <button onclick="animateDemo()">🎬 Animera Demo</button>
+        </div>
+    </div>
+
+    <div class="status">
+        <p class="success" id="status">Väntar på bibliotek...</p>
+        <p class="info" id="info"></p>
+    </div>
+
+    <!-- Load SVG Avatar Renderer -->
+    <script src="svg-avatar-renderer.js"></script>
+
+    <script>
+        let renderer = null;
+        let currentAvatarURL = null;
+
+        // Wait for everything to load
+        window.addEventListener('load', () => {
+            // Check if libraries are loaded
+            const svgLoaded = typeof SVG !== 'undefined';
+            const tinycolorLoaded = typeof tinycolor !== 'undefined';
+            const animeLoaded = typeof anime !== 'undefined';
+
+            if (!svgLoaded || !tinycolorLoaded) {
+                document.getElementById('status').textContent = '❌ Bibliotek saknas! SVG.js: ' + svgLoaded + ', TinyColor: ' + tinycolorLoaded;
+                document.getElementById('status').className = 'danger';
+                return;
+            }
+
+            // Initialize SVG renderer
+            renderer = initializeSVGRenderer('svg-avatar-container');
+
+            if (renderer) {
+                document.getElementById('status').textContent = '✅ SVG Renderer redo! Klicka "Ladda DiceBear Avatar" för att börja.';
+                document.getElementById('info').textContent =
+                    'SVG.js: ✓ | TinyColor: ✓ | Anime.js: ' + (animeLoaded ? anime.version : '✗');
+            } else {
+                document.getElementById('status').textContent = '❌ Kunde inte initiera renderer';
+                document.getElementById('status').className = 'danger';
+            }
+        });
+
+        // Load DiceBear avatar
+        async function loadAvatar() {
+            if (!renderer) {
+                alert('Renderer inte initierad!');
+                return;
+            }
+
+            try {
+                updateStatus('📥 Laddar DiceBear avatar...', 'info');
+
+                // Generate DiceBear URL
+                currentAvatarURL = 'https://api.dicebear.com/9.x/avataaars/svg?' + new URLSearchParams({
+                    seed: 'svg-demo-' + Date.now(),
+                    skinColor: 'Light',
+                    top: 'LongHairStraight',
+                    hairColor: '724133',
+                    eyes: 'Happy',
+                    eyebrow: 'Default',
+                    mouth: 'Smile',
+                    clotheType: 'Hoodie',
+                    clotheColor: '4169E1',
+                    backgroundColor: 'transparent'
+                });
+
+                await renderer.loadDicebearSVG(currentAvatarURL);
+                updateStatus('✅ Avatar laddad! Nu kan du manipulera SVG:en.', 'success');
+                animateSuccess();
+            } catch (error) {
+                updateStatus('❌ Fel vid laddning: ' + error.message, 'danger');
+                console.error(error);
+            }
+        }
+
+        // Color functions
+        function colorHair() {
+            const color = document.getElementById('hairColor').value;
+            const success = renderer.colorPart('[id*="hair"], [class*="hair"]', color);
+            updateStatus(success ? `✅ Hår färgat: ${color}` : '⚠️ Hittade inga hårelement', success ? 'success' : 'info');
+        }
+
+        function colorClothes() {
+            const color = document.getElementById('clothesColor').value;
+            const success = renderer.colorPart('[id*="clothes"], [id*="clothe"]', color);
+            updateStatus(success ? `✅ Kläder färgade: ${color}` : '⚠️ Hittade inga klädelement', success ? 'success' : 'info');
+        }
+
+        function colorSkin() {
+            const color = document.getElementById('skinColor').value;
+            const success = renderer.colorPart('[id*="skin"]', color);
+            updateStatus(success ? `✅ Hud färgad: ${color}` : '⚠️ Hittade inga hudelement', success ? 'success' : 'info');
+        }
+
+        function colorAllParts() {
+            // Demo of multi-part coloring
+            renderer.colorClothingParts({
+                'hoodie-body': '#DC143C',
+                'hoodie-hood': '#FF6347',
+                'hoodie-strings': '#FFD700'
+            });
+            updateStatus('🌈 Multi-part coloring applicerad!', 'success');
+        }
+
+        // Pattern functions
+        function applyStripes() {
+            const color1 = document.getElementById('patternColor1').value;
+            const color2 = document.getElementById('patternColor2').value;
+            const success = renderer.applyPattern('[id*="clothes"]', 'stripes', [color1, color2]);
+            updateStatus(success ? '📏 Randmönster applicerat!' : '⚠️ Kunde inte applicera mönster', success ? 'success' : 'info');
+        }
+
+        function applyPolkadots() {
+            const color1 = document.getElementById('patternColor1').value;
+            const color2 = document.getElementById('patternColor2').value;
+            const success = renderer.applyPattern('[id*="clothes"]', 'polkadots', [color1, color2]);
+            updateStatus(success ? '⚪ Prickmönster applicerat!' : '⚠️ Kunde inte applicera mönster', success ? 'success' : 'info');
+        }
+
+        function applyCheckerboard() {
+            const color1 = document.getElementById('patternColor1').value;
+            const color2 = document.getElementById('patternColor2').value;
+            const success = renderer.applyPattern('[id*="clothes"]', 'checkerboard', [color1, color2]);
+            updateStatus(success ? '🔲 Schackmönster applicerat!' : '⚠️ Kunde inte applicera mönster', success ? 'success' : 'info');
+        }
+
+        function applyGradient() {
+            const color1 = document.getElementById('patternColor1').value;
+            const color2 = document.getElementById('patternColor2').value;
+            const success = renderer.applyPattern('[id*="clothes"]', 'gradient', [color1, color2]);
+            updateStatus(success ? '🌈 Gradient applicerad!' : '⚠️ Kunde inte applicera gradient', success ? 'success' : 'info');
+        }
+
+        // Effects
+        function applyGlowEffect() {
+            const color = document.getElementById('glowColor').value;
+            renderer.applyGlow('[id*="hair"], [id*="clothes"]', color, 4);
+            updateStatus('💫 Glow-effekt applicerad!', 'success');
+        }
+
+        async function addCrown() {
+            try {
+                await renderer.addCustomSVG('assets/accessories/crown.svg', 'accessories', {x: 200, y: 50}, {width: 120, height: 120});
+                updateStatus('👑 Krona tillagd!', 'success');
+            } catch (error) {
+                updateStatus('⚠️ Kunde inte ladda krona: ' + error.message, 'info');
+            }
+        }
+
+        async function addWings() {
+            try {
+                await renderer.addCustomSVG('assets/accessories/wings.svg', 'accessories', {x: 200, y: 150}, {width: 180, height: 180});
+                updateStatus('👼 Vingar tillagda!', 'success');
+            } catch (error) {
+                updateStatus('⚠️ Kunde inte ladda vingar: ' + error.message, 'info');
+            }
+        }
+
+        // Export functions
+        function exportSVG() {
+            renderer.downloadSVG('stylespace-avatar.svg');
+            updateStatus('💾 SVG exporterad!', 'success');
+        }
+
+        async function exportPNG() {
+            try {
+                await renderer.downloadPNG('stylespace-avatar.png');
+                updateStatus('💾 PNG exporterad!', 'success');
+            } catch (error) {
+                updateStatus('❌ PNG export misslyckades: ' + error.message, 'danger');
+            }
+        }
+
+        function showInfo() {
+            const info = renderer.getInfo();
+            const message = `
+📊 Renderer Info:
+• Lager: ${info.layers}
+• Element: ${info.elements}
+• Mönster: ${info.patterns}
+• Delar: ${info.parts}
+            `;
+            alert(message);
+            updateStatus('ℹ️ Info visad i console', 'info');
+            console.log('Renderer Info:', info);
+        }
+
+        // Layer control
+        function clearClothing() {
+            renderer.clearLayer('clothing');
+            updateStatus('🧹 Klädlager rensat', 'success');
+        }
+
+        function clearAccessories() {
+            renderer.clearLayer('accessories');
+            updateStatus('🧹 Tillbehörslager rensat', 'success');
+        }
+
+        function clearEffects() {
+            renderer.clearLayer('effects');
+            updateStatus('🧹 Effektlager rensat', 'success');
+        }
+
+        function clearAllLayers() {
+            renderer.clearLayer('clothing');
+            renderer.clearLayer('accessories');
+            renderer.clearLayer('decals');
+            renderer.clearLayer('effects');
+            updateStatus('🧹 Alla lager rensade', 'success');
+        }
+
+        // Advanced functions
+        function inspectSVGParts() {
+            console.log('=== SVG Parts Inspection ===');
+            console.log('SVG Parts:', renderer.svgParts);
+
+            const parts = [];
+            if (renderer.svgParts.hair) parts.push(`Hår: ${renderer.svgParts.hair.length} element`);
+            if (renderer.svgParts.clothes) parts.push(`Kläder: ${renderer.svgParts.clothes.length} element`);
+            if (renderer.svgParts.accessories) parts.push(`Tillbehör: ${renderer.svgParts.accessories.length} element`);
+            if (renderer.svgParts.skin) parts.push(`Hud: ${renderer.svgParts.skin.length} element`);
+            if (renderer.svgParts.all) parts.push(`Totalt: ${renderer.svgParts.all.length} element`);
+
+            alert('🔍 Funna delar:\n' + (parts.length > 0 ? parts.join('\n') : 'Inga delar hittade'));
+            updateStatus('🔍 Delar inspekterade (se console)', 'info');
+        }
+
+        function testMultiPartColoring() {
+            // Test coloring different parts of a hoodie
+            renderer.colorClothingParts({
+                'hoodie': '#DC143C',
+                'hood': '#FF1493',
+                'pocket': '#FFD700',
+                'zipper': '#4169E1',
+                'string': '#00CED1'
+            });
+            updateStatus('🎨 Multi-part test körd', 'success');
+        }
+
+        function animateDemo() {
+            if (typeof anime === 'undefined') {
+                updateStatus('⚠️ Anime.js inte laddad', 'info');
+                return;
+            }
+
+            anime({
+                targets: '#svg-avatar-container',
+                rotate: [0, 360],
+                duration: 2000,
+                easing: 'easeInOutQuad',
+                complete: () => {
+                    updateStatus('🎬 Animation klar!', 'success');
+                }
+            });
+        }
+
+        // Helper functions
+        function updateStatus(message, type = 'info') {
+            const statusEl = document.getElementById('status');
+            statusEl.textContent = message;
+            statusEl.className = type;
+        }
+
+        function animateSuccess() {
+            if (typeof anime !== 'undefined') {
+                anime({
+                    targets: '#demo-container',
+                    scale: [1, 1.05, 1],
+                    duration: 400,
+                    easing: 'easeOutElastic(1, .5)'
+                });
+            }
+        }
+    </script>
+</body>
+</html>
