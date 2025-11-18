@@ -121,6 +121,14 @@ function updateAvatar() {
             console.error('❌ Avatar image failed to load:', error);
         };
 
+        // Update SVG renderer if available
+        if (svgAvatarRenderer && avatar) {
+            const svgString = avatar.toString();
+            svgAvatarRenderer.parseSVG(svgString).catch(err => {
+                console.error('Failed to update SVG renderer:', err);
+            });
+        }
+
         // Update pets display
         updatePetsDisplay();
     } catch (error) {
@@ -845,6 +853,155 @@ function animateTabSwitch(tabContent) {
 // INITIALIZATION
 // ============================================
 
+// Global SVG Avatar Renderer instance
+let svgAvatarRenderer = null;
+
+function initializeSVGRenderer() {
+    // Check if SVG.js is loaded
+    if (typeof SVG === 'undefined') {
+        console.error('❌ SVG.js not loaded! SVG manipulation will not work.');
+        return null;
+    }
+
+    // We'll use the main avatar for SVG manipulation
+    // For now, create a hidden container for SVG operations
+    const svgContainer = document.createElement('div');
+    svgContainer.id = 'svg-manipulation-container';
+    svgContainer.style.display = 'none';
+    document.body.appendChild(svgContainer);
+
+    try {
+        svgAvatarRenderer = new SVGAvatarRenderer('svg-manipulation-container');
+        console.log('✅ SVG Avatar Renderer initialized');
+        return svgAvatarRenderer;
+    } catch (error) {
+        console.error('❌ Failed to initialize SVG renderer:', error);
+        return null;
+    }
+}
+
+// ============================================
+// CUSTOM DESIGN FUNCTIONS
+// ============================================
+
+function applyMultiPartColoring() {
+    if (!svgAvatarRenderer) {
+        alert('SVG Renderer inte initierad än. Prova igen om en stund!');
+        return;
+    }
+
+    try {
+        // Example multi-part coloring for hoodie
+        svgAvatarRenderer.colorClothingParts({
+            'hoodie': '#DC143C',      // Red body
+            'hood': '#FF6347',        // Tomato hood
+            'pocket': '#FFD700',      // Gold pockets
+            'zipper': '#4169E1',      // Blue zipper
+            'string': '#00CED1'       // Turquoise strings
+        });
+
+        alert('🌈 Multi-part färgning applicerad!\nOlika delar av plagget har nu olika färger.');
+    } catch (error) {
+        console.error('Error applying multi-part coloring:', error);
+        alert('⚠️ Kunde inte applicera multi-part färgning: ' + error.message);
+    }
+}
+
+function applyPattern(patternType) {
+    if (!svgAvatarRenderer) {
+        alert('SVG Renderer inte initierad än. Prova igen om en stund!');
+        return;
+    }
+
+    try {
+        const colors = ['#FF6B9D', '#4169E1']; // Pink and blue
+
+        const success = svgAvatarRenderer.applyPattern(
+            '[id*="clothes"]',
+            patternType,
+            colors
+        );
+
+        if (success) {
+            alert(`✅ ${patternType} mönster applicerat på kläder!`);
+        } else {
+            alert('⚠️ Kunde inte applicera mönster. Kontrollera att avatar är laddad.');
+        }
+    } catch (error) {
+        console.error('Error applying pattern:', error);
+        alert('⚠️ Kunde inte applicera mönster: ' + error.message);
+    }
+}
+
+function applyGlowEffect() {
+    if (!svgAvatarRenderer) {
+        alert('SVG Renderer inte initierad än. Prova igen om en stund!');
+        return;
+    }
+
+    try {
+        svgAvatarRenderer.applyGlow(
+            '[id*="hair"], [id*="clothes"]',
+            '#FF6B9D',
+            4
+        );
+
+        alert('💫 Glow-effekt applicerad på hår och kläder!');
+    } catch (error) {
+        console.error('Error applying glow:', error);
+        alert('⚠️ Kunde inte applicera glow: ' + error.message);
+    }
+}
+
+function clearEffects() {
+    if (!svgAvatarRenderer) {
+        alert('SVG Renderer inte initierad än. Prova igen om en stund!');
+        return;
+    }
+
+    try {
+        svgAvatarRenderer.clearLayer('effects');
+        alert('🧹 Effekter rensade!');
+    } catch (error) {
+        console.error('Error clearing effects:', error);
+        alert('⚠️ Kunde inte rensa effekter: ' + error.message);
+    }
+}
+
+function exportAvatarSVG() {
+    if (!svgAvatarRenderer) {
+        alert('SVG Renderer inte initierad än. Öppna demo-svg-manipulation.html för full export-funktionalitet!');
+        return;
+    }
+
+    try {
+        svgAvatarRenderer.downloadSVG('stylespace-avatar.svg');
+        alert('💾 SVG-fil nedladdad!');
+    } catch (error) {
+        console.error('Error exporting SVG:', error);
+        alert('⚠️ Kunde inte exportera SVG: ' + error.message);
+    }
+}
+
+async function exportAvatarPNG() {
+    if (!svgAvatarRenderer) {
+        alert('SVG Renderer inte initierad än. Öppna demo-svg-manipulation.html för full export-funktionalitet!');
+        return;
+    }
+
+    try {
+        await svgAvatarRenderer.downloadPNG('stylespace-avatar.png');
+        alert('💾 PNG-fil nedladdad!');
+    } catch (error) {
+        console.error('Error exporting PNG:', error);
+        alert('⚠️ Kunde inte exportera PNG: ' + error.message);
+    }
+}
+
+// ============================================
+// INITIALIZATION
+// ============================================
+
 function init() {
     console.log('🎮 Initializing StyleSpace with DiceBear...');
     console.log('📦 Anime.js loaded:', typeof anime !== 'undefined');
@@ -875,6 +1032,22 @@ function init() {
 
     // Generate initial avatar
     updateAvatar();
+
+    // Initialize SVG Avatar Renderer for Custom Design features
+    setTimeout(() => {
+        initializeSVGRenderer();
+
+        // Load current avatar into SVG renderer if available
+        if (svgAvatarRenderer) {
+            const avatar = generateAvatar();
+            if (avatar) {
+                const svgString = avatar.toString();
+                svgAvatarRenderer.parseSVG(svgString).catch(err => {
+                    console.error('Failed to load avatar into SVG renderer:', err);
+                });
+            }
+        }
+    }, 500); // Delay to ensure everything is loaded
 
     // Start anime.js animations
     console.log('🎬 Starting animations...');
