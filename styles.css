@@ -544,3 +544,35 @@ body {
         height: 40px;
     }
 }
+
+/* Pet bounce animation */
+@keyframes petBounce {
+    0%, 100% {
+        transform: translateY(0);
+    }
+    50% {
+        transform: translateY(-10px);
+    }
+}
+
+.avatar-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+#avatarDisplay {
+    border: 3px solid rgba(255, 255, 255, 0.3);
+    box-shadow: 0 10px 40px rgba(0, 0, 0, 0.2);
+}
+
+#petsContainer span {
+    display: inline-block;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+}
+
+#petsContainer span:hover {
+    transform: scale(1.2);
+}
