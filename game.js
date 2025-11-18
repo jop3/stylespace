@@ -46,15 +46,15 @@ function generateAvatarURL() {
 
     const params = new URLSearchParams({
         seed: 'stylespace-' + Date.now(), // Unique seed
-        skinColor: [playerData.avatar.skinColor],
-        top: [playerData.avatar.top],
-        hairColor: [playerData.avatar.hairColor],
-        eyes: [playerData.avatar.eyes],
-        eyebrow: [playerData.avatar.eyebrow],
-        mouth: [playerData.avatar.mouth],
-        clotheType: [playerData.avatar.clotheType],
-        clotheColor: [playerData.avatar.clotheColor],
-        backgroundColor: ['transparent']
+        skinColor: playerData.avatar.skinColor,
+        top: playerData.avatar.top,
+        hairColor: playerData.avatar.hairColor,
+        eyes: playerData.avatar.eyes,
+        eyebrow: playerData.avatar.eyebrow,
+        mouth: playerData.avatar.mouth,
+        clotheType: playerData.avatar.clotheType,
+        clotheColor: playerData.avatar.clotheColor,
+        backgroundColor: 'transparent'
     });
 
     // Add accessories if selected
