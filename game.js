@@ -28,6 +28,7 @@ const playerData = {
         backgroundColor: 'linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%)' // Avatar container background
     },
     diamonds: 100,
+    devMode: false, // Toggle to unlock everything for free
     ownedClothes: [],
     currentClothes: {
         top: null,
@@ -337,7 +338,7 @@ function populateShop() {
         categoryDiv.innerHTML = `<h3>${category.name}</h3>`;
 
         category.items.forEach(item => {
-            const owned = playerData.ownedClothes.includes(item.id);
+            const owned = playerData.devMode || playerData.ownedClothes.includes(item.id);
             const itemDiv = document.createElement('div');
             itemDiv.className = 'shop-item';
 
@@ -350,10 +351,10 @@ function populateShop() {
                         <h4 style="margin: 0;">${item.name}</h4>
                         ${owned ? '<span class="owned-label">Ägs</span>' : ''}
                     </div>
-                    <span style="color: #FFD700; font-weight: bold;">${item.price} 💎</span>
+                    <span style="color: #FFD700; font-weight: bold;">${playerData.devMode ? 'FREE' : item.price + ' 💎'}</span>
                 </div>
                 <div class="shop-item-buttons">
-                    ${!owned ? `<button class="shop-btn buy-btn" onclick="buyClothes('${item.id}', ${item.price})">Köp</button>` : '<span style="color: #4CAF50; font-size: 0.9rem;">✓ Ägs redan</span>'}
+                    ${!owned ? `<button class="shop-btn buy-btn" onclick="buyClothes('${item.id}', ${item.price})">${playerData.devMode ? 'Få' : 'Köp'}</button>` : '<span style="color: #4CAF50; font-size: 0.9rem;">✓ Ägs redan</span>'}
                 </div>
             `;
 
@@ -376,15 +377,18 @@ function buyClothes(itemId, price) {
         return;
     }
 
-    // Check if enough diamonds
-    if (playerData.diamonds < price) {
-        alert('Du har inte tillräckligt med diamanter!');
-        return;
+    // Dev mode - get items for free
+    if (playerData.devMode) {
+        playerData.ownedClothes.push(itemId);
+    } else {
+        // Normal mode - check diamonds and pay
+        if (playerData.diamonds < price) {
+            alert('Du har inte tillräckligt med diamanter!');
+            return;
+        }
+        playerData.diamonds -= price;
+        playerData.ownedClothes.push(itemId);
     }
-
-    // Buy the item
-    playerData.diamonds -= price;
-    playerData.ownedClothes.push(itemId);
 
     // Find the item
     let item = null;
@@ -417,7 +421,7 @@ function populatePetsShop() {
     shopContainer.innerHTML = '';
 
     petsDatabase.forEach(pet => {
-        const owned = playerData.ownedPets.includes(pet.id);
+        const owned = playerData.devMode || playerData.ownedPets.includes(pet.id);
         const active = playerData.activePets.includes(pet.id);
 
         const petDiv = document.createElement('div');
@@ -433,10 +437,10 @@ function populatePetsShop() {
                         ${active ? '<span class="owned-label" style="background: #2196F3;">Aktiv</span>' : ''}
                     </div>
                 </div>
-                <span style="color: #FFD700; font-weight: bold;">${pet.price} 💎</span>
+                <span style="color: #FFD700; font-weight: bold;">${playerData.devMode ? 'FREE' : pet.price + ' 💎'}</span>
             </div>
             <div class="shop-item-buttons">
-                ${!owned ? `<button class="shop-btn buy-btn" onclick="buyPet('${pet.id}', ${pet.price})">Köp</button>` : ''}
+                ${!owned ? `<button class="shop-btn buy-btn" onclick="buyPet('${pet.id}', ${pet.price})">${playerData.devMode ? 'Få' : 'Köp'}</button>` : ''}
                 ${owned && !active ? `<button class="shop-btn try-btn" onclick="activatePet('${pet.id}')">Aktivera</button>` : ''}
                 ${active ? `<button class="shop-btn remove-btn" onclick="deactivatePet('${pet.id}')">Avaktivera</button>` : ''}
             </div>
@@ -459,13 +463,18 @@ function buyPet(petId, price) {
         return;
     }
 
-    if (playerData.diamonds < price) {
-        alert('Du har inte tillräckligt med diamanter!');
-        return;
+    // Dev mode - get pets for free
+    if (playerData.devMode) {
+        playerData.ownedPets.push(petId);
+    } else {
+        // Normal mode - check diamonds and pay
+        if (playerData.diamonds < price) {
+            alert('Du har inte tillräckligt med diamanter!');
+            return;
+        }
+        playerData.diamonds -= price;
+        playerData.ownedPets.push(petId);
     }
-
-    playerData.diamonds -= price;
-    playerData.ownedPets.push(petId);
 
     const pet = petsDatabase.find(p => p.id === petId);
 
@@ -1024,6 +1033,32 @@ async function exportAvatarPNG() {
         console.error('Error exporting PNG:', error);
         alert('⚠️ Kunde inte exportera PNG: ' + error.message);
     }
+}
+
+// ============================================
+// DEV MODE
+// ============================================
+
+function toggleDevMode() {
+    playerData.devMode = !playerData.devMode;
+
+    const statusSpan = document.getElementById('devModeStatus');
+    const toggle = document.getElementById('devModeToggle');
+
+    if (playerData.devMode) {
+        statusSpan.textContent = 'PÅ ✓';
+        statusSpan.style.color = '#4CAF50';
+        console.log('🔓 Dev Mode AKTIVERAD - Alla items gratis!');
+    } else {
+        statusSpan.textContent = 'AV';
+        statusSpan.style.color = 'white';
+        console.log('🔒 Dev Mode AVAKTIVERAD');
+    }
+
+    // Update shops to reflect dev mode changes
+    populateShop();
+    populatePetsShop();
+    updateDiamondDisplay();
 }
 
 // ============================================
