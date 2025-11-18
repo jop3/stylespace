@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>StyleSpace - Avatar Spel</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="styles.css">
     <!-- Animation & Rendering Libraries -->
     <script src="https://cdn.jsdelivr.net/npm/animejs@4.2.2/dist/bundles/anime.umd.min.js"></script>
@@ -55,6 +57,47 @@
                             <button class="option-btn selected" data-type="sex" data-value="female">👩 Kvinna</button>
                             <button class="option-btn" data-type="sex" data-value="male">👨 Man</button>
                         </div>
+                    </div>
+
+                    <!-- Avatar Style -->
+                    <div class="customization-section">
+                        <h3>Avatar Stil</h3>
+                        <select id="avatarStyleSelect" class="style-select" onchange="changeAvatarStyle(this.value)">
+                            <optgroup label="Humanoid Styles">
+                                <option value="avataaars" selected>Avataaars (Classic)</option>
+                                <option value="adventurer">Adventurer</option>
+                                <option value="adventurerNeutral">Adventurer Neutral</option>
+                                <option value="bigEars">Big Ears</option>
+                                <option value="bigEarsNeutral">Big Ears Neutral</option>
+                                <option value="bigSmile">Big Smile</option>
+                                <option value="lorelei">Lorelei</option>
+                                <option value="loreleiNeutral">Lorelei Neutral</option>
+                                <option value="micah">Micah</option>
+                                <option value="miniavs">Miniavs</option>
+                                <option value="notionists">Notionists</option>
+                                <option value="notionistsNeutral">Notionists Neutral</option>
+                                <option value="openPeeps">Open Peeps</option>
+                                <option value="personas">Personas</option>
+                                <option value="pixelArt">Pixel Art</option>
+                                <option value="pixelArtNeutral">Pixel Art Neutral</option>
+                            </optgroup>
+                            <optgroup label="Abstract & Fun Styles">
+                                <option value="bottts">Bottts (Robot)</option>
+                                <option value="botttsNeutral">Bottts Neutral</option>
+                                <option value="croodles">Croodles (Doodle)</option>
+                                <option value="croodlesNeutral">Croodles Neutral</option>
+                                <option value="funEmoji">Fun Emoji</option>
+                                <option value="icons">Icons</option>
+                                <option value="identicon">Identicon</option>
+                                <option value="initials">Initials</option>
+                                <option value="rings">Rings</option>
+                                <option value="shapes">Shapes</option>
+                                <option value="thumbs">Thumbs</option>
+                            </optgroup>
+                        </select>
+                        <p style="font-size: 0.75rem; opacity: 0.7; margin-top: 8px;">
+                            💡 Vissa stilar stödjer inte alla anpassningar
+                        </p>
                     </div>
 
                     <!-- Bakgrundsfärg -->

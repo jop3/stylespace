@@ -3,7 +3,66 @@
 // ============================================
 
 import { createAvatar } from '@dicebear/core';
-import { avataaars } from '@dicebear/collection';
+import {
+    avataaars,
+    adventurer,
+    adventurerNeutral,
+    bigEars,
+    bigEarsNeutral,
+    bigSmile,
+    bottts,
+    botttsNeutral,
+    croodles,
+    croodlesNeutral,
+    funEmoji,
+    icons,
+    identicon,
+    initials,
+    lorelei,
+    loreleiNeutral,
+    micah,
+    miniavs,
+    notionists,
+    notionistsNeutral,
+    openPeeps,
+    personas,
+    pixelArt,
+    pixelArtNeutral,
+    rings,
+    shapes,
+    thumbs
+} from '@dicebear/collection';
+
+// Avatar styles mapping
+const avatarStyles = {
+    avataaars: { style: avataaars, name: 'Avataaars', supportsCustomization: true },
+    adventurer: { style: adventurer, name: 'Adventurer', supportsCustomization: true },
+    adventurerNeutral: { style: adventurerNeutral, name: 'Adventurer Neutral', supportsCustomization: true },
+    bigEars: { style: bigEars, name: 'Big Ears', supportsCustomization: true },
+    bigEarsNeutral: { style: bigEarsNeutral, name: 'Big Ears Neutral', supportsCustomization: true },
+    bigSmile: { style: bigSmile, name: 'Big Smile', supportsCustomization: true },
+    bottts: { style: bottts, name: 'Bottts (Robot)', supportsCustomization: false },
+    botttsNeutral: { style: botttsNeutral, name: 'Bottts Neutral', supportsCustomization: false },
+    croodles: { style: croodles, name: 'Croodles', supportsCustomization: true },
+    croodlesNeutral: { style: croodlesNeutral, name: 'Croodles Neutral', supportsCustomization: true },
+    funEmoji: { style: funEmoji, name: 'Fun Emoji', supportsCustomization: false },
+    icons: { style: icons, name: 'Icons', supportsCustomization: false },
+    identicon: { style: identicon, name: 'Identicon', supportsCustomization: false },
+    initials: { style: initials, name: 'Initials', supportsCustomization: false },
+    lorelei: { style: lorelei, name: 'Lorelei', supportsCustomization: true },
+    loreleiNeutral: { style: loreleiNeutral, name: 'Lorelei Neutral', supportsCustomization: true },
+    micah: { style: micah, name: 'Micah', supportsCustomization: true },
+    miniavs: { style: miniavs, name: 'Miniavs', supportsCustomization: false },
+    notionists: { style: notionists, name: 'Notionists', supportsCustomization: false },
+    notionistsNeutral: { style: notionistsNeutral, name: 'Notionists Neutral', supportsCustomization: false },
+    openPeeps: { style: openPeeps, name: 'Open Peeps', supportsCustomization: true },
+    personas: { style: personas, name: 'Personas', supportsCustomization: true },
+    pixelArt: { style: pixelArt, name: 'Pixel Art', supportsCustomization: false },
+    pixelArtNeutral: { style: pixelArtNeutral, name: 'Pixel Art Neutral', supportsCustomization: false },
+    rings: { style: rings, name: 'Rings', supportsCustomization: false },
+    shapes: { style: shapes, name: 'Shapes', supportsCustomization: false },
+    thumbs: { style: thumbs, name: 'Thumbs', supportsCustomization: false }
+};
 
 // ============================================
 // PLAYER DATA
@@ -12,6 +71,7 @@ import { avataaars } from '@dicebear/collection';
 const playerData = {
     // DiceBear avatar properties
     avatar: {
+        style: 'avataaars', // Current DiceBear style
         seed: 'stylespace-user', // Static seed - won't randomize on updates
         sex: 'female', // 'male' or 'female'
         skinColor: 'light',
@@ -55,42 +115,56 @@ const playerData = {
 function generateAvatar() {
     try {
         // Check if DiceBear is loaded
-        if (typeof createAvatar === 'undefined' || typeof avataaars === 'undefined') {
-            console.error('❌ DiceBear not loaded! createAvatar:', typeof createAvatar, 'avataaars:', typeof avataaars);
+        if (typeof createAvatar === 'undefined') {
+            console.error('❌ DiceBear not loaded!');
             return null;
         }
 
-        // Build options object for DiceBear
+        // Get selected style
+        const styleName = playerData.avatar.style || 'avataaars';
+        const styleConfig = avatarStyles[styleName];
+
+        if (!styleConfig) {
+            console.error('❌ Unknown avatar style:', styleName);
+            return null;
+        }
+
+        // Base options for all styles
         const options = {
-            seed: playerData.avatar.seed, // Static seed - prevents randomization
-            skinColor: [playerData.avatar.skinColor],
-            top: [playerData.avatar.top],
-            hairColor: [playerData.avatar.hairColor],
-            eyes: [playerData.avatar.eyes],
-            eyebrow: [playerData.avatar.eyebrow],
-            mouth: [playerData.avatar.mouth],
-            clothesType: [playerData.avatar.clotheType],
-            clothesColor: [playerData.avatar.clotheColor],
+            seed: playerData.avatar.seed,
             backgroundColor: ['transparent']
         };
 
-        // Add accessories if selected
-        if (playerData.avatar.accessories) {
-            options.accessories = [playerData.avatar.accessories];
-            options.accessoriesColor = ['262E33'];
+        // Add customization options only for styles that support it
+        if (styleConfig.supportsCustomization) {
+            // Add common customization options
+            if (playerData.avatar.skinColor) options.skinColor = [playerData.avatar.skinColor];
+            if (playerData.avatar.top) options.top = [playerData.avatar.top];
+            if (playerData.avatar.hairColor) options.hairColor = [playerData.avatar.hairColor];
+            if (playerData.avatar.eyes) options.eyes = [playerData.avatar.eyes];
+            if (playerData.avatar.eyebrow) options.eyebrow = [playerData.avatar.eyebrow];
+            if (playerData.avatar.mouth) options.mouth = [playerData.avatar.mouth];
+            if (playerData.avatar.clotheType) options.clothesType = [playerData.avatar.clotheType];
+            if (playerData.avatar.clotheColor) options.clothesColor = [playerData.avatar.clotheColor];
+
+            // Add accessories if selected
+            if (playerData.avatar.accessories) {
+                options.accessories = [playerData.avatar.accessories];
+                options.accessoriesColor = ['262E33'];
+            }
+
+            // Add facial hair if selected
+            if (playerData.avatar.facialHairType) {
+                options.facialHairType = [playerData.avatar.facialHairType];
+                options.facialHairColor = [playerData.avatar.facialHairColor || playerData.avatar.hairColor];
+            }
         }
 
-        // Add facial hair if selected
-        if (playerData.avatar.facialHairType) {
-            options.facialHairType = [playerData.avatar.facialHairType];
-            options.facialHairColor = [playerData.avatar.facialHairColor || playerData.avatar.hairColor];
-        }
+        console.log('🎨 Generating avatar with style:', styleName, 'options:', options);
 
-        console.log('🎨 Generating avatar with options:', options);
-
-        // Create avatar using DiceBear
-        const avatar = createAvatar(avataaars, options);
-        console.log('✅ Avatar created:', avatar);
+        // Create avatar using selected style
+        const avatar = createAvatar(styleConfig.style, options);
+        console.log('✅ Avatar created');
 
         return avatar;
     } catch (error) {
@@ -98,6 +172,35 @@ function generateAvatar() {
         return null;
     }
 }
+
+// Change avatar style
+function changeAvatarStyle(styleName) {
+    console.log(`🎨 Changing avatar style to: ${styleName}`);
+
+    const styleConfig = avatarStyles[styleName];
+    if (!styleConfig) {
+        console.error('❌ Unknown avatar style:', styleName);
+        return;
+    }
+
+    // Update playerData
+    playerData.avatar.style = styleName;
+
+    // Regenerate avatar with new style
+    updateAvatar();
+
+    // Show info about customization support
+    if (!styleConfig.supportsCustomization) {
+        console.log('ℹ️ Note: This style does not support detailed customization');
+    }
+
+    // Animate the change
+    if (typeof anime !== 'undefined') {
+        animateAvatarChange();
+    }
+}
+// Make globally accessible for HTML onchange handler
+window.changeAvatarStyle = changeAvatarStyle;
 
 function updateAvatar() {
     try {
@@ -1124,6 +1227,15 @@ function init() {
         console.error('❌ Anime.js not loaded! Animations will not work.');
     }
 }
+
+// Expose functions globally for HTML event handlers
+window.toggleDevMode = toggleDevMode;
+window.applyMultiPartColoring = applyMultiPartColoring;
+window.applyPattern = applyPattern;
+window.applyGlowEffect = applyGlowEffect;
+window.clearEffects = clearEffects;
+window.exportAvatarSVG = exportAvatarSVG;
+window.exportAvatarPNG = exportAvatarPNG;
 
 // Start the game when page loads
 window.addEventListener('load', init);
