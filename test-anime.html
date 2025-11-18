@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Test Anime.js 4.2.2</title>
+    <script src="https://cdn.jsdelivr.net/npm/animejs@4.2.2/lib/anime.min.js"></script>
+    <style>
+        body {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: Arial, sans-serif;
+            color: white;
+        }
+        .container {
+            text-align: center;
+        }
+        h1 {
+            margin-bottom: 30px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.3);
+        }
+        .test-box {
+            width: 100px;
+            height: 100px;
+            background: linear-gradient(135deg, #FF6B9D, #FFC371);
+            border-radius: 20px;
+            margin: 40px auto;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+        }
+        .status {
+            background: rgba(255,255,255,0.2);
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+            backdrop-filter: blur(10px);
+        }
+        .status p {
+            margin: 10px 0;
+        }
+        .success {
+            color: #4ade80;
+            font-weight: bold;
+        }
+        .info {
+            color: #fbbf24;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>✨ Anime.js 4.2.2 Test ✨</h1>
+        <div class="test-box"></div>
+        <div class="status">
+            <p class="success" id="status">Testar...</p>
+            <p class="info" id="version"></p>
+            <p>Om boxen roterar, hoppar och skalar = anime.js fungerar! 🎉</p>
+        </div>
+    </div>
+
+    <script>
+        console.log('🔍 Testing Anime.js...');
+
+        if (typeof anime !== 'undefined') {
+            console.log('✅ Anime loaded successfully!');
+            console.log('📦 Anime version:', anime.version);
+            document.getElementById('status').textContent = '✅ Anime.js laddad!';
+            document.getElementById('version').textContent = `Version: ${anime.version}`;
+
+            // Test animation
+            const animation = anime({
+                targets: '.test-box',
+                translateY: [0, -80, 0],
+                scale: [1, 1.3, 1],
+                rotate: '1turn',
+                duration: 2000,
+                easing: 'easeInOutQuad',
+                loop: true
+            });
+
+            console.log('🎬 Animation started!', animation);
+            console.log('🎨 If you see the box animating, anime.js is working perfectly!');
+        } else {
+            console.error('❌ Anime.js not loaded!');
+            document.getElementById('status').textContent = '❌ Anime.js INTE laddad!';
+            document.getElementById('status').style.color = '#ef4444';
+        }
+    </script>
+</body>
+</html>

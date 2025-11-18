@@ -1413,17 +1413,20 @@ let petAnimations = [];
 
 function startAvatarBreathing() {
     // Subtle breathing effect on canvas
+    console.log('💨 Starting avatar breathing animation...');
     if (avatarBreathingAnimation) {
         avatarBreathingAnimation.pause();
     }
 
     avatarBreathingAnimation = anime({
         targets: '#avatarCanvas',
-        translateY: [0, -3, 0],
+        translateY: [0, -10, 0], // Increased from -3 to -10 for more visible effect
+        scale: [1, 1.01, 1], // Added subtle scale
         duration: 3000,
         easing: 'easeInOutSine',
         loop: true
     });
+    console.log('💨 Avatar breathing animation created:', avatarBreathingAnimation);
 }
 
 function stopAvatarBreathing() {
@@ -1436,6 +1439,7 @@ function stopAvatarBreathing() {
 let petAnimationLoop = null;
 
 function startPetAnimations() {
+    console.log('🐾 Starting pet animations loop...');
     // Clear any existing pet animation loop
     if (petAnimationLoop) {
         cancelAnimationFrame(petAnimationLoop);
@@ -1448,6 +1452,7 @@ function startPetAnimations() {
     }
 
     animatePets();
+    console.log('🐾 Pet animation loop started');
 }
 
 function stopPetAnimations() {
@@ -1478,6 +1483,8 @@ function animateAvatarChange() {
 
 // UI entrance animations
 function animateUIEntrance() {
+    console.log('🎨 Starting UI entrance animations...');
+
     // Animate header
     anime({
         targets: '.game-header',
@@ -1516,12 +1523,18 @@ function animateUIEntrance() {
         delay: anime.stagger(100, {start: 400}),
         easing: 'easeOutQuad'
     });
+
+    console.log('🎨 UI entrance animations created');
 }
 
 // Button hover animations (enhanced)
 function setupButtonAnimations() {
+    console.log('🔘 Setting up button animations...');
+    const buttons = document.querySelectorAll('.option-btn, .color-btn, .shop-btn, .tab-btn');
+    console.log(`🔘 Found ${buttons.length} buttons to animate`);
+
     // Add hover animations to all buttons
-    document.querySelectorAll('.option-btn, .color-btn, .shop-btn, .tab-btn').forEach(btn => {
+    buttons.forEach(btn => {
         btn.addEventListener('mouseenter', function() {
             anime({
                 targets: this,
@@ -1554,7 +1567,9 @@ function setupButtonAnimations() {
 
 // Diamond sparkle effect
 function createDiamondSparkle() {
+    console.log('💎 Starting diamond sparkle animation...');
     const diamondDisplay = document.querySelector('.diamonds-display');
+    console.log('💎 Diamond display element found:', diamondDisplay !== null);
 
     anime({
         targets: '.diamond-icon',
@@ -1564,14 +1579,15 @@ function createDiamondSparkle() {
         loop: true
     });
 
-    // Pulse effect
+    // Pulse effect - more noticeable
     anime({
         targets: '.diamonds-display',
-        scale: [1, 1.05, 1],
+        scale: [1, 1.1, 1],
         duration: 2000,
         easing: 'easeInOutSine',
         loop: true
     });
+    console.log('💎 Diamond animations started');
 }
 
 // Shop item entrance animation
@@ -1620,6 +1636,12 @@ function animateTabSwitch(tabContent) {
 // ============================================
 
 function init() {
+    console.log('🎮 Initializing StyleSpace...');
+    console.log('📦 Anime.js loaded:', typeof anime !== 'undefined');
+    if (typeof anime !== 'undefined') {
+        console.log('✨ Anime.js version:', anime.version);
+    }
+
     // Set default selections
     document.querySelector('[data-type="faceShape"][data-value="oval"]')?.classList.add('selected');
     document.querySelector('[data-type="skinTone"][data-value="#FFE0BD"]')?.classList.add('selected');
@@ -1640,11 +1662,17 @@ function init() {
     drawAvatar();
 
     // Start anime.js animations
-    animateUIEntrance();
-    startAvatarBreathing();
-    createDiamondSparkle();
-    setupButtonAnimations();
-    startPetAnimations(); // Start continuous pet animation loop
+    console.log('🎬 Starting animations...');
+    if (typeof anime !== 'undefined') {
+        animateUIEntrance();
+        startAvatarBreathing();
+        createDiamondSparkle();
+        setupButtonAnimations();
+        startPetAnimations(); // Start continuous pet animation loop
+        console.log('✅ All animations started!');
+    } else {
+        console.error('❌ Anime.js not loaded! Animations will not work.');
+    }
 }
 
 // Start the game when page loads
