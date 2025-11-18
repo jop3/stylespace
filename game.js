@@ -49,52 +49,83 @@ const playerData = {
 // ============================================
 
 function generateAvatar() {
-    // Build options object for DiceBear
-    const options = {
-        seed: 'stylespace-' + Date.now(), // Unique seed for consistency
-        skinColor: [playerData.avatar.skinColor],
-        top: [playerData.avatar.top],
-        hairColor: [playerData.avatar.hairColor],
-        eyes: [playerData.avatar.eyes],
-        eyebrow: [playerData.avatar.eyebrow],
-        mouth: [playerData.avatar.mouth],
-        clothesType: [playerData.avatar.clotheType],
-        clothesColor: [playerData.avatar.clotheColor],
-        backgroundColor: ['transparent']
-    };
+    try {
+        // Check if DiceBear is loaded
+        if (typeof createAvatar === 'undefined' || typeof avataaars === 'undefined') {
+            console.error('❌ DiceBear not loaded! createAvatar:', typeof createAvatar, 'avataaars:', typeof avataaars);
+            return null;
+        }
 
-    // Add accessories if selected
-    if (playerData.avatar.accessories) {
-        options.accessories = [playerData.avatar.accessories];
-        options.accessoriesColor = ['262E33'];
+        // Build options object for DiceBear
+        const options = {
+            seed: 'stylespace-' + Date.now(), // Unique seed for consistency
+            skinColor: [playerData.avatar.skinColor],
+            top: [playerData.avatar.top],
+            hairColor: [playerData.avatar.hairColor],
+            eyes: [playerData.avatar.eyes],
+            eyebrow: [playerData.avatar.eyebrow],
+            mouth: [playerData.avatar.mouth],
+            clothesType: [playerData.avatar.clotheType],
+            clothesColor: [playerData.avatar.clotheColor],
+            backgroundColor: ['transparent']
+        };
+
+        // Add accessories if selected
+        if (playerData.avatar.accessories) {
+            options.accessories = [playerData.avatar.accessories];
+            options.accessoriesColor = ['262E33'];
+        }
+
+        // Add facial hair if selected
+        if (playerData.avatar.facialHairType) {
+            options.facialHairType = [playerData.avatar.facialHairType];
+            options.facialHairColor = [playerData.avatar.facialHairColor || playerData.avatar.hairColor];
+        }
+
+        console.log('🎨 Generating avatar with options:', options);
+
+        // Create avatar using DiceBear
+        const avatar = createAvatar(avataaars, options);
+        console.log('✅ Avatar created:', avatar);
+
+        return avatar;
+    } catch (error) {
+        console.error('❌ Error generating avatar:', error);
+        return null;
     }
-
-    // Add facial hair if selected
-    if (playerData.avatar.facialHairType) {
-        options.facialHairType = [playerData.avatar.facialHairType];
-        options.facialHairColor = [playerData.avatar.facialHairColor || playerData.avatar.hairColor];
-    }
-
-    console.log('🎨 Generating avatar with options:', options);
-
-    // Create avatar using DiceBear
-    const avatar = createAvatar(avataaars, options);
-
-    return avatar;
 }
 
 function updateAvatar() {
-    const avatarImg = document.getElementById('avatarDisplay');
-    const avatar = generateAvatar();
+    try {
+        const avatarImg = document.getElementById('avatarDisplay');
+        const avatar = generateAvatar();
 
-    // Convert avatar to data URI
-    const dataUri = avatar.toDataUri();
+        if (!avatar) {
+            console.error('❌ Avatar generation failed - avatar is null');
+            return;
+        }
 
-    console.log('🖼️ Updating avatar image');
-    avatarImg.src = dataUri;
+        // Convert avatar to data URI
+        const dataUri = avatar.toDataUri();
+        console.log('📊 Data URI length:', dataUri.length);
+        console.log('📝 Data URI preview:', dataUri.substring(0, 100) + '...');
 
-    // Update pets display
-    updatePetsDisplay();
+        console.log('🖼️ Updating avatar image');
+        avatarImg.src = dataUri;
+
+        // Verify image loaded
+        avatarImg.onload = () => {
+            console.log('✅ Avatar image loaded successfully!');
+        };
+        avatarImg.onerror = (error) => {
+            console.error('❌ Avatar image failed to load:', error);
+        };
+
+        // Update pets display
+        updatePetsDisplay();
+    } catch (error) {
+        console.error('❌ Error updating avatar:', error);
+    }
 }
 
 function updatePetsDisplay() {
@@ -819,6 +850,14 @@ function init() {
     console.log('📦 Anime.js loaded:', typeof anime !== 'undefined');
     if (typeof anime !== 'undefined') {
         console.log('✨ Anime.js version:', anime.version);
+    }
+
+    // Check DiceBear loading
+    console.log('📦 DiceBear createAvatar loaded:', typeof createAvatar !== 'undefined');
+    console.log('📦 DiceBear avataaars loaded:', typeof avataaars !== 'undefined');
+
+    if (typeof createAvatar === 'undefined' || typeof avataaars === 'undefined') {
+        console.error('❌ DiceBear library not loaded! Check import map and network.');
     }
 
     // Set default selections
