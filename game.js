@@ -1139,6 +1139,147 @@ async function exportAvatarPNG() {
 }
 
 // ============================================
+// COLOR PICKERS & GRADIENT BUILDER
+// ============================================
+
+// Custom Gradient Background
+function applyCustomGradient() {
+    const color1 = document.getElementById('gradientColor1').value;
+    const color2 = document.getElementById('gradientColor2').value;
+    const angle = document.getElementById('gradientAngle').value;
+
+    const gradient = `linear-gradient(${angle}deg, ${color1} 0%, ${color2} 100%)`;
+    playerData.avatar.backgroundColor = gradient;
+
+    const avatarContainer = document.getElementById('avatarContainer');
+    if (avatarContainer) {
+        avatarContainer.style.background = gradient;
+    }
+
+    console.log('✨ Custom gradient applied:', gradient);
+}
+
+// Solid Background Color
+function applySolidBackground() {
+    const color = document.getElementById('solidBackgroundColor').value;
+    playerData.avatar.backgroundColor = color;
+
+    const avatarContainer = document.getElementById('avatarContainer');
+    if (avatarContainer) {
+        avatarContainer.style.background = color;
+    }
+
+    console.log('🎨 Solid background applied:', color);
+}
+
+// Custom Skin Color
+function applyCustomSkinColor() {
+    const color = document.getElementById('customSkinColor').value;
+    // Convert hex to DiceBear-compatible format (remove #)
+    const hexColor = color.replace('#', '');
+    playerData.avatar.skinColor = hexColor;
+    updateAvatar();
+    console.log('🎨 Custom skin color applied:', hexColor);
+}
+
+// Custom Hair Color
+function applyCustomHairColor() {
+    const color = document.getElementById('customHairColor').value;
+    const hexColor = color.replace('#', '');
+    playerData.avatar.hairColor = hexColor;
+    updateAvatar();
+    console.log('🎨 Custom hair color applied:', hexColor);
+}
+
+// Custom Clothe Color
+function applyCustomClotheColor() {
+    const color = document.getElementById('customClotheColor').value;
+    const hexColor = color.replace('#', '');
+    playerData.avatar.clotheColor = hexColor;
+    updateAvatar();
+    console.log('🎨 Custom clothe color applied:', hexColor);
+}
+
+// Update gradient preview in real-time
+function updateGradientPreview() {
+    const color1 = document.getElementById('gradientColor1').value;
+    const color2 = document.getElementById('gradientColor2').value;
+    const angle = document.getElementById('gradientAngle').value;
+    const preview = document.getElementById('gradientPreview');
+    const angleValue = document.getElementById('gradientAngleValue');
+
+    if (preview) {
+        preview.style.background = `linear-gradient(${angle}deg, ${color1} 0%, ${color2} 100%)`;
+    }
+    if (angleValue) {
+        angleValue.textContent = `${angle}°`;
+    }
+}
+
+// ============================================
+// ENHANCED EFFECTS SYSTEM
+// ============================================
+
+function applyEffect(effectType) {
+    if (!svgAvatarRenderer) {
+        alert('SVG Renderer inte initierad än. Prova igen om en stund!');
+        return;
+    }
+
+    try {
+        const selector = '[id*="hair"], [id*="clothes"], [id*="face"]';
+
+        switch(effectType) {
+            case 'glow':
+                svgAvatarRenderer.applyGlow(selector, '#FF6B9D', 4);
+                alert('💫 Glow-effekt applicerad!');
+                break;
+            case 'neon':
+                svgAvatarRenderer.applyGlow(selector, '#00FFFF', 8);
+                alert('🌟 Neon-effekt applicerad!');
+                break;
+            case 'shadow':
+                svgAvatarRenderer.applyShadow(selector, 2, 2, 5, 'rgba(0,0,0,0.5)');
+                alert('🌑 Shadow-effekt applicerad!');
+                break;
+            case 'blur':
+                svgAvatarRenderer.applyBlur(selector, 2);
+                alert('🌫️ Blur-effekt applicerad!');
+                break;
+            case 'sharpen':
+                alert('🔪 Sharpen-effekt kommer snart!');
+                break;
+            case 'vintage':
+                svgAvatarRenderer.applySepia(selector, 0.7);
+                alert('📷 Vintage-effekt applicerad!');
+                break;
+            case 'rainbow':
+                svgAvatarRenderer.applyRainbow(selector);
+                alert('🌈 Rainbow-effekt applicerad!');
+                break;
+            case 'emboss':
+                alert('🗿 Emboss-effekt kommer snart!');
+                break;
+            case 'duotone':
+                alert('🎨 Duotone-effekt kommer snart!');
+                break;
+            case 'pixelate':
+                alert('🟦 Pixelate-effekt kommer snart!');
+                break;
+            case 'outline':
+                svgAvatarRenderer.applyOutline(selector, 2, '#000000');
+                alert('✏️ Outline-effekt applicerad!');
+                break;
+            default:
+                alert('⚠️ Okänd effekt: ' + effectType);
+        }
+    } catch (error) {
+        console.error('Error applying effect:', error);
+        alert('⚠️ Kunde inte applicera effekt: ' + error.message);
+    }
+}
+
+// ============================================
 // DEV MODE
 // ============================================
 
@@ -1233,9 +1374,32 @@ window.toggleDevMode = toggleDevMode;
 window.applyMultiPartColoring = applyMultiPartColoring;
 window.applyPattern = applyPattern;
 window.applyGlowEffect = applyGlowEffect;
+window.applyEffect = applyEffect;
 window.clearEffects = clearEffects;
 window.exportAvatarSVG = exportAvatarSVG;
 window.exportAvatarPNG = exportAvatarPNG;
+window.applyCustomGradient = applyCustomGradient;
+window.applySolidBackground = applySolidBackground;
+window.applyCustomSkinColor = applyCustomSkinColor;
+window.applyCustomHairColor = applyCustomHairColor;
+window.applyCustomClotheColor = applyCustomClotheColor;
 
 // Start the game when page loads
 window.addEventListener('load', init);
+
+// Add gradient preview listeners after page loads
+window.addEventListener('load', () => {
+    const gradientColor1 = document.getElementById('gradientColor1');
+    const gradientColor2 = document.getElementById('gradientColor2');
+    const gradientAngle = document.getElementById('gradientAngle');
+
+    if (gradientColor1) {
+        gradientColor1.addEventListener('input', updateGradientPreview);
+    }
+    if (gradientColor2) {
+        gradientColor2.addEventListener('input', updateGradientPreview);
+    }
+    if (gradientAngle) {
+        gradientAngle.addEventListener('input', updateGradientPreview);
+    }
+});
