@@ -45,11 +45,22 @@
                     <button class="tab-btn" data-tab="custom">🎨 Custom</button>
                     <button class="tab-btn" data-tab="pets">Pets</button>
                     <button class="tab-btn" data-tab="outfits">Outfits</button>
+                    <button class="tab-btn" data-tab="progression">⭐ Progress</button>
                     <button class="tab-btn" data-tab="codes">Koder</button>
                 </div>
 
                 <!-- Appearance Tab -->
                 <div class="tab-content active" id="appearance-tab">
+                    <!-- Quick Actions -->
+                    <div class="customization-section p-5 rounded-xl shadow-xl border-2 border-white border-opacity-20" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                        <h3 class="text-white font-bold mb-3 text-base">⚡ Snabbåtgärder</h3>
+                        <div class="grid grid-cols-3 gap-2">
+                            <button class="option-btn transform hover:scale-105 transition-transform duration-200" onclick="randomizeAvatar()">🎲 Slumpa</button>
+                            <button id="undoBtn" class="option-btn transform hover:scale-105 transition-transform duration-200" onclick="undo()">↶ Undo</button>
+                            <button id="redoBtn" class="option-btn transform hover:scale-105 transition-transform duration-200" onclick="redo()">↷ Redo</button>
+                        </div>
+                    </div>
+
                     <!-- Kön -->
                     <div class="customization-section">
                         <h3>Kön</h3>
@@ -487,6 +498,77 @@
                         <h3>Mina Outfits (25 platser)</h3>
                         <button id="saveOutfitBtn" class="primary-btn">Spara Nuvarande Outfit (5 💎)</button>
                         <div id="outfitsList"></div>
+                    </div>
+                </div>
+
+                <!-- Progression Tab -->
+                <div class="tab-content" id="progression-tab">
+                    <!-- Level Display -->
+                    <div class="customization-section p-6 rounded-xl shadow-xl border-2 border-white border-opacity-20" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+                        <h3 class="text-white font-bold mb-3 text-xl">⭐ Din Nivå</h3>
+                        <div class="flex items-center justify-between mb-3">
+                            <div class="text-white">
+                                <div class="text-4xl font-bold">Nivå <span id="playerLevel">1</span></div>
+                            </div>
+                        </div>
+                        <div class="w-full bg-white bg-opacity-30 rounded-full h-6 overflow-hidden mb-2">
+                            <div id="xpProgressBar" class="bg-white h-full transition-all duration-500" style="width: 0%"></div>
+                        </div>
+                        <p id="xpText" class="text-white text-sm text-center font-semibold">0 / 100 XP</p>
+                        <p class="text-white text-opacity-80 text-xs text-center mt-2">Gör saker för att få XP och levla upp!</p>
+                    </div>
+
+                    <!-- Login Streak Display -->
+                    <div class="customization-section">
+                        <h3>🔥 Inloggningsstreak</h3>
+                        <div class="text-center p-4 bg-gradient-to-r from-orange-400 to-red-500 rounded-lg">
+                            <div class="text-4xl font-bold text-white mb-2"><span id="statsLoginStreak">0</span> dagar</div>
+                            <p class="text-white text-opacity-90 text-sm">Logga in varje dag för bonusar!</p>
+                        </div>
+                    </div>
+
+                    <!-- Achievements -->
+                    <div class="customization-section">
+                        <h3>🏆 Achievements</h3>
+                        <p id="achievementProgress" class="text-sm opacity-70 mb-3">0 / 12 upplåsta</p>
+                        <div id="achievementsList" class="achievements-grid">
+                            <!-- Achievements will be populated by JavaScript -->
+                        </div>
+                    </div>
+
+                    <!-- Statistics -->
+                    <div class="customization-section">
+                        <h3>📊 Statistik</h3>
+                        <div class="stats-grid grid grid-cols-2 gap-3">
+                            <div class="stat-card bg-blue-100 p-3 rounded-lg">
+                                <div class="text-2xl font-bold text-blue-600"><span id="statsAvatarChanges">0</span></div>
+                                <div class="text-xs text-blue-800 opacity-70">Avatar-ändringar</div>
+                            </div>
+                            <div class="stat-card bg-green-100 p-3 rounded-lg">
+                                <div class="text-2xl font-bold text-green-600"><span id="statsDiamondsEarned">0</span> 💎</div>
+                                <div class="text-xs text-green-800 opacity-70">Tjänade diamanter</div>
+                            </div>
+                            <div class="stat-card bg-red-100 p-3 rounded-lg">
+                                <div class="text-2xl font-bold text-red-600"><span id="statsDiamondsSpent">0</span> 💎</div>
+                                <div class="text-xs text-red-800 opacity-70">Spenderade diamanter</div>
+                            </div>
+                            <div class="stat-card bg-purple-100 p-3 rounded-lg">
+                                <div class="text-2xl font-bold text-purple-600"><span id="statsItemsPurchased">0</span></div>
+                                <div class="text-xs text-purple-800 opacity-70">Köpta plagg</div>
+                            </div>
+                            <div class="stat-card bg-yellow-100 p-3 rounded-lg">
+                                <div class="text-2xl font-bold text-yellow-600"><span id="statsPetsPurchased">0</span></div>
+                                <div class="text-xs text-yellow-800 opacity-70">Köpta pets</div>
+                            </div>
+                            <div class="stat-card bg-pink-100 p-3 rounded-lg">
+                                <div class="text-2xl font-bold text-pink-600"><span id="statsOutfitsSaved">0</span></div>
+                                <div class="text-xs text-pink-800 opacity-70">Sparade outfits</div>
+                            </div>
+                            <div class="stat-card bg-indigo-100 p-3 rounded-lg">
+                                <div class="text-2xl font-bold text-indigo-600"><span id="statsTotalLogins">0</span></div>
+                                <div class="text-xs text-indigo-800 opacity-70">Totala inloggningar</div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 

@@ -105,7 +105,166 @@ const playerData = {
     ownedPets: [],
     activePets: [],
     savedOutfits: [],
-    usedCodes: []
+    usedCodes: [],
+
+    // Progression System
+    level: 1,
+    xp: 0,
+    lastLoginDate: null,
+    loginStreak: 0,
+    totalLogins: 0,
+    achievements: [], // Array of achievement IDs that have been unlocked
+
+    // Statistics
+    stats: {
+        avatarChanges: 0,
+        diamondsSpent: 0,
+        diamondsEarned: 0,
+        itemsPurchased: 0,
+        petsPurchased: 0,
+        outfitsSaved: 0,
+        codesRedeemed: 0
+    },
+
+    // Undo/Redo System
+    avatarHistory: [],
+    historyIndex: -1
+};
+
+// ============================================
+// ACHIEVEMENTS DATABASE
+// ============================================
+
+const achievementsDatabase = [
+    {
+        id: 'first_login',
+        name: 'Välkommen!',
+        description: 'Logga in första gången',
+        icon: '👋',
+        reward: 50,
+        condition: () => playerData.totalLogins >= 1
+    },
+    {
+        id: 'loyal_user',
+        name: 'Lojal Användare',
+        description: 'Logga in 7 dagar i rad',
+        icon: '🔥',
+        reward: 200,
+        condition: () => playerData.loginStreak >= 7
+    },
+    {
+        id: 'style_explorer',
+        name: 'Stil Utforskare',
+        description: 'Ändra avatar 50 gånger',
+        icon: '🎨',
+        reward: 100,
+        condition: () => playerData.stats.avatarChanges >= 50
+    },
+    {
+        id: 'fashionista',
+        name: 'Fashionista',
+        description: 'Köp 10 klädesplagg',
+        icon: '👗',
+        reward: 150,
+        condition: () => playerData.stats.itemsPurchased >= 10
+    },
+    {
+        id: 'pet_collector',
+        name: 'Djur Samlare',
+        description: 'Köp 5 pets',
+        icon: '🐾',
+        reward: 100,
+        condition: () => playerData.stats.petsPurchased >= 5
+    },
+    {
+        id: 'outfit_master',
+        name: 'Outfit Mästare',
+        description: 'Spara 10 outfits',
+        icon: '💼',
+        reward: 120,
+        condition: () => playerData.stats.outfitsSaved >= 10
+    },
+    {
+        id: 'big_spender',
+        name: 'Stor Spenderare',
+        description: 'Spendera 1000 diamanter',
+        icon: '💸',
+        reward: 250,
+        condition: () => playerData.stats.diamondsSpent >= 1000
+    },
+    {
+        id: 'code_hunter',
+        name: 'Kod Jägare',
+        description: 'Lös in 3 kampanjkoder',
+        icon: '🔑',
+        reward: 75,
+        condition: () => playerData.stats.codesRedeemed >= 3
+    },
+    {
+        id: 'level_5',
+        name: 'Nivå 5',
+        description: 'Nå nivå 5',
+        icon: '⭐',
+        reward: 100,
+        condition: () => playerData.level >= 5
+    },
+    {
+        id: 'level_10',
+        name: 'Nivå 10',
+        description: 'Nå nivå 10',
+        icon: '🌟',
+        reward: 200,
+        condition: () => playerData.level >= 10
+    },
+    {
+        id: 'diamond_collector',
+        name: 'Diamant Samlare',
+        description: 'Samla 500 diamanter totalt',
+        icon: '💎',
+        reward: 100,
+        condition: () => playerData.stats.diamondsEarned >= 500
+    },
+    {
+        id: 'all_styles',
+        name: 'Stil Mästare',
+        description: 'Prova alla 26 avatar stilar',
+        icon: '🎭',
+        reward: 300,
+        condition: () => {
+            // This would need tracking of which styles have been used
+            return false; // TODO: Implement style tracking
+        }
+    }
+];
+
+// ============================================
+// LEVEL SYSTEM CONSTANTS
+// ============================================
+
+const LEVEL_SYSTEM = {
+    // XP required for each level (cumulative)
+    xpPerLevel: (level) => Math.floor(100 * Math.pow(1.5, level - 1)),
+
+    // Rewards for leveling up
+    levelRewards: {
+        diamonds: (level) => 50 + (level * 10), // 60 for lvl 1, 70 for lvl 2, etc.
+        unlocks: {
+            5: { type: 'feature', name: 'Premium Patterns' },
+            10: { type: 'feature', name: 'Advanced Effects' },
+            15: { type: 'feature', name: 'Custom Exports' }
+        }
+    },
+
+    // XP rewards for different actions
+    xpRewards: {
+        avatarChange: 5,
+        buyItem: 10,
+        buyPet: 15,
+        saveOutfit: 20,
+        redeemCode: 25,
+        dailyLogin: 30,
+        achievementUnlock: 50
+    }
 };
 
 // ============================================
@@ -272,6 +431,361 @@ function clearSaveData() {
 }
 
 // ============================================
+// DAILY LOGIN BONUS SYSTEM
+// ============================================
+
+function checkDailyBonus() {
+    const now = new Date();
+    const today = now.toDateString();
+
+    // First login ever
+    if (!playerData.lastLoginDate) {
+        playerData.lastLoginDate = today;
+        playerData.totalLogins = 1;
+        playerData.loginStreak = 1;
+
+        awardDiamonds(50, '🎉 Välkomstbonus!');
+        addXP(LEVEL_SYSTEM.xpRewards.dailyLogin);
+        checkAchievements();
+        saveToLocalStorage();
+        return;
+    }
+
+    // Check if it's a new day
+    if (playerData.lastLoginDate === today) {
+        console.log('✅ Already logged in today');
+        return; // Already got today's bonus
+    }
+
+    // Calculate days between logins
+    const lastDate = new Date(playerData.lastLoginDate);
+    const daysDiff = Math.floor((now - lastDate) / (1000 * 60 * 60 * 24));
+
+    playerData.totalLogins++;
+
+    if (daysDiff === 1) {
+        // Consecutive day - increase streak
+        playerData.loginStreak++;
+        const bonusDiamonds = 10 + (playerData.loginStreak * 5); // More for longer streaks
+
+        awardDiamonds(bonusDiamonds, `🔥 Dag ${playerData.loginStreak} streak bonus!`);
+        addXP(LEVEL_SYSTEM.xpRewards.dailyLogin);
+
+        // Extra reward for week streak
+        if (playerData.loginStreak % 7 === 0) {
+            awardDiamonds(100, '🎁 1 veckas streak bonus!');
+        }
+    } else {
+        // Streak broken - reset
+        playerData.loginStreak = 1;
+        awardDiamonds(10, '💎 Daglig inloggningsbonus');
+        addXP(LEVEL_SYSTEM.xpRewards.dailyLogin);
+    }
+
+    playerData.lastLoginDate = today;
+    checkAchievements();
+    saveToLocalStorage();
+}
+
+// ============================================
+// ACHIEVEMENT SYSTEM
+// ============================================
+
+function checkAchievements() {
+    let newUnlocks = 0;
+
+    achievementsDatabase.forEach(achievement => {
+        // Skip if already unlocked
+        if (playerData.achievements.includes(achievement.id)) {
+            return;
+        }
+
+        // Check condition
+        if (achievement.condition()) {
+            // Unlock achievement!
+            playerData.achievements.push(achievement.id);
+            newUnlocks++;
+
+            // Award diamonds
+            awardDiamonds(achievement.reward, `🏆 Achievement: ${achievement.name}!`);
+            addXP(LEVEL_SYSTEM.xpRewards.achievementUnlock);
+
+            console.log(`🏆 Achievement unlocked: ${achievement.name}`);
+        }
+    });
+
+    if (newUnlocks > 0) {
+        updateAchievementsDisplay();
+        saveToLocalStorage();
+    }
+
+    return newUnlocks;
+}
+
+function updateAchievementsDisplay() {
+    const container = document.getElementById('achievementsList');
+    if (!container) return;
+
+    container.innerHTML = '';
+
+    achievementsDatabase.forEach(achievement => {
+        const unlocked = playerData.achievements.includes(achievement.id);
+
+        const achievementDiv = document.createElement('div');
+        achievementDiv.className = `achievement-item ${unlocked ? 'unlocked' : 'locked'}`;
+
+        const progress = achievement.condition() ? 100 : 0; // Simplified progress
+
+        achievementDiv.innerHTML = `
+            <div class="achievement-icon ${unlocked ? 'unlocked' : ''}">${achievement.icon}</div>
+            <div class="achievement-info">
+                <h4>${achievement.name} ${unlocked ? '✓' : ''}</h4>
+                <p>${achievement.description}</p>
+                <div class="achievement-reward">Belöning: ${achievement.reward} 💎</div>
+            </div>
+        `;
+
+        container.appendChild(achievementDiv);
+    });
+
+    // Update progress stats
+    const unlockedCount = playerData.achievements.length;
+    const totalCount = achievementsDatabase.length;
+    const progressElement = document.getElementById('achievementProgress');
+    if (progressElement) {
+        progressElement.textContent = `${unlockedCount} / ${totalCount} upplåsta`;
+    }
+}
+
+// ============================================
+// LEVEL & XP SYSTEM
+// ============================================
+
+function addXP(amount) {
+    playerData.xp += amount;
+
+    // Check for level up
+    const xpNeeded = LEVEL_SYSTEM.xpPerLevel(playerData.level);
+
+    while (playerData.xp >= xpNeeded) {
+        playerData.xp -= xpNeeded;
+        playerData.level++;
+
+        // Award level up rewards
+        const diamondReward = LEVEL_SYSTEM.levelRewards.diamonds(playerData.level);
+        awardDiamonds(diamondReward, `🎊 Nivå ${playerData.level}!`);
+
+        console.log(`🎊 LEVEL UP! Now level ${playerData.level}`);
+
+        // Check for special unlocks
+        const unlock = LEVEL_SYSTEM.levelRewards.unlocks[playerData.level];
+        if (unlock) {
+            showNotification(`🔓 Upplåst: ${unlock.name}!`);
+        }
+
+        // Check achievements (might unlock level-based achievements)
+        checkAchievements();
+    }
+
+    updateProgressionDisplay();
+}
+
+function updateProgressionDisplay() {
+    // Update level display
+    const levelElement = document.getElementById('playerLevel');
+    if (levelElement) {
+        levelElement.textContent = playerData.level;
+    }
+
+    // Update XP progress bar
+    const xpNeeded = LEVEL_SYSTEM.xpPerLevel(playerData.level);
+    const xpProgress = (playerData.xp / xpNeeded) * 100;
+
+    const progressBar = document.getElementById('xpProgressBar');
+    if (progressBar) {
+        progressBar.style.width = `${xpProgress}%`;
+    }
+
+    const xpText = document.getElementById('xpText');
+    if (xpText) {
+        xpText.textContent = `${playerData.xp} / ${xpNeeded} XP`;
+    }
+
+    // Update stats display
+    updateStatsDisplay();
+}
+
+function updateStatsDisplay() {
+    const statsElements = {
+        'statsAvatarChanges': playerData.stats.avatarChanges,
+        'statsDiamondsSpent': playerData.stats.diamondsSpent,
+        'statsDiamondsEarned': playerData.stats.diamondsEarned,
+        'statsItemsPurchased': playerData.stats.itemsPurchased,
+        'statsPetsPurchased': playerData.stats.petsPurchased,
+        'statsOutfitsSaved': playerData.stats.outfitsSaved,
+        'statsLoginStreak': playerData.loginStreak,
+        'statsTotalLogins': playerData.totalLogins
+    };
+
+    Object.entries(statsElements).forEach(([id, value]) => {
+        const element = document.getElementById(id);
+        if (element) {
+            element.textContent = value;
+        }
+    });
+}
+
+// ============================================
+// DIAMOND REWARD HELPER
+// ============================================
+
+function awardDiamonds(amount, message) {
+    playerData.diamonds += amount;
+    playerData.stats.diamondsEarned += amount;
+    updateDiamondDisplay();
+
+    if (message) {
+        showNotification(message);
+    }
+
+    // Animate diamond display
+    if (typeof anime !== 'undefined' && typeof anime.animate === 'function') {
+        anime.animate('.diamonds-display', {
+            scale: [1, 1.2, 1],
+            duration: 500,
+            easing: 'easeOutElastic(1, .5)'
+        });
+    }
+}
+
+function showNotification(message, type = 'success') {
+    // Reuse the save notification system
+    showSaveNotification(message, type === 'error');
+}
+
+// ============================================
+// RANDOM AVATAR FUNCTION
+// ============================================
+
+function randomizeAvatar() {
+    // Save current state to history
+    saveToHistory();
+
+    // Random style
+    const styleKeys = Object.keys(avatarStyles);
+    playerData.avatar.style = styleKeys[Math.floor(Math.random() * styleKeys.length)];
+
+    // Random gender
+    playerData.avatar.sex = Math.random() > 0.5 ? 'male' : 'female';
+
+    // Random skin color
+    const skinColors = ['light', 'ffdbb4', 'edb98a', 'd08b5b', 'ae5d29', '614335'];
+    playerData.avatar.skinColor = skinColors[Math.floor(Math.random() * skinColors.length)];
+
+    // Random hair
+    const hairStyles = ['noHair', 'longHairStraight', 'shortHairShortFlat', 'shortHairDreads', 'longHairCurly', 'shortHairShortCurly'];
+    playerData.avatar.top = hairStyles[Math.floor(Math.random() * hairStyles.length)];
+
+    // Random hair color
+    const hairColors = ['724133', '4a312c', 'f59797', 'c93305', 'a55728', 'd6b370', 'b58143', '2c1b18'];
+    playerData.avatar.hairColor = hairColors[Math.floor(Math.random() * hairColors.length)];
+
+    // Random eyes
+    const eyeTypes = ['default', 'happy', 'surprised', 'wink', 'hearts', 'cry', 'squint', 'side', 'closed'];
+    playerData.avatar.eyes = eyeTypes[Math.floor(Math.random() * eyeTypes.length)];
+
+    // Random eyebrows
+    const eyebrowTypes = ['default', 'angry', 'flat', 'raised', 'sad', 'unibrow', 'up', 'down'];
+    playerData.avatar.eyebrow = eyebrowTypes[Math.floor(Math.random() * eyebrowTypes.length)];
+
+    // Random mouth
+    const mouthTypes = ['smile', 'concerned', 'default', 'eating', 'grimace', 'sad', 'scream', 'serious', 'tongue', 'twinkle'];
+    playerData.avatar.mouth = mouthTypes[Math.floor(Math.random() * mouthTypes.length)];
+
+    // Random clothes
+    const clotheTypes = ['hoodie', 'overall', 'shirtCrewNeck', 'shirtScoopNeck', 'shirtVNeck', 'collarSweater', 'graphicShirt'];
+    playerData.avatar.clotheType = clotheTypes[Math.floor(Math.random() * clotheTypes.length)];
+
+    // Random clothe color
+    const clotheColors = ['4169E1', 'DC143C', '228B22', 'FFD700', 'FF6347', '9370DB', 'FF69B4'];
+    playerData.avatar.clotheColor = clotheColors[Math.floor(Math.random() * clotheColors.length)];
+
+    // Random background
+    const backgrounds = [
+        'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+        'linear-gradient(135deg, #f093fb 0%, #f5576c 100%)',
+        'linear-gradient(135deg, #4facfe 0%, #00f2fe 100%)',
+        'linear-gradient(135deg, #43e97b 0%, #38f9d7 100%)',
+        'linear-gradient(135deg, #fa709a 0%, #fee140 100%)',
+        '#ffecd2',
+        '#fcb69f'
+    ];
+    playerData.avatar.backgroundColor = backgrounds[Math.floor(Math.random() * backgrounds.length)];
+
+    updateAvatar();
+    showNotification('🎲 Avatar slumpad!');
+}
+
+// ============================================
+// UNDO/REDO SYSTEM
+// ============================================
+
+function saveToHistory() {
+    // Remove any redo history if we're not at the end
+    if (playerData.historyIndex < playerData.avatarHistory.length - 1) {
+        playerData.avatarHistory = playerData.avatarHistory.slice(0, playerData.historyIndex + 1);
+    }
+
+    // Save current avatar state
+    const snapshot = JSON.parse(JSON.stringify(playerData.avatar));
+    playerData.avatarHistory.push(snapshot);
+    playerData.historyIndex++;
+
+    // Limit history to 50 entries
+    if (playerData.avatarHistory.length > 50) {
+        playerData.avatarHistory.shift();
+        playerData.historyIndex--;
+    }
+
+    updateUndoRedoButtons();
+}
+
+function undo() {
+    if (playerData.historyIndex > 0) {
+        playerData.historyIndex--;
+        playerData.avatar = JSON.parse(JSON.stringify(playerData.avatarHistory[playerData.historyIndex]));
+        updateAvatar();
+        updateUndoRedoButtons();
+        showNotification('↶ Undo');
+    }
+}
+
+function redo() {
+    if (playerData.historyIndex < playerData.avatarHistory.length - 1) {
+        playerData.historyIndex++;
+        playerData.avatar = JSON.parse(JSON.stringify(playerData.avatarHistory[playerData.historyIndex]));
+        updateAvatar();
+        updateUndoRedoButtons();
+        showNotification('↷ Redo');
+    }
+}
+
+function updateUndoRedoButtons() {
+    const undoBtn = document.getElementById('undoBtn');
+    const redoBtn = document.getElementById('redoBtn');
+
+    if (undoBtn) {
+        undoBtn.disabled = playerData.historyIndex <= 0;
+        undoBtn.style.opacity = playerData.historyIndex <= 0 ? '0.5' : '1';
+    }
+
+    if (redoBtn) {
+        redoBtn.disabled = playerData.historyIndex >= playerData.avatarHistory.length - 1;
+        redoBtn.style.opacity = playerData.historyIndex >= playerData.avatarHistory.length - 1 ? '0.5' : '1';
+    }
+}
+
+// ============================================
 // DICEBEAR AVATAR GENERATION
 // ============================================
 
@@ -407,6 +921,18 @@ function updateAvatar() {
 
         // Update pets display
         updatePetsDisplay();
+
+        // Track stats (avatar changes)
+        playerData.stats.avatarChanges++;
+
+        // Save to history for undo/redo
+        saveToHistory();
+
+        // Award XP for customization
+        addXP(LEVEL_SYSTEM.xpRewards.avatarChange);
+
+        // Check achievements
+        checkAchievements();
 
         // Auto-save changes
         triggerAutoSave();
@@ -656,6 +1182,7 @@ function buyClothes(itemId, price) {
             return;
         }
         playerData.diamonds -= price;
+        playerData.stats.diamondsSpent += price;
         playerData.ownedClothes.push(itemId);
     }
 
@@ -665,6 +1192,15 @@ function buyClothes(itemId, price) {
         const found = category.find(i => i.id === itemId);
         if (found) item = found;
     });
+
+    // Track stats
+    playerData.stats.itemsPurchased++;
+
+    // Award XP
+    addXP(LEVEL_SYSTEM.xpRewards.buyItem);
+
+    // Check achievements
+    checkAchievements();
 
     updateDiamondDisplay();
     populateShop();
@@ -742,10 +1278,20 @@ function buyPet(petId, price) {
             return;
         }
         playerData.diamonds -= price;
+        playerData.stats.diamondsSpent += price;
         playerData.ownedPets.push(petId);
     }
 
     const pet = petsDatabase.find(p => p.id === petId);
+
+    // Track stats
+    playerData.stats.petsPurchased++;
+
+    // Award XP
+    addXP(LEVEL_SYSTEM.xpRewards.buyPet);
+
+    // Check achievements
+    checkAchievements();
 
     updateDiamondDisplay();
     populatePetsShop();
@@ -873,6 +1419,16 @@ document.getElementById('saveOutfitBtn').addEventListener('click', () => {
 
     playerData.savedOutfits.push(outfit);
     playerData.diamonds -= 5;
+    playerData.stats.diamondsSpent += 5;
+
+    // Track stats
+    playerData.stats.outfitsSaved++;
+
+    // Award XP
+    addXP(LEVEL_SYSTEM.xpRewards.saveOutfit);
+
+    // Check achievements
+    checkAchievements();
 
     updateDiamondDisplay();
     populateOutfitsList();
@@ -933,7 +1489,17 @@ document.getElementById('redeemCodeBtn').addEventListener('click', () => {
 
     const diamonds = promoCodes[code].diamonds;
     playerData.diamonds += diamonds;
+    playerData.stats.diamondsEarned += diamonds;
     playerData.usedCodes.push(code);
+
+    // Track stats
+    playerData.stats.codesRedeemed++;
+
+    // Award XP
+    addXP(LEVEL_SYSTEM.xpRewards.redeemCode);
+
+    // Check achievements
+    checkAchievements();
 
     updateDiamondDisplay();
     input.value = '';
@@ -1493,6 +2059,14 @@ function init() {
     // Load saved data from LocalStorage
     loadFromLocalStorage();
 
+    // Check daily login bonus (must be after loading data)
+    checkDailyBonus();
+
+    // Initialize progression display
+    updateProgressionDisplay();
+    updateAchievementsDisplay();
+    updateUndoRedoButtons();
+
     // Set default selections
     document.querySelector('[data-type="skinColor"][data-value="Light"]')?.classList.add('selected');
     document.querySelector('[data-type="top"][data-value="LongHairStraight"]')?.classList.add('selected');
@@ -1506,8 +2080,16 @@ function init() {
     populatePetsShop();
     populateOutfitsList();
 
-    // Generate initial avatar
-    updateAvatar();
+    // Generate initial avatar (this will NOT trigger stats/xp on first load)
+    const firstLoad = playerData.stats.avatarChanges === 0;
+    if (firstLoad) {
+        // Disable stats tracking for initial avatar generation
+        const tempStats = playerData.stats.avatarChanges;
+        updateAvatar();
+        playerData.stats.avatarChanges = 0; // Reset to 0 for first load
+    } else {
+        updateAvatar();
+    }
 
     // Initialize SVG Avatar Renderer for Custom Design features
     setTimeout(() => {
@@ -1556,6 +2138,9 @@ window.saveToLocalStorage = saveToLocalStorage;
 window.exportAvatarData = exportAvatarData;
 window.importAvatarData = importAvatarData;
 window.clearSaveData = clearSaveData;
+window.randomizeAvatar = randomizeAvatar;
+window.undo = undo;
+window.redo = redo;
 
 // Start the game when page loads
 window.addEventListener('load', init);
