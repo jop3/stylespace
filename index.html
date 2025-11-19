@@ -95,7 +95,7 @@
                                 <option value="thumbs">Thumbs</option>
                             </optgroup>
                         </select>
-                        <p style="font-size: 0.75rem; opacity: 0.7; margin-top: 8px;">
+                        <p class="text-xs opacity-70 mt-2">
                             💡 Vissa stilar stödjer inte alla anpassningar
                         </p>
                     </div>
@@ -105,7 +105,7 @@
                         <h3>Bakgrundsfärg</h3>
 
                         <!-- Preset Gradients -->
-                        <h4 style="font-size: 0.9rem; margin: 10px 0 8px 0; opacity: 0.8;">Förvalda Gradienter</h4>
+                        <h4 class="text-sm font-medium my-2 opacity-80">Förvalda Gradienter</h4>
                         <div class="color-grid">
                             <button class="color-btn selected" data-type="backgroundColor" data-value="linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%)" style="background: linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%);" title="Persika"></button>
                             <button class="color-btn" data-type="backgroundColor" data-value="linear-gradient(135deg, #a8edea 0%, #fed6e3 100%)" style="background: linear-gradient(135deg, #a8edea 0%, #fed6e3 100%);" title="Mint Rosa"></button>
@@ -122,29 +122,29 @@
                         </div>
 
                         <!-- Gradient Builder -->
-                        <div class="gradient-builder" style="margin-top: 15px; padding: 15px; background: rgba(255,255,255,0.1); border-radius: 10px;">
-                            <h4 style="font-size: 0.9rem; margin: 0 0 10px 0;">🎨 Skapa Custom Gradient</h4>
-                            <div style="display: flex; gap: 10px; align-items: center; margin-bottom: 10px;">
-                                <label style="font-size: 0.85rem;">Färg 1:</label>
-                                <input type="color" id="gradientColor1" value="#667eea" class="color-picker">
-                                <label style="font-size: 0.85rem;">Färg 2:</label>
-                                <input type="color" id="gradientColor2" value="#764ba2" class="color-picker">
+                        <div class="gradient-builder mt-4 p-4 bg-white bg-opacity-10 rounded-xl backdrop-blur-sm border border-white border-opacity-20 shadow-lg">
+                            <h4 class="text-sm font-semibold mb-3 text-white">🎨 Skapa Custom Gradient</h4>
+                            <div class="flex gap-3 items-center mb-3">
+                                <label class="text-xs text-white text-opacity-90 font-medium min-w-[60px]">Färg 1:</label>
+                                <input type="color" id="gradientColor1" value="#667eea" class="color-picker flex-1">
+                                <label class="text-xs text-white text-opacity-90 font-medium min-w-[60px]">Färg 2:</label>
+                                <input type="color" id="gradientColor2" value="#764ba2" class="color-picker flex-1">
                             </div>
-                            <div style="display: flex; gap: 10px; align-items: center; margin-bottom: 10px;">
-                                <label style="font-size: 0.85rem;">Vinkel:</label>
-                                <input type="range" id="gradientAngle" min="0" max="360" value="135" class="gradient-slider" style="flex: 1;">
-                                <span id="gradientAngleValue" style="font-size: 0.85rem; min-width: 40px;">135°</span>
+                            <div class="flex gap-3 items-center mb-3">
+                                <label class="text-xs text-white text-opacity-90 font-medium min-w-[60px]">Vinkel:</label>
+                                <input type="range" id="gradientAngle" min="0" max="360" value="135" class="gradient-slider flex-1">
+                                <span id="gradientAngleValue" class="text-xs text-white text-opacity-90 font-mono min-w-[45px] text-center">135°</span>
                             </div>
-                            <div id="gradientPreview" style="width: 100%; height: 60px; border-radius: 8px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); margin-bottom: 10px;"></div>
-                            <button class="option-btn" onclick="applyCustomGradient()" style="width: 100%;">✨ Använd Gradient</button>
+                            <div id="gradientPreview" class="w-full h-16 rounded-lg shadow-inner mb-3 border-2 border-white border-opacity-20" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);"></div>
+                            <button class="option-btn w-full transform hover:scale-105 transition-transform duration-200" onclick="applyCustomGradient()">✨ Använd Gradient</button>
                         </div>
 
                         <!-- Solid Color Picker -->
-                        <div style="margin-top: 15px;">
-                            <h4 style="font-size: 0.9rem; margin: 0 0 10px 0;">🎨 Enfärgad Bakgrund</h4>
-                            <div style="display: flex; gap: 10px; align-items: center;">
-                                <input type="color" id="solidBackgroundColor" value="#ffffff" class="color-picker" style="flex: 1; height: 50px;">
-                                <button class="option-btn" onclick="applySolidBackground()" style="flex: 1;">Använd Färg</button>
+                        <div class="mt-4 p-4 bg-white bg-opacity-10 rounded-xl backdrop-blur-sm border border-white border-opacity-20 shadow-lg">
+                            <h4 class="text-sm font-semibold mb-3 text-white">🎨 Enfärgad Bakgrund</h4>
+                            <div class="flex gap-3 items-center">
+                                <input type="color" id="solidBackgroundColor" value="#ffffff" class="color-picker flex-1 h-12">
+                                <button class="option-btn flex-1 transform hover:scale-105 transition-transform duration-200" onclick="applySolidBackground()">Använd Färg</button>
                             </div>
                         </div>
                     </div>
@@ -154,7 +154,7 @@
                         <h3>Hudton</h3>
 
                         <!-- Preset Skin Tones -->
-                        <h4 style="font-size: 0.9rem; margin: 10px 0 8px 0; opacity: 0.8;">Förvalda Toner</h4>
+                        <h4 class="text-sm font-medium my-2 opacity-80">Förvalda Toner</h4>
                         <div class="color-grid">
                             <button class="color-btn" data-type="skinColor" data-value="pale" style="background-color: #FFDBB4;" title="Pale"></button>
                             <button class="color-btn" data-type="skinColor" data-value="light" style="background-color: #EDB98A;" title="Light"></button>
@@ -165,11 +165,11 @@
                         </div>
 
                         <!-- Custom Skin Color Picker -->
-                        <div style="margin-top: 15px;">
-                            <h4 style="font-size: 0.9rem; margin: 0 0 10px 0;">🎨 Custom Hudton</h4>
-                            <div style="display: flex; gap: 10px; align-items: center;">
-                                <input type="color" id="customSkinColor" value="#EDB98A" class="color-picker" style="flex: 1; height: 50px;">
-                                <button class="option-btn" onclick="applyCustomSkinColor()" style="flex: 1;">Använd Färg</button>
+                        <div class="mt-4 p-4 bg-white bg-opacity-10 rounded-xl backdrop-blur-sm border border-white border-opacity-20 shadow-lg">
+                            <h4 class="text-sm font-semibold mb-3 text-white">🎨 Custom Hudton</h4>
+                            <div class="flex gap-3 items-center">
+                                <input type="color" id="customSkinColor" value="#EDB98A" class="color-picker flex-1 h-12">
+                                <button class="option-btn flex-1 transform hover:scale-105 transition-transform duration-200" onclick="applyCustomSkinColor()">Använd Färg</button>
                             </div>
                         </div>
                     </div>
@@ -177,7 +177,7 @@
                     <!-- Hår -->
                     <div class="customization-section">
                         <h3>Hårstil</h3>
-                        <div class="option-buttons" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px;">
+                        <div class="option-buttons grid grid-cols-2 gap-2">
                             <button class="option-btn" data-type="top" data-value="noHair">Inget Hår</button>
                             <button class="option-btn" data-type="top" data-value="eyepatch">Ögonlapp</button>
                             <button class="option-btn" data-type="top" data-value="hat">Hatt</button>
@@ -215,8 +215,8 @@
                             <button class="option-btn" data-type="top" data-value="shortHairTheCaesarSidePart">Caesar Side</button>
                         </div>
 
-                        <h4 style="margin-top: 15px;">Hårfärg</h4>
-                        <h5 style="font-size: 0.85rem; margin: 8px 0; opacity: 0.8;">Förvalda Färger</h5>
+                        <h4 class="mt-4 text-base font-semibold">Hårfärg</h4>
+                        <h5 class="text-xs font-medium my-2 opacity-80">Förvalda Färger</h5>
                         <div class="color-grid">
                             <button class="color-btn" data-type="hairColor" data-value="000000" style="background-color: #000000;" title="Svart"></button>
                             <button class="color-btn" data-type="hairColor" data-value="2C1B18" style="background-color: #2C1B18;" title="Mörkbrun"></button>
@@ -239,11 +239,11 @@
                         </div>
 
                         <!-- Custom Hair Color Picker -->
-                        <div style="margin-top: 15px;">
-                            <h5 style="font-size: 0.85rem; margin: 0 0 8px 0;">🎨 Custom Hårfärg</h5>
-                            <div style="display: flex; gap: 10px; align-items: center;">
-                                <input type="color" id="customHairColor" value="#000000" class="color-picker" style="flex: 1; height: 50px;">
-                                <button class="option-btn" onclick="applyCustomHairColor()" style="flex: 1;">Använd Färg</button>
+                        <div class="mt-4 p-4 bg-white bg-opacity-10 rounded-xl backdrop-blur-sm border border-white border-opacity-20 shadow-lg">
+                            <h5 class="text-sm font-semibold mb-3 text-white">🎨 Custom Hårfärg</h5>
+                            <div class="flex gap-3 items-center">
+                                <input type="color" id="customHairColor" value="#000000" class="color-picker flex-1 h-12">
+                                <button class="option-btn flex-1 transform hover:scale-105 transition-transform duration-200" onclick="applyCustomHairColor()">Använd Färg</button>
                             </div>
                         </div>
                     </div>
@@ -251,7 +251,7 @@
                     <!-- Ögon -->
                     <div class="customization-section">
                         <h3>Ögon</h3>
-                        <div class="option-buttons" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px;">
+                        <div class="option-buttons grid grid-cols-2 gap-2">
                             <button class="option-btn" data-type="eyes" data-value="default">👀 Standard</button>
                             <button class="option-btn" data-type="eyes" data-value="close">😌 Stängda</button>
                             <button class="option-btn" data-type="eyes" data-value="cry">😢 Gråter</button>
@@ -271,7 +271,7 @@
                     <!-- Ögonbryn -->
                     <div class="customization-section">
                         <h3>Ögonbryn</h3>
-                        <div class="option-buttons" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px;">
+                        <div class="option-buttons grid grid-cols-2 gap-2">
                             <button class="option-btn" data-type="eyebrow" data-value="default">Standard</button>
                             <button class="option-btn" data-type="eyebrow" data-value="defaultNatural">Naturlig</button>
                             <button class="option-btn" data-type="eyebrow" data-value="angryNatural">😠 Arg Natural</button>
@@ -291,7 +291,7 @@
                     <!-- Mun -->
                     <div class="customization-section">
                         <h3>Mun</h3>
-                        <div class="option-buttons" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px;">
+                        <div class="option-buttons grid grid-cols-2 gap-2">
                             <button class="option-btn" data-type="mouth" data-value="default">😊 Standard</button>
                             <button class="option-btn" data-type="mouth" data-value="concerned">😟 Bekymrad</button>
                             <button class="option-btn" data-type="mouth" data-value="disbelief">😒 Misstro</button>
@@ -324,7 +324,7 @@
                     <!-- Kläder (DiceBear bygger in) -->
                     <div class="customization-section">
                         <h3>Bas-Kläder</h3>
-                        <div class="option-buttons" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px;">
+                        <div class="option-buttons grid grid-cols-2 gap-2">
                             <button class="option-btn" data-type="clotheType" data-value="blazerShirt">👔 Blazer</button>
                             <button class="option-btn" data-type="clotheType" data-value="blazerSweater">🧥 Blazer Tröja</button>
                             <button class="option-btn" data-type="clotheType" data-value="collarSweater">🧶 Krage Tröja</button>
@@ -336,8 +336,8 @@
                             <button class="option-btn" data-type="clotheType" data-value="shirtVNeck">👕 V-Neck</button>
                         </div>
 
-                        <h4 style="margin-top: 15px;">Klädfärg</h4>
-                        <h5 style="font-size: 0.85rem; margin: 8px 0; opacity: 0.8;">Förvalda Färger</h5>
+                        <h4 class="mt-4 text-base font-semibold">Klädfärg</h4>
+                        <h5 class="text-xs font-medium my-2 opacity-80">Förvalda Färger</h5>
                         <div class="color-grid">
                             <button class="color-btn" data-type="clotheColor" data-value="000000" style="background-color: #000000;" title="Svart"></button>
                             <button class="color-btn" data-type="clotheColor" data-value="FFFFFF" style="background-color: #FFFFFF; border: 2px solid #ccc;" title="Vit"></button>
@@ -354,11 +354,11 @@
                         </div>
 
                         <!-- Custom Clothe Color Picker -->
-                        <div style="margin-top: 15px;">
-                            <h5 style="font-size: 0.85rem; margin: 0 0 8px 0;">🎨 Custom Klädfärg</h5>
-                            <div style="display: flex; gap: 10px; align-items: center;">
-                                <input type="color" id="customClotheColor" value="#000000" class="color-picker" style="flex: 1; height: 50px;">
-                                <button class="option-btn" onclick="applyCustomClotheColor()" style="flex: 1;">Använd Färg</button>
+                        <div class="mt-4 p-4 bg-white bg-opacity-10 rounded-xl backdrop-blur-sm border border-white border-opacity-20 shadow-lg">
+                            <h5 class="text-sm font-semibold mb-3 text-white">🎨 Custom Klädfärg</h5>
+                            <div class="flex gap-3 items-center">
+                                <input type="color" id="customClotheColor" value="#000000" class="color-picker flex-1 h-12">
+                                <button class="option-btn flex-1 transform hover:scale-105 transition-transform duration-200" onclick="applyCustomClotheColor()">Använd Färg</button>
                             </div>
                         </div>
                     </div>
@@ -388,20 +388,20 @@
                 <div class="tab-content" id="custom-tab">
                     <div class="custom-section">
                         <h3>🎨 Custom SVG Design</h3>
-                        <p style="font-size: 0.9rem; opacity: 0.8; margin-bottom: 15px;">
+                        <p class="text-sm opacity-80 mb-4">
                             Avancerad avatar-anpassning med SVG-manipulation
                         </p>
 
                         <!-- Dev Mode Toggle -->
-                        <div class="customization-section" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 20px; border-radius: 10px; margin-bottom: 20px;">
-                            <h4 style="color: white; margin: 0 0 10px 0;">🔓 Dev Mode</h4>
-                            <p style="font-size: 0.85rem; color: rgba(255,255,255,0.9); margin-bottom: 15px;">
+                        <div class="customization-section p-5 rounded-xl mb-5 shadow-xl border-2 border-white border-opacity-20" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                            <h4 class="text-white font-bold mb-2 text-base">🔓 Dev Mode</h4>
+                            <p class="text-sm text-white text-opacity-90 mb-4">
                                 Aktivera för att låsa upp alla kläder, pets och utseenden gratis!
                             </p>
                             <label class="dev-mode-switch">
                                 <input type="checkbox" id="devModeToggle" onchange="toggleDevMode()">
                                 <span class="dev-mode-slider"></span>
-                                <span id="devModeStatus" style="color: white; margin-left: 15px; font-weight: bold;">
+                                <span id="devModeStatus" class="text-white ml-4 font-bold">
                                     AV
                                 </span>
                             </label>
@@ -410,14 +410,14 @@
                         <!-- Multi-Part Coloring -->
                         <div class="customization-section">
                             <h4>Multi-Part Färgning</h4>
-                            <p style="font-size: 0.8rem; opacity: 0.7;">Färga olika delar av samma plagg</p>
-                            <button class="option-btn" onclick="applyMultiPartColoring()">🌈 Test Multi-Part</button>
+                            <p class="text-xs opacity-70 mb-3">Färga olika delar av samma plagg</p>
+                            <button class="option-btn transform hover:scale-105 transition-transform duration-200" onclick="applyMultiPartColoring()">🌈 Test Multi-Part</button>
                         </div>
 
                         <!-- Patterns -->
                         <div class="customization-section">
                             <h4>Mönster</h4>
-                            <div class="option-buttons" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px;">
+                            <div class="option-buttons grid grid-cols-2 gap-2">
                                 <button class="option-btn" onclick="applyPattern('stripes')">📏 Ränder</button>
                                 <button class="option-btn" onclick="applyPattern('polkadots')">⚪ Prickar</button>
                                 <button class="option-btn" onclick="applyPattern('checkerboard')">🔲 Schack</button>
@@ -436,7 +436,7 @@
                         <!-- Effects -->
                         <div class="customization-section">
                             <h4>Effekter</h4>
-                            <div class="option-buttons" style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 8px;">
+                            <div class="option-buttons grid grid-cols-2 gap-2">
                                 <button class="option-btn" onclick="applyEffect('glow')">💫 Glow</button>
                                 <button class="option-btn" onclick="applyEffect('neon')">🌟 Neon</button>
                                 <button class="option-btn" onclick="applyEffect('shadow')">🌑 Shadow</button>
@@ -461,7 +461,7 @@
                             </div>
                         </div>
 
-                        <p style="font-size: 0.8rem; opacity: 0.6; margin-top: 20px;">
+                        <p class="text-xs opacity-60 mt-5">
                             💡 Tips: Öppna demo-svg-manipulation.html för fullständig kontroll!
                         </p>
                     </div>
