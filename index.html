@@ -461,6 +461,20 @@
                             </div>
                         </div>
 
+                        <!-- Save/Load System -->
+                        <div class="customization-section p-5 rounded-xl shadow-xl border-2 border-white border-opacity-20" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);">
+                            <h4 class="text-white font-bold mb-2 text-base">💾 Spara/Ladda</h4>
+                            <p class="text-sm text-white text-opacity-90 mb-4">
+                                Auto-sparar automatiskt! Du kan även exportera/importera datan.
+                            </p>
+                            <div class="grid grid-cols-2 gap-3">
+                                <button class="option-btn transform hover:scale-105 transition-transform duration-200" onclick="saveToLocalStorage()">💾 Spara Nu</button>
+                                <button class="option-btn transform hover:scale-105 transition-transform duration-200" onclick="exportAvatarData()">📤 Export JSON</button>
+                                <button class="option-btn transform hover:scale-105 transition-transform duration-200" onclick="importAvatarData()">📥 Import JSON</button>
+                                <button class="option-btn transform hover:scale-105 transition-transform duration-200" onclick="clearSaveData()" style="background: #f44336; color: white;">🗑️ Radera Data</button>
+                            </div>
+                        </div>
+
                         <p class="text-xs opacity-60 mt-5">
                             💡 Tips: Öppna demo-svg-manipulation.html för fullständig kontroll!
                         </p>

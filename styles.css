@@ -810,6 +810,43 @@ body {
     transform: translateX(30px);
 }
 
+/* ============================================
+   SAVE NOTIFICATION
+   ============================================ */
+
+.save-notification {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    padding: 15px 25px;
+    border-radius: 10px;
+    font-weight: 600;
+    font-size: 0.95rem;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+    z-index: 10000;
+    opacity: 0;
+    transform: translateX(400px);
+    transition: all 0.3s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+    pointer-events: none;
+}
+
+.save-notification.show {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.save-notification.success {
+    background: linear-gradient(135deg, #4CAF50, #45a049);
+    color: white;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+}
+
+.save-notification.error {
+    background: linear-gradient(135deg, #f44336, #da190b);
+    color: white;
+    border: 2px solid rgba(255, 255, 255, 0.3);
+}
+
 @media (max-width: 768px) {
     .avatar-container {
         width: 300px;

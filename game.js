@@ -109,6 +109,169 @@ const playerData = {
 };
 
 // ============================================
+// LOCALSTORAGE SAVE/LOAD SYSTEM
+// ============================================
+
+const SAVE_KEY = 'stylespace_save_v1';
+const AUTO_SAVE_DELAY = 1000; // 1 second debounce
+let autoSaveTimer = null;
+
+// Save to LocalStorage
+function saveToLocalStorage() {
+    try {
+        const saveData = JSON.stringify(playerData);
+        localStorage.setItem(SAVE_KEY, saveData);
+        console.log('💾 Game saved to LocalStorage');
+        showSaveNotification('Sparat! ✓');
+        return true;
+    } catch (error) {
+        console.error('❌ Error saving to LocalStorage:', error);
+        showSaveNotification('Fel vid sparning!', true);
+        return false;
+    }
+}
+
+// Load from LocalStorage
+function loadFromLocalStorage() {
+    try {
+        const savedData = localStorage.getItem(SAVE_KEY);
+        if (savedData) {
+            const loadedData = JSON.parse(savedData);
+
+            // Merge loaded data into playerData (preserve new properties)
+            Object.assign(playerData, loadedData);
+
+            console.log('📂 Game loaded from LocalStorage');
+            showSaveNotification('Laddad! ✓');
+            return true;
+        } else {
+            console.log('ℹ️ No saved data found, using defaults');
+            return false;
+        }
+    } catch (error) {
+        console.error('❌ Error loading from LocalStorage:', error);
+        showSaveNotification('Fel vid laddning!', true);
+        return false;
+    }
+}
+
+// Auto-save with debounce
+function triggerAutoSave() {
+    if (autoSaveTimer) {
+        clearTimeout(autoSaveTimer);
+    }
+    autoSaveTimer = setTimeout(() => {
+        saveToLocalStorage();
+    }, AUTO_SAVE_DELAY);
+}
+
+// Export avatar data as JSON file
+function exportAvatarData() {
+    try {
+        const dataStr = JSON.stringify(playerData, null, 2);
+        const dataBlob = new Blob([dataStr], { type: 'application/json' });
+        const url = URL.createObjectURL(dataBlob);
+
+        const link = document.createElement('a');
+        link.href = url;
+        link.download = `stylespace_avatar_${Date.now()}.json`;
+        link.click();
+
+        URL.revokeObjectURL(url);
+        showSaveNotification('Exporterad! ✓');
+        console.log('📤 Avatar data exported');
+    } catch (error) {
+        console.error('❌ Error exporting avatar data:', error);
+        alert('Fel vid export: ' + error.message);
+    }
+}
+
+// Import avatar data from JSON file
+function importAvatarData() {
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.accept = 'application/json';
+
+    input.onchange = (e) => {
+        const file = e.target.files[0];
+        if (!file) return;
+
+        const reader = new FileReader();
+        reader.onload = (event) => {
+            try {
+                const importedData = JSON.parse(event.target.result);
+
+                // Validate data structure
+                if (!importedData.avatar || !importedData.diamonds) {
+                    throw new Error('Ogiltig datafil');
+                }
+
+                // Merge imported data
+                Object.assign(playerData, importedData);
+
+                // Update UI
+                updateAvatar();
+                updateDiamondDisplay();
+                populateShop();
+                populatePetsShop();
+                populateOutfitsList();
+
+                // Save to localStorage
+                saveToLocalStorage();
+
+                showSaveNotification('Importerad! ✓');
+                console.log('📥 Avatar data imported');
+            } catch (error) {
+                console.error('❌ Error importing avatar data:', error);
+                alert('Fel vid import: ' + error.message);
+            }
+        };
+
+        reader.readAsText(file);
+    };
+
+    input.click();
+}
+
+// Show save notification
+function showSaveNotification(message, isError = false) {
+    // Remove existing notification
+    const existing = document.getElementById('saveNotification');
+    if (existing) {
+        existing.remove();
+    }
+
+    // Create notification
+    const notification = document.createElement('div');
+    notification.id = 'saveNotification';
+    notification.textContent = message;
+    notification.className = `save-notification ${isError ? 'error' : 'success'}`;
+
+    document.body.appendChild(notification);
+
+    // Trigger animation
+    setTimeout(() => {
+        notification.classList.add('show');
+    }, 10);
+
+    // Remove after 2 seconds
+    setTimeout(() => {
+        notification.classList.remove('show');
+        setTimeout(() => {
+            notification.remove();
+        }, 300);
+    }, 2000);
+}
+
+// Clear all saved data
+function clearSaveData() {
+    if (confirm('Är du säker på att du vill radera all sparad data? Detta går inte att ångra!')) {
+        localStorage.removeItem(SAVE_KEY);
+        location.reload();
+    }
+}
+
+// ============================================
 // DICEBEAR AVATAR GENERATION
 // ============================================
 
@@ -186,7 +349,7 @@ function changeAvatarStyle(styleName) {
     // Update playerData
     playerData.avatar.style = styleName;
 
-    // Regenerate avatar with new style
+    // Regenerate avatar with new style (includes auto-save)
     updateAvatar();
 
     // Show info about customization support
@@ -244,6 +407,9 @@ function updateAvatar() {
 
         // Update pets display
         updatePetsDisplay();
+
+        // Auto-save changes
+        triggerAutoSave();
     } catch (error) {
         console.error('❌ Error updating avatar:', error);
     }
@@ -1324,6 +1490,9 @@ function init() {
         console.error('❌ DiceBear library not loaded! Check import map and network.');
     }
 
+    // Load saved data from LocalStorage
+    loadFromLocalStorage();
+
     // Set default selections
     document.querySelector('[data-type="skinColor"][data-value="Light"]')?.classList.add('selected');
     document.querySelector('[data-type="top"][data-value="LongHairStraight"]')?.classList.add('selected');
@@ -1383,6 +1552,10 @@ window.applySolidBackground = applySolidBackground;
 window.applyCustomSkinColor = applyCustomSkinColor;
 window.applyCustomHairColor = applyCustomHairColor;
 window.applyCustomClotheColor = applyCustomClotheColor;
+window.saveToLocalStorage = saveToLocalStorage;
+window.exportAvatarData = exportAvatarData;
+window.importAvatarData = importAvatarData;
+window.clearSaveData = clearSaveData;
 
 // Start the game when page loads
 window.addEventListener('load', init);
