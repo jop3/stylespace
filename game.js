@@ -986,35 +986,34 @@ const petsDatabase = [
 // CLOTHES DATABASE (for extra items beyond DiceBear)
 // ============================================
 
-const clothesDatabase = {
-    tops: [
-        { id: 'tshirt_1', name: 'Basis T-shirt', color: '#FFFFFF', price: 20 },
-        { id: 'tshirt_2', name: 'Svart T-shirt', color: '#000000', price: 20 },
-        { id: 'hoodie_1', name: 'Rosa Hoodie', color: '#FF6B9D', price: 50 },
-        { id: 'hoodie_2', name: 'Blå Hoodie', color: '#4169E1', price: 50 },
-        { id: 'jacket_1', name: 'Läder Jacka', color: '#2C2C2C', price: 100 },
-        { id: 'sweater_1', name: 'Varm Tröja', color: '#8B4513', price: 60 }
-    ],
-    bottoms: [
-        { id: 'jeans_1', name: 'Blå Jeans', color: '#1E3A8A', price: 40 },
-        { id: 'jeans_2', name: 'Svarta Jeans', color: '#000000', price: 40 },
-        { id: 'skirt_1', name: 'Rosa Kjol', color: '#FFB6C1', price: 35 },
-        { id: 'skirt_2', name: 'Svart Kjol', color: '#000000', price: 35 },
-        { id: 'shorts_1', name: 'Denim Shorts', color: '#6B8E23', price: 30 }
-    ],
-    shoes: [
-        { id: 'sneakers_1', name: 'Vita Sneakers', color: '#FFFFFF', price: 50 },
-        { id: 'sneakers_2', name: 'Svarta Sneakers', color: '#000000', price: 50 },
-        { id: 'boots_1', name: 'Bruna Boots', color: '#8B4513', price: 80 },
-        { id: 'sandals_1', name: 'Sandaler', color: '#F5DEB3', price: 25 }
-    ],
-    accessories: [
-        { id: 'hat_1', name: 'Baseball Keps', color: '#DC143C', price: 30 },
-        { id: 'hat_2', name: 'Beanie', color: '#2C3E50', price: 25 },
-        { id: 'scarf_1', name: 'Varm Halsduk', color: '#FF6B9D', price: 20 },
-        { id: 'bag_1', name: 'Mini Väska', color: '#FFD700', price: 60 }
-    ]
-};
+// Map SVG assets to shop categories
+function getClothesShopDatabase() {
+    if (typeof SVGAssetDatabase === 'undefined') {
+        console.error('❌ SVGAssetDatabase not loaded');
+        return { tops: [], bottoms: [], shoes: [], accessories: [] };
+    }
+
+    return {
+        tops: [
+            ...SVGAssetDatabase.tshirts,
+            ...SVGAssetDatabase.hoodies,
+            ...SVGAssetDatabase.jackets
+        ],
+        bottoms: [
+            ...SVGAssetDatabase.pants,
+            ...SVGAssetDatabase.skirts,
+            ...SVGAssetDatabase.shorts,
+            ...SVGAssetDatabase.dresses
+        ],
+        shoes: SVGAssetDatabase.shoes,
+        accessories: [
+            ...SVGAssetDatabase.accessories,
+            ...SVGAssetDatabase.hats,
+            ...SVGAssetDatabase.bags,
+            ...SVGAssetDatabase.jewelry
+        ]
+    };
+}
 
 // ============================================
 // UI INTERACTIONS
@@ -1120,12 +1119,15 @@ function populateShop() {
     const shopContainer = document.getElementById('clothesShop');
     shopContainer.innerHTML = '';
 
+    // Get clothing database
+    const clothesDatabase = getClothesShopDatabase();
+
     // Add all clothing categories
     const categories = [
         { name: 'Överdel', items: clothesDatabase.tops, slot: 'top' },
         { name: 'Underdel', items: clothesDatabase.bottoms, slot: 'bottom' },
         { name: 'Skor', items: clothesDatabase.shoes, slot: 'shoes' },
-        { name: 'Accessoarer', items: clothesDatabase.accessories, slot: 'accessory' }
+        { name: 'Accessoarer', items: clothesDatabase.accessories, slot: 'accessories' }
     ];
 
     categories.forEach(category => {
@@ -1135,22 +1137,31 @@ function populateShop() {
 
         category.items.forEach(item => {
             const owned = playerData.devMode || playerData.ownedClothes.includes(item.id);
+            const wearing = playerData.currentClothes[category.slot] === item.id;
             const itemDiv = document.createElement('div');
             itemDiv.className = 'shop-item';
 
-            const colorPreview = `<div style="width: 30px; height: 30px; background: ${item.color}; border-radius: 50%; display: inline-block; margin-right: 10px; border: 2px solid #ddd;"></div>`;
+            // Show color swatches from SVG asset colors
+            const colorSwatches = item.colors ? item.colors.slice(0, 3).map(color =>
+                `<div style="width: 20px; height: 20px; background: ${color}; border-radius: 50%; display: inline-block; margin-right: 5px; border: 2px solid #ddd;"></div>`
+            ).join('') : '';
 
             itemDiv.innerHTML = `
-                <div style="display: flex; align-items: center; justify-content: space-between;">
+                <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 8px;">
                     <div style="display: flex; align-items: center;">
-                        ${colorPreview}
-                        <h4 style="margin: 0;">${item.name}</h4>
-                        ${owned ? '<span class="owned-label">Ägs</span>' : ''}
+                        <div style="display: flex; margin-right: 10px;">${colorSwatches}</div>
+                        <div>
+                            <h4 style="margin: 0; font-size: 0.9rem;">${item.name}</h4>
+                            ${owned ? '<span class="owned-label" style="font-size: 0.7rem;">Ägs</span>' : ''}
+                            ${wearing ? '<span class="owned-label" style="background: #2196F3; font-size: 0.7rem;">Bärs</span>' : ''}
+                        </div>
                     </div>
-                    <span style="color: #FFD700; font-weight: bold;">${playerData.devMode ? 'FREE' : item.price + ' 💎'}</span>
+                    <span style="color: #FFD700; font-weight: bold; font-size: 0.85rem;">${playerData.devMode ? 'FREE' : item.price + ' 💎'}</span>
                 </div>
                 <div class="shop-item-buttons">
-                    ${!owned ? `<button class="shop-btn buy-btn" onclick="buyClothes('${item.id}', ${item.price})">${playerData.devMode ? 'Få' : 'Köp'}</button>` : '<span style="color: #4CAF50; font-size: 0.9rem;">✓ Ägs redan</span>'}
+                    ${!owned ? `<button class="shop-btn buy-btn" onclick="buyClothes('${item.id}', ${item.price}, '${category.slot}')">${playerData.devMode ? 'Få' : 'Köp'}</button>` : ''}
+                    ${owned && !wearing ? `<button class="shop-btn" onclick="wearClothes('${item.id}', '${category.slot}')" style="background: linear-gradient(135deg, #2ecc71, #27ae60);">Ta på</button>` : ''}
+                    ${wearing ? '<span style="color: #2196F3; font-size: 0.85rem; font-weight: 600;">✓ Bärs nu</span>' : ''}
                 </div>
             `;
 
@@ -1166,7 +1177,7 @@ function populateShop() {
     }
 }
 
-function buyClothes(itemId, price) {
+function buyClothes(itemId, price, slot) {
     // Check if already owned
     if (playerData.ownedClothes.includes(itemId)) {
         alert('Du äger redan detta plagg!');
@@ -1187,12 +1198,8 @@ function buyClothes(itemId, price) {
         playerData.ownedClothes.push(itemId);
     }
 
-    // Find the item
-    let item = null;
-    Object.values(clothesDatabase).forEach(category => {
-        const found = category.find(i => i.id === itemId);
-        if (found) item = found;
-    });
+    // Find the item from SVG asset database
+    const item = SVGAssetDatabase.getById(itemId);
 
     // Track stats
     playerData.stats.itemsPurchased++;
@@ -1215,7 +1222,57 @@ function buyClothes(itemId, price) {
         });
     }
 
-    alert(`Du köpte ${item.name}!`);
+    if (item) {
+        alert(`Du köpte ${item.name}! Klicka "Ta på" för att bära det.`);
+    } else {
+        alert('Item köpt!');
+    }
+}
+
+// Wear/equip a clothing item using ClothingEngine
+async function wearClothes(itemId, slot) {
+    console.log(`👕 Wearing ${itemId} in slot ${slot}`);
+
+    // Get the item from database
+    const item = SVGAssetDatabase.getById(itemId);
+    if (!item) {
+        alert('❌ Kunde inte hitta detta plagg!');
+        return;
+    }
+
+    try {
+        // Initialize clothing engine if needed
+        if (!window.clothingEngine) {
+            await initializeClothingEngineIfNeeded();
+        }
+
+        // Create outfit spec for this item
+        const outfitSpec = {};
+        outfitSpec[slot] = {
+            assetId: itemId,
+            colors: item.colors
+        };
+
+        // Apply the clothing item
+        const result = await window.clothingEngine.applyOutfit(outfitSpec);
+
+        // Update avatar display
+        updateAvatarFromSVGRenderer();
+
+        // Track what's currently worn
+        playerData.currentClothes[slot] = itemId;
+
+        // Refresh shop to show "wearing" status
+        populateShop();
+
+        // Award XP
+        addXP(10, `Provade ${item.name}`);
+
+        console.log('✅ Clothing applied:', result);
+    } catch (error) {
+        console.error('❌ Failed to wear clothes:', error);
+        alert('⚠️ Kunde inte applicera plagget: ' + error.message);
+    }
 }
 
 // ============================================
@@ -2492,6 +2549,8 @@ window.applyLLMOutfit = applyLLMOutfit;
 window.loadExampleOutfit = loadExampleOutfit;
 window.loadPresetOutfit = loadPresetOutfit;
 window.clearOutfit = clearOutfit;
+window.buyClothes = buyClothes;
+window.wearClothes = wearClothes;
 
 // Start the game when page loads
 window.addEventListener('load', init);
