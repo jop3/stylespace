@@ -815,6 +815,7 @@ function generateAvatar() {
         // Add customization options only for styles that support it
         if (styleConfig.supportsCustomization) {
             // Add common customization options
+            if (playerData.avatar.sex) options.sex = [playerData.avatar.sex];
             if (playerData.avatar.skinColor) options.skinColor = [playerData.avatar.skinColor];
             if (playerData.avatar.top) options.top = [playerData.avatar.top];
             if (playerData.avatar.hairColor) options.hairColor = [playerData.avatar.hairColor];
@@ -1729,22 +1730,35 @@ function animateTabSwitch(tabContent) {
 let svgAvatarRenderer = null;
 
 function initializeSVGRenderer() {
-    // Check if SVG.js is loaded
+    // Check if all required dependencies are loaded
     if (typeof SVG === 'undefined') {
         console.error('❌ SVG.js not loaded! SVG manipulation will not work.');
         return null;
     }
 
-    // We'll use the main avatar for SVG manipulation
-    // For now, create a hidden container for SVG operations
-    const svgContainer = document.createElement('div');
-    svgContainer.id = 'svg-manipulation-container';
-    svgContainer.style.display = 'none';
-    document.body.appendChild(svgContainer);
+    if (typeof tinycolor === 'undefined') {
+        console.error('❌ TinyColor not loaded! Color manipulation will not work.');
+        return null;
+    }
+
+    if (typeof SVGAvatarRenderer === 'undefined') {
+        console.error('❌ SVGAvatarRenderer class not loaded! Please check svg-avatar-renderer.js');
+        return null;
+    }
+
+    // Check if container already exists
+    let svgContainer = document.getElementById('svg-manipulation-container');
+    if (!svgContainer) {
+        // Create a hidden container for SVG operations
+        svgContainer = document.createElement('div');
+        svgContainer.id = 'svg-manipulation-container';
+        svgContainer.style.display = 'none';
+        document.body.appendChild(svgContainer);
+    }
 
     try {
         svgAvatarRenderer = new SVGAvatarRenderer('svg-manipulation-container');
-        console.log('✅ SVG Avatar Renderer initialized');
+        console.log('✅ SVG Avatar Renderer initialized successfully');
         return svgAvatarRenderer;
     } catch (error) {
         console.error('❌ Failed to initialize SVG renderer:', error);
@@ -2091,12 +2105,19 @@ function init() {
         updateAvatar();
     }
 
-    // Initialize SVG Avatar Renderer for Custom Design features
-    setTimeout(() => {
-        initializeSVGRenderer();
+    // Initialize SVG Avatar Renderer for Custom Design features with retry logic
+    let initAttempts = 0;
+    const maxAttempts = 5;
+    const initDelay = 1000; // 1 second initial delay
 
-        // Load current avatar into SVG renderer if available
-        if (svgAvatarRenderer) {
+    function tryInitializeSVGRenderer() {
+        initAttempts++;
+        console.log(`🔄 Attempting to initialize SVG renderer (attempt ${initAttempts}/${maxAttempts})...`);
+
+        const result = initializeSVGRenderer();
+
+        if (result) {
+            // Success! Load current avatar into SVG renderer
             const avatar = generateAvatar();
             if (avatar) {
                 const svgString = avatar.toString();
@@ -2104,8 +2125,17 @@ function init() {
                     console.error('Failed to load avatar into SVG renderer:', err);
                 });
             }
+        } else if (initAttempts < maxAttempts) {
+            // Retry with exponential backoff
+            const retryDelay = initDelay * Math.pow(1.5, initAttempts);
+            console.log(`⏳ Will retry SVG renderer initialization in ${retryDelay}ms...`);
+            setTimeout(tryInitializeSVGRenderer, retryDelay);
+        } else {
+            console.warn('⚠️ SVG renderer initialization failed after', maxAttempts, 'attempts. Custom design features will be disabled.');
         }
-    }, 500); // Delay to ensure everything is loaded
+    }
+
+    setTimeout(tryInitializeSVGRenderer, initDelay);
 
     // Start anime.js animations
     console.log('🎬 Starting animations...');
