@@ -1116,11 +1116,22 @@ document.querySelectorAll('.color-btn').forEach(btn => {
 // ============================================
 
 function populateShop() {
+    console.log('🛍️ populateShop() called');
     const shopContainer = document.getElementById('clothesShop');
+    if (!shopContainer) {
+        console.error('❌ Shop container not found');
+        return;
+    }
     shopContainer.innerHTML = '';
 
     // Get clothing database
     const clothesDatabase = getClothesShopDatabase();
+    console.log('📦 Clothes database:', {
+        tops: clothesDatabase.tops.length,
+        bottoms: clothesDatabase.bottoms.length,
+        shoes: clothesDatabase.shoes.length,
+        accessories: clothesDatabase.accessories.length
+    });
 
     // Add all clothing categories
     const categories = [
@@ -2171,6 +2182,12 @@ function init() {
     // Check DiceBear loading
     console.log('📦 DiceBear createAvatar loaded:', typeof createAvatar !== 'undefined');
     console.log('📦 DiceBear avataaars loaded:', typeof avataaars !== 'undefined');
+
+    // Check dependencies for shop
+    console.log('📦 SVGAssetDatabase loaded:', typeof SVGAssetDatabase !== 'undefined');
+    console.log('📦 SVGAvatarRenderer loaded:', typeof SVGAvatarRenderer !== 'undefined');
+    console.log('📦 ClothingEngine loaded:', typeof ClothingEngine !== 'undefined');
+    console.log('📦 SVGColorRemapper loaded:', typeof SVGColorRemapper !== 'undefined');
 
     if (typeof createAvatar === 'undefined' || typeof avataaars === 'undefined') {
         console.error('❌ DiceBear library not loaded! Check import map and network.');

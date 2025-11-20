@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="UTF-8">
+    <title>StyleSpace Debug</title>
+    <style>
+        body { font-family: monospace; padding: 20px; background: #1a1a1a; color: #0f0; }
+        .log { margin: 5px 0; padding: 5px; background: #000; }
+        .error { color: #f00; }
+        .success { color: #0f0; }
+        .warning { color: #ff0; }
+    </style>
+</head>
+<body>
+    <h1>StyleSpace Debug Console</h1>
+    <div id="output"></div>
+
+    <script src="https://cdn.jsdelivr.net/npm/tinycolor2@1.6.0/dist/tinycolor-min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@svgdotjs/svg.js@3.2.0/dist/svg.min.js"></script>
+    <script src="avatar-renderer.js"></script>
+    <script src="svg-avatar-renderer.js"></script>
+    <script src="svg-color-remapper.js"></script>
+    <script src="assets/asset-database.js"></script>
+    <script src="clothing-engine.js"></script>
+
+    <script>
+        const output = document.getElementById('output');
+
+        function log(msg, type = 'log') {
+            const div = document.createElement('div');
+            div.className = `log ${type}`;
+            div.textContent = msg;
+            output.appendChild(div);
+            console.log(msg);
+        }
+
+        // Test dependencies
+        log('🔍 Testing Dependencies:', 'success');
+        log(`  SVG.js: ${typeof SVG !== 'undefined' ? '✅' : '❌'}`, typeof SVG !== 'undefined' ? 'success' : 'error');
+        log(`  TinyColor: ${typeof tinycolor !== 'undefined' ? '✅' : '❌'}`, typeof tinycolor !== 'undefined' ? 'success' : 'error');
+        log(`  SVGAvatarRenderer: ${typeof SVGAvatarRenderer !== 'undefined' ? '✅' : '❌'}`, typeof SVGAvatarRenderer !== 'undefined' ? 'success' : 'error');
+        log(`  SVGColorRemapper: ${typeof SVGColorRemapper !== 'undefined' ? '✅' : '❌'}`, typeof SVGColorRemapper !== 'undefined' ? 'success' : 'error');
+        log(`  SVGAssetDatabase: ${typeof SVGAssetDatabase !== 'undefined' ? '✅' : '❌'}`, typeof SVGAssetDatabase !== 'undefined' ? 'success' : 'error');
+        log(`  ClothingEngine: ${typeof ClothingEngine !== 'undefined' ? '✅' : '❌'}`, typeof ClothingEngine !== 'undefined' ? 'success' : 'error');
+
+        if (typeof SVGAssetDatabase !== 'undefined') {
+            log('\n📦 SVGAssetDatabase Content:', 'success');
+            const stats = {
+                tshirts: SVGAssetDatabase.tshirts.length,
+                hoodies: SVGAssetDatabase.hoodies.length,
+                jackets: SVGAssetDatabase.jackets.length,
+                pants: SVGAssetDatabase.pants.length,
+                skirts: SVGAssetDatabase.skirts.length,
+                shorts: SVGAssetDatabase.shorts.length,
+                dresses: SVGAssetDatabase.dresses.length,
+                shoes: SVGAssetDatabase.shoes.length,
+                accessories: SVGAssetDatabase.accessories.length,
+                hats: SVGAssetDatabase.hats.length,
+                bags: SVGAssetDatabase.bags.length,
+                jewelry: SVGAssetDatabase.jewelry.length
+            };
+
+            Object.entries(stats).forEach(([key, value]) => {
+                log(`  ${key}: ${value} items`, 'log');
+            });
+
+            const total = Object.values(stats).reduce((a, b) => a + b, 0);
+            log(`  TOTAL: ${total} items`, 'success');
+
+            // Test getClothesShopDatabase equivalent
+            log('\n🛍️ Shop Categories:', 'success');
+            const tops = [...SVGAssetDatabase.tshirts, ...SVGAssetDatabase.hoodies, ...SVGAssetDatabase.jackets];
+            const bottoms = [...SVGAssetDatabase.pants, ...SVGAssetDatabase.skirts, ...SVGAssetDatabase.shorts, ...SVGAssetDatabase.dresses];
+            const shoes = SVGAssetDatabase.shoes;
+            const accessories = [...SVGAssetDatabase.accessories, ...SVGAssetDatabase.hats, ...SVGAssetDatabase.bags, ...SVGAssetDatabase.jewelry];
+
+            log(`  Tops: ${tops.length}`, 'log');
+            log(`  Bottoms: ${bottoms.length}`, 'log');
+            log(`  Shoes: ${shoes.length}`, 'log');
+            log(`  Accessories: ${accessories.length}`, 'log');
+
+            // Test first item
+            if (tops.length > 0) {
+                log('\n👕 Sample Item (First Top):', 'success');
+                const item = tops[0];
+                log(`  ID: ${item.id}`, 'log');
+                log(`  Name: ${item.name}`, 'log');
+                log(`  Price: ${item.price}`, 'log');
+                log(`  Colors: ${item.colors.join(', ')}`, 'log');
+                log(`  File: ${item.file}`, 'log');
+                log(`  Tags: ${item.tags.join(', ')}`, 'log');
+            }
+        }
+    </script>
+</body>
+</html>
