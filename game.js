@@ -2120,6 +2120,271 @@ function init() {
     }
 }
 
+// ============================================
+// LLM OUTFIT SYSTEM
+// ============================================
+
+// Preset outfit specifications
+const presetOutfits = {
+    sporty: {
+        outfit: {
+            top: {
+                assetId: "hoodie_colorblock",
+                colors: ["#3498DB", "#E74C3C", "#2C3E50"]
+            },
+            bottom: {
+                assetId: "pants_joggers",
+                colors: ["#808080", "#505050", "#fff"]
+            },
+            shoes: {
+                assetId: "shoes_sneakers_red",
+                colors: ["#E74C3C", "#C0392B", "#fff"]
+            },
+            accessories: [
+                {
+                    assetId: "hat_baseball_cap",
+                    colors: ["#3498DB", "#fff"]
+                }
+            ]
+        }
+    },
+    elegant: {
+        outfit: {
+            top: {
+                assetId: "dress_party",
+                colors: ["#000", "#FFD700", "#C0C0C0"]
+            },
+            shoes: {
+                assetId: "shoes_heels_red",
+                colors: ["#DC143C", "#B22222", "#8B0000"]
+            },
+            accessories: [
+                {
+                    assetId: "jewelry_diamond_earrings",
+                    colors: ["#FFD700", "#4ECDC4"]
+                },
+                {
+                    assetId: "jewelry_heart_necklace",
+                    colors: ["#FFD700", "#e74c3c"]
+                }
+            ]
+        }
+    },
+    gamer: {
+        outfit: {
+            top: {
+                assetId: "tshirt_gaming_pro",
+                colors: ["#1a1a2e", "#0f3460", "#e94560"]
+            },
+            bottom: {
+                assetId: "pants_jeans",
+                colors: ["#2E5C8A", "#1a3a5c", "#3a6ea5"]
+            },
+            shoes: {
+                assetId: "shoes_sneakers_red",
+                colors: ["#e94560", "#c0392b", "#fff"]
+            },
+            accessories: [
+                {
+                    assetId: "accessory_glasses_nerd",
+                    colors: ["#000", "#E3F2FD"]
+                }
+            ]
+        }
+    },
+    winter: {
+        outfit: {
+            top: {
+                assetId: "jacket_bomber",
+                colors: ["#8B4513", "#A0522D", "#FFD700"]
+            },
+            bottom: {
+                assetId: "pants_jeans",
+                colors: ["#4A90E2", "#2E5C8A", "#5BA3F5"]
+            },
+            shoes: {
+                assetId: "shoes_boots_winter",
+                colors: ["#8B4513", "#654321", "#fff"]
+            },
+            accessories: [
+                {
+                    assetId: "hat_beanie",
+                    colors: ["#E74C3C", "#C0392B", "#fff"]
+                },
+                {
+                    assetId: "accessory_scarf",
+                    colors: ["#E74C3C", "#C0392B", "#fff"]
+                }
+            ]
+        }
+    },
+    rock: {
+        outfit: {
+            top: {
+                assetId: "jacket_leather",
+                colors: ["#1a1a1a", "#2a2a2a", "#7F8C8D"]
+            },
+            bottom: {
+                assetId: "pants_jeans",
+                colors: ["#1a1a1a", "#2a2a2a", "#3a3a3a"]
+            },
+            shoes: {
+                assetId: "shoes_boots_black",
+                colors: ["#1a1a1a", "#2c3e50", "#c0c0c0"]
+            },
+            accessories: [
+                {
+                    assetId: "accessory_sunglasses_cool",
+                    colors: ["#000", "#1a1a1a"]
+                },
+                {
+                    assetId: "jewelry_chain_silver",
+                    colors: ["#C0C0C0", "#A9A9A9"]
+                }
+            ]
+        }
+    }
+};
+
+// Apply LLM outfit from textarea
+async function applyLLMOutfit() {
+    console.log('🤖 Applying LLM outfit...');
+
+    // Get spec from textarea
+    const textarea = document.getElementById('llmOutfitSpec');
+    if (!textarea) {
+        alert('❌ Textarea not found');
+        return;
+    }
+
+    const specText = textarea.value.trim();
+    if (!specText) {
+        alert('⚠️ Klistra in en outfit-spec först!');
+        return;
+    }
+
+    try {
+        // Parse JSON
+        const spec = JSON.parse(specText);
+        console.log('📋 Parsed spec:', spec);
+
+        // Initialize clothing engine if not done
+        if (!window.clothingEngine) {
+            console.log('🔧 Initializing Clothing Engine...');
+            await initializeClothingEngineIfNeeded();
+        }
+
+        // Apply outfit
+        const result = await window.clothingEngine.applyOutfit(spec.outfit || spec);
+
+        // Show result
+        console.log('✅ Outfit applied:', result);
+
+        if (result.errors && result.errors.length > 0) {
+            alert(`⚠️ Outfit applicerad med ${result.errors.length} varningar:\n${result.errors.map(e => e.error).join('\n')}`);
+        } else {
+            alert('✨ Outfit applicerad framgångsrikt!');
+        }
+
+        // Award XP for trying new features
+        addXP(25, 'Testade LLM Outfit System');
+
+    } catch (error) {
+        console.error('❌ Error applying outfit:', error);
+        alert('❌ Fel i outfit-spec:\n' + error.message);
+    }
+}
+
+// Load example outfit into textarea
+function loadExampleOutfit() {
+    const example = {
+        outfit: {
+            top: {
+                assetId: "hoodie_colorblock",
+                colors: ["#3498DB", "#E74C3C", "#2C3E50"]
+            },
+            bottom: {
+                assetId: "pants_jeans",
+                colors: ["#4A90E2", "#2E5C8A", "#5BA3F5"]
+            },
+            shoes: {
+                assetId: "shoes_sneakers_red",
+                colors: ["#e74c3c", "#c0392b", "#fff"]
+            },
+            accessories: [
+                {
+                    assetId: "accessory_watch_digital",
+                    colors: ["#2C3E50", "#27AE60"]
+                }
+            ]
+        }
+    };
+
+    const textarea = document.getElementById('llmOutfitSpec');
+    if (textarea) {
+        textarea.value = JSON.stringify(example, null, 2);
+        alert('📋 Exempel-outfit inladdat! Tryck på "Applicera Outfit" för att testa.');
+    }
+}
+
+// Load preset outfit
+async function loadPresetOutfit(presetName) {
+    console.log('👔 Loading preset:', presetName);
+
+    const preset = presetOutfits[presetName];
+    if (!preset) {
+        alert('❌ Preset inte funnen: ' + presetName);
+        return;
+    }
+
+    // Load into textarea
+    const textarea = document.getElementById('llmOutfitSpec');
+    if (textarea) {
+        textarea.value = JSON.stringify(preset, null, 2);
+    }
+
+    // Apply immediately
+    await applyLLMOutfit();
+}
+
+// Clear outfit
+function clearOutfit() {
+    console.log('🧹 Clearing outfit...');
+
+    if (window.clothingEngine) {
+        window.clothingEngine.clearOutfit();
+        alert('🧹 Outfit rensat!');
+    } else {
+        alert('⚠️ Clothing Engine inte initierad än');
+    }
+}
+
+// Initialize clothing engine if needed
+async function initializeClothingEngineIfNeeded() {
+    if (window.clothingEngine) {
+        return window.clothingEngine;
+    }
+
+    // Wait for dependencies
+    let attempts = 0;
+    while (attempts < 50) {
+        if (typeof SVGAvatarRenderer !== 'undefined' &&
+            typeof SVGAssetDatabase !== 'undefined' &&
+            typeof SVGColorRemapper !== 'undefined' &&
+            window.svgAvatarRenderer) {
+
+            console.log('✅ All dependencies loaded, creating ClothingEngine');
+            window.clothingEngine = new ClothingEngine(window.svgAvatarRenderer, SVGAssetDatabase);
+            return window.clothingEngine;
+        }
+
+        await new Promise(resolve => setTimeout(resolve, 100));
+        attempts++;
+    }
+
+    throw new Error('Failed to initialize Clothing Engine - dependencies not loaded');
+}
+
 // Expose functions globally for HTML event handlers
 window.toggleDevMode = toggleDevMode;
 window.applyMultiPartColoring = applyMultiPartColoring;
@@ -2141,6 +2406,10 @@ window.clearSaveData = clearSaveData;
 window.randomizeAvatar = randomizeAvatar;
 window.undo = undo;
 window.redo = redo;
+window.applyLLMOutfit = applyLLMOutfit;
+window.loadExampleOutfit = loadExampleOutfit;
+window.loadPresetOutfit = loadPresetOutfit;
+window.clearOutfit = clearOutfit;
 
 // Start the game when page loads
 window.addEventListener('load', init);

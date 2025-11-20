@@ -1,0 +1,31 @@
+{
+  "description": "Urban streetwear with bomber jacket and sneakers",
+  "outfit": {
+    "top": {
+      "assetId": "jacket_bomber",
+      "colors": ["#2E7D32", "#1B5E20", "#FFD700"]
+    },
+    "bottom": {
+      "assetId": "pants_jeans",
+      "colors": ["#2E5C8A", "#1a3a5c", "#3a6ea5"]
+    },
+    "shoes": {
+      "assetId": "shoes_sneakers_red",
+      "colors": ["#E74C3C", "#C0392B", "#fff"]
+    },
+    "accessories": [
+      {
+        "assetId": "hat_baseball_cap",
+        "colors": ["#2E7D32", "#FFD700"]
+      },
+      {
+        "assetId": "bag_messenger",
+        "colors": ["#2C3E50", "#34495E", "#8B4513"]
+      },
+      {
+        "assetId": "accessory_watch_digital",
+        "colors": ["#2C3E50", "#E74C3C"]
+      }
+    ]
+  }
+}

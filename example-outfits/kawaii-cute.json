@@ -1,0 +1,31 @@
+{
+  "description": "Kawaii cute outfit with pastel colors and adorable accessories",
+  "outfit": {
+    "top": {
+      "assetId": "tshirt_cat_love",
+      "colors": ["#FFB6C1", "#FF69B4", "#FF1493"]
+    },
+    "bottom": {
+      "assetId": "skirt_pleated",
+      "colors": ["#E6E6FA", "#DDA0DD", "#DA70D6"]
+    },
+    "shoes": {
+      "assetId": "shoes_sneakers_red",
+      "colors": ["#FFB6C1", "#FF69B4", "#fff"]
+    },
+    "accessories": [
+      {
+        "assetId": "jewelry_heart_necklace",
+        "colors": ["#FFD700", "#FF69B4"]
+      },
+      {
+        "assetId": "bag_backpack",
+        "colors": ["#FFB6C1", "#FF69B4", "#DDA0DD"]
+      },
+      {
+        "assetId": "accessory_glasses_cateye",
+        "colors": ["#FF1493", "#C71585"]
+      }
+    ]
+  }
+}

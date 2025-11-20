@@ -1,0 +1,31 @@
+{
+  "description": "Glamorous party night outfit with dress and jewelry",
+  "outfit": {
+    "top": {
+      "assetId": "dress_party",
+      "colors": ["#000", "#FFD700", "#C0C0C0"]
+    },
+    "shoes": {
+      "assetId": "shoes_heels_red",
+      "colors": ["#DC143C", "#B22222", "#8B0000"]
+    },
+    "accessories": [
+      {
+        "assetId": "jewelry_diamond_earrings",
+        "colors": ["#FFD700", "#4ECDC4"]
+      },
+      {
+        "assetId": "jewelry_heart_necklace",
+        "colors": ["#FFD700", "#DC143C"]
+      },
+      {
+        "assetId": "jewelry_bracelet_gold",
+        "colors": ["#DAA520", "#FFD700"]
+      },
+      {
+        "assetId": "bag_purse",
+        "colors": ["#000", "#FFD700"]
+      }
+    ]
+  }
+}

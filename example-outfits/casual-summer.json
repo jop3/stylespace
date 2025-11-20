@@ -1,0 +1,23 @@
+{
+  "description": "Casual summer outfit with t-shirt and shorts",
+  "outfit": {
+    "top": {
+      "assetId": "tshirt_ocean",
+      "colors": ["#E0F7FA", "#00BCD4", "#0097A7"]
+    },
+    "bottom": {
+      "assetId": "shorts_denim",
+      "colors": ["#4A90E2", "#2E5C8A", "#5BA3F5"]
+    },
+    "shoes": {
+      "assetId": "shoes_sandals",
+      "colors": ["#8B4513", "#D2691E", "#DAA520"]
+    },
+    "accessories": [
+      {
+        "assetId": "accessory_sunglasses_cool",
+        "colors": ["#000", "#1a1a1a"]
+      }
+    ]
+  }
+}

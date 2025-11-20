@@ -418,6 +418,41 @@
                             </label>
                         </div>
 
+                        <!-- LLM Outfit Import -->
+                        <div class="customization-section p-5 rounded-xl mb-5 shadow-xl border-2 border-white border-opacity-20" style="background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);">
+                            <h4 class="text-white font-bold mb-2 text-base">🤖 LLM Outfit Generator</h4>
+                            <p class="text-sm text-white text-opacity-90 mb-4">
+                                Klistra in JSON-spec från en LLM för att generera kompletta outfits automatiskt!
+                            </p>
+
+                            <textarea id="llmOutfitSpec"
+                                      class="w-full p-3 rounded-lg bg-white bg-opacity-20 text-white placeholder-white placeholder-opacity-50 border-2 border-white border-opacity-30 font-mono text-xs mb-3"
+                                      rows="8"
+                                      placeholder='{"outfit": {"top": {"assetId": "hoodie_colorblock", "colors": ["#3498DB", "#E74C3C"]}}}'></textarea>
+
+                            <div class="grid grid-cols-2 gap-3">
+                                <button class="option-btn transform hover:scale-105 transition-transform duration-200" onclick="applyLLMOutfit()">
+                                    ✨ Applicera Outfit
+                                </button>
+                                <button class="option-btn transform hover:scale-105 transition-transform duration-200" onclick="loadExampleOutfit()">
+                                    📋 Ladda Exempel
+                                </button>
+                            </div>
+
+                            <div class="grid grid-cols-3 gap-2 mt-3">
+                                <button class="option-btn text-xs py-2" onclick="loadPresetOutfit('sporty')">🏃 Sporty</button>
+                                <button class="option-btn text-xs py-2" onclick="loadPresetOutfit('elegant')">👗 Elegant</button>
+                                <button class="option-btn text-xs py-2" onclick="loadPresetOutfit('gamer')">🎮 Gamer</button>
+                                <button class="option-btn text-xs py-2" onclick="loadPresetOutfit('winter')">❄️ Winter</button>
+                                <button class="option-btn text-xs py-2" onclick="loadPresetOutfit('rock')">🎸 Rock</button>
+                                <button class="option-btn text-xs py-2" onclick="clearOutfit()">🧹 Rensa</button>
+                            </div>
+
+                            <p class="text-xs text-white text-opacity-70 mt-3">
+                                💡 Se llm-outfit-specs.md för fullständig dokumentation!
+                            </p>
+                        </div>
+
                         <!-- Multi-Part Coloring -->
                         <div class="customization-section">
                             <h4>Multi-Part Färgning</h4>
@@ -607,6 +642,9 @@
 
     <script src="avatar-renderer.js"></script>
     <script src="svg-avatar-renderer.js"></script>
+    <script src="svg-color-remapper.js"></script>
+    <script src="assets/asset-database.js"></script>
+    <script src="clothing-engine.js"></script>
     <script type="module" src="game.js"></script>
 </body>
 </html>

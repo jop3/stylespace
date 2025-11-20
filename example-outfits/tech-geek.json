@@ -1,0 +1,31 @@
+{
+  "description": "Tech geek outfit with coding t-shirt and backpack",
+  "outfit": {
+    "top": {
+      "assetId": "tshirt_code_ninja",
+      "colors": ["#1a1a1a", "#00FF00"]
+    },
+    "bottom": {
+      "assetId": "pants_joggers",
+      "colors": ["#2C3E50", "#1a1a1a", "#fff"]
+    },
+    "shoes": {
+      "assetId": "shoes_sneakers_red",
+      "colors": ["#2C3E50", "#1a1a1a", "#00FF00"]
+    },
+    "accessories": [
+      {
+        "assetId": "accessory_glasses_nerd",
+        "colors": ["#000", "#E3F2FD"]
+      },
+      {
+        "assetId": "bag_backpack",
+        "colors": ["#1a1a1a", "#2C3E50", "#00FF00"]
+      },
+      {
+        "assetId": "accessory_watch_digital",
+        "colors": ["#1a1a1a", "#00FF00"]
+      }
+    ]
+  }
+}
