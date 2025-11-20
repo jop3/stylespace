@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="UTF-8">
+    <title>LLM Outfit Demo</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+        .demo-container {
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 30px;
+            padding: 40px;
+            max-width: 1400px;
+            width: 100%;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        }
+        h1 {
+            text-align: center;
+            color: #667eea;
+            margin-bottom: 10px;
+            font-size: 2.5em;
+        }
+        .subtitle {
+            text-align: center;
+            color: #666;
+            margin-bottom: 30px;
+        }
+        .demo-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 30px;
+        }
+        .section {
+            background: #f8f9fa;
+            border-radius: 20px;
+            padding: 25px;
+        }
+        .section h2 {
+            color: #667eea;
+            margin-bottom: 15px;
+            font-size: 1.5em;
+        }
+        #avatar-display {
+            width: 100%;
+            height: 500px;
+            background: white;
+            border-radius: 15px;
+            border: 3px solid #667eea;
+            position: relative;
+            overflow: visible;
+        }
+        .spec-display {
+            background: #2d3748;
+            color: #48bb78;
+            padding: 20px;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            font-size: 13px;
+            max-height: 400px;
+            overflow-y: auto;
+            white-space: pre-wrap;
+            line-height: 1.6;
+        }
+        .controls {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 10px;
+            margin-top: 20px;
+        }
+        button {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            border: none;
+            padding: 15px 20px;
+            border-radius: 12px;
+            font-size: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.4);
+        }
+        button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.6);
+        }
+        button:active {
+            transform: translateY(0);
+        }
+        .status {
+            background: #e6fffa;
+            border-left: 4px solid #48bb78;
+            padding: 15px;
+            border-radius: 8px;
+            margin: 15px 0;
+        }
+        .status.error {
+            background: #fff5f5;
+            border-left-color: #f56565;
+        }
+        .outfit-summary {
+            background: white;
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 15px;
+        }
+        .outfit-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 8px;
+            border-bottom: 1px solid #e2e8f0;
+        }
+        .outfit-item:last-child {
+            border-bottom: none;
+        }
+        .item-label {
+            font-weight: 600;
+            color: #667eea;
+        }
+        .item-value {
+            color: #4a5568;
+        }
+    </style>
+</head>
+<body>
+    <div class="demo-container">
+        <h1>🤖 LLM Outfit System - Live Demo</h1>
+        <p class="subtitle">Vector Character Design Engine in Action</p>
+
+        <div class="demo-grid">
+            <div class="section">
+                <h2>👔 Current Outfit Spec</h2>
+                <div class="spec-display" id="spec-display"></div>
+
+                <div class="controls">
+                    <button onclick="loadOutfit('sporty')">🏃 Sporty</button>
+                    <button onclick="loadOutfit('elegant')">👗 Elegant</button>
+                    <button onclick="loadOutfit('gamer')">🎮 Gamer</button>
+                    <button onclick="loadOutfit('winter')">❄️ Winter</button>
+                    <button onclick="loadOutfit('rock')">🎸 Rock</button>
+                    <button onclick="loadOutfit('kawaii')">💖 Kawaii</button>
+                </div>
+
+                <div class="outfit-summary" id="outfit-summary">
+                    <div class="outfit-item">
+                        <span class="item-label">Top:</span>
+                        <span class="item-value" id="sum-top">-</span>
+                    </div>
+                    <div class="outfit-item">
+                        <span class="item-label">Bottom:</span>
+                        <span class="item-value" id="sum-bottom">-</span>
+                    </div>
+                    <div class="outfit-item">
+                        <span class="item-label">Shoes:</span>
+                        <span class="item-value" id="sum-shoes">-</span>
+                    </div>
+                    <div class="outfit-item">
+                        <span class="item-label">Accessories:</span>
+                        <span class="item-value" id="sum-accessories">-</span>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section">
+                <h2>🎨 Avatar Preview</h2>
+                <div id="avatar-display"></div>
+                <div class="status" id="status">
+                    ⏳ Initializing system...
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/@svgdotjs/svg.js@3.2.0/dist/svg.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/tinycolor2@1.6.0/dist/tinycolor-min.js"></script>
+    <script src="svg-color-remapper.js"></script>
+    <script src="assets/asset-database.js"></script>
+    <script src="svg-avatar-renderer.js"></script>
+    <script src="clothing-engine.js"></script>
+
+    <script>
+        const outfits = {
+            sporty: {
+                outfit: {
+                    top: { assetId: "hoodie_colorblock", colors: ["#3498DB", "#E74C3C", "#2C3E50"] },
+                    bottom: { assetId: "pants_joggers", colors: ["#808080", "#505050", "#fff"] },
+                    shoes: { assetId: "shoes_sneakers_red", colors: ["#E74C3C", "#C0392B", "#fff"] },
+                    accessories: [{ assetId: "hat_baseball_cap", colors: ["#3498DB", "#fff"] }]
+                }
+            },
+            elegant: {
+                outfit: {
+                    top: { assetId: "dress_party", colors: ["#000", "#FFD700", "#C0C0C0"] },
+                    shoes: { assetId: "shoes_heels_red", colors: ["#DC143C", "#B22222", "#8B0000"] },
+                    accessories: [
+                        { assetId: "jewelry_diamond_earrings", colors: ["#FFD700", "#4ECDC4"] },
+                        { assetId: "jewelry_heart_necklace", colors: ["#FFD700", "#DC143C"] }
+                    ]
+                }
+            },
+            gamer: {
+                outfit: {
+                    top: { assetId: "tshirt_gaming_pro", colors: ["#1a1a2e", "#0f3460", "#e94560"] },
+                    bottom: { assetId: "pants_jeans", colors: ["#2E5C8A", "#1a3a5c", "#3a6ea5"] },
+                    shoes: { assetId: "shoes_sneakers_red", colors: ["#e94560", "#c0392b", "#fff"] },
+                    accessories: [{ assetId: "accessory_glasses_nerd", colors: ["#000", "#E3F2FD"] }]
+                }
+            },
+            winter: {
+                outfit: {
+                    top: { assetId: "jacket_bomber", colors: ["#8B4513", "#A0522D", "#FFD700"] },
+                    bottom: { assetId: "pants_jeans", colors: ["#4A90E2", "#2E5C8A", "#5BA3F5"] },
+                    shoes: { assetId: "shoes_boots_winter", colors: ["#8B4513", "#654321", "#fff"] },
+                    accessories: [
+                        { assetId: "hat_beanie", colors: ["#E74C3C", "#C0392B", "#fff"] },
+                        { assetId: "accessory_scarf", colors: ["#E74C3C", "#C0392B", "#fff"] }
+                    ]
+                }
+            },
+            rock: {
+                outfit: {
+                    top: { assetId: "jacket_leather", colors: ["#1a1a1a", "#2a2a2a", "#7F8C8D"] },
+                    bottom: { assetId: "pants_jeans", colors: ["#1a1a1a", "#2a2a2a", "#3a3a3a"] },
+                    shoes: { assetId: "shoes_boots_black", colors: ["#1a1a1a", "#2c3e50", "#c0c0c0"] },
+                    accessories: [
+                        { assetId: "accessory_sunglasses_cool", colors: ["#000", "#1a1a1a"] },
+                        { assetId: "jewelry_chain_silver", colors: ["#C0C0C0", "#A9A9A9"] }
+                    ]
+                }
+            },
+            kawaii: {
+                outfit: {
+                    top: { assetId: "tshirt_cat_love", colors: ["#FFB6C1", "#FF69B4", "#FF1493"] },
+                    bottom: { assetId: "skirt_pleated", colors: ["#E6E6FA", "#DDA0DD", "#DA70D6"] },
+                    shoes: { assetId: "shoes_sneakers_red", colors: ["#FFB6C1", "#FF69B4", "#fff"] },
+                    accessories: [
+                        { assetId: "jewelry_heart_necklace", colors: ["#FFD700", "#FF69B4"] },
+                        { assetId: "bag_backpack", colors: ["#FFB6C1", "#FF69B4", "#DDA0DD"] }
+                    ]
+                }
+            }
+        };
+
+        let renderer, engine;
+
+        function updateStatus(message, isError = false) {
+            const status = document.getElementById('status');
+            status.textContent = message;
+            status.className = isError ? 'status error' : 'status';
+        }
+
+        function updateSpec(spec) {
+            document.getElementById('spec-display').textContent = JSON.stringify(spec, null, 2);
+        }
+
+        function updateSummary(summary) {
+            document.getElementById('sum-top').textContent = summary.top || 'None';
+            document.getElementById('sum-bottom').textContent = summary.bottom || 'None';
+            document.getElementById('sum-shoes').textContent = summary.shoes || 'None';
+            document.getElementById('sum-accessories').textContent =
+                summary.accessories.length > 0 ? summary.accessories.join(', ') : 'None';
+        }
+
+        async function loadOutfit(name) {
+            const outfit = outfits[name];
+            if (!outfit) {
+                updateStatus('❌ Outfit not found: ' + name, true);
+                return;
+            }
+
+            updateStatus(`⏳ Loading ${name} outfit...`);
+            updateSpec(outfit);
+
+            try {
+                engine.clearOutfit();
+                const result = await engine.applyOutfit(outfit.outfit);
+
+                if (result.errors && result.errors.length > 0) {
+                    updateStatus(`⚠️ Outfit loaded with ${result.errors.length} warnings`);
+                } else {
+                    updateStatus(`✅ ${name.charAt(0).toUpperCase() + name.slice(1)} outfit loaded successfully!`);
+                }
+
+                const summary = engine.getOutfitSummary();
+                updateSummary(summary);
+
+            } catch (error) {
+                updateStatus('❌ Error: ' + error.message, true);
+            }
+        }
+
+        window.addEventListener('load', async () => {
+            updateStatus('⏳ Initializing LLM Outfit System...');
+
+            try {
+                await new Promise(resolve => setTimeout(resolve, 500));
+
+                renderer = new SVGAvatarRenderer('avatar-display');
+                await new Promise(resolve => setTimeout(resolve, 500));
+
+                engine = new ClothingEngine(renderer, SVGAssetDatabase);
+                await new Promise(resolve => setTimeout(resolve, 500));
+
+                updateStatus('✅ System ready! Click a button to load an outfit.');
+
+                // Auto-load sporty outfit
+                setTimeout(() => loadOutfit('sporty'), 1000);
+
+            } catch (error) {
+                updateStatus('❌ Initialization failed: ' + error.message, true);
+            }
+        });
+    </script>
+</body>
+</html>

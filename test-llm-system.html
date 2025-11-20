@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LLM Outfit System - Test</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+        .container {
+            background: rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 30px;
+            backdrop-filter: blur(10px);
+        }
+        h1 {
+            text-align: center;
+            font-size: 2.5em;
+            margin-bottom: 10px;
+        }
+        .subtitle {
+            text-align: center;
+            opacity: 0.8;
+            margin-bottom: 30px;
+        }
+        .test-section {
+            background: rgba(255, 255, 255, 0.15);
+            border-radius: 15px;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+        .test-section h2 {
+            margin-top: 0;
+            border-bottom: 2px solid rgba(255, 255, 255, 0.3);
+            padding-bottom: 10px;
+        }
+        #avatar-display {
+            width: 400px;
+            height: 400px;
+            background: white;
+            border-radius: 15px;
+            margin: 20px auto;
+            position: relative;
+            overflow: hidden;
+        }
+        #svg-container {
+            width: 100%;
+            height: 100%;
+        }
+        button {
+            background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            font-size: 16px;
+            cursor: pointer;
+            margin: 5px;
+            transition: transform 0.2s;
+        }
+        button:hover {
+            transform: scale(1.05);
+        }
+        button:active {
+            transform: scale(0.95);
+        }
+        .log {
+            background: rgba(0, 0, 0, 0.3);
+            padding: 15px;
+            border-radius: 10px;
+            font-family: 'Courier New', monospace;
+            font-size: 12px;
+            max-height: 300px;
+            overflow-y: auto;
+            margin-top: 15px;
+        }
+        .log-entry {
+            margin: 5px 0;
+            padding: 5px;
+            border-left: 3px solid #4CAF50;
+            padding-left: 10px;
+        }
+        .log-entry.error {
+            border-left-color: #f44336;
+        }
+        .log-entry.success {
+            border-left-color: #4CAF50;
+        }
+        .log-entry.info {
+            border-left-color: #2196F3;
+        }
+        .stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+        .stat-card {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            border-radius: 10px;
+            text-align: center;
+        }
+        .stat-value {
+            font-size: 2em;
+            font-weight: bold;
+            margin: 10px 0;
+        }
+        .preset-buttons {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 10px;
+            margin-top: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🤖 LLM Outfit System Test</h1>
+        <p class="subtitle">Testing Vector Character Design Engine</p>
+
+        <div class="test-section">
+            <h2>📊 System Status</h2>
+            <div class="stats" id="stats">
+                <div class="stat-card">
+                    <div>SVG Remapper</div>
+                    <div class="stat-value" id="remapper-status">⏳</div>
+                </div>
+                <div class="stat-card">
+                    <div>Clothing Engine</div>
+                    <div class="stat-value" id="engine-status">⏳</div>
+                </div>
+                <div class="stat-card">
+                    <div>Asset Database</div>
+                    <div class="stat-value" id="database-status">⏳</div>
+                </div>
+                <div class="stat-card">
+                    <div>Total Assets</div>
+                    <div class="stat-value" id="total-assets">0</div>
+                </div>
+            </div>
+        </div>
+
+        <div class="test-section">
+            <h2>🎨 Avatar Display</h2>
+            <div id="avatar-display">
+                <div id="svg-container"></div>
+            </div>
+        </div>
+
+        <div class="test-section">
+            <h2>👔 Test Outfit Presets</h2>
+            <div class="preset-buttons">
+                <button onclick="testPreset('sporty')">🏃 Sporty</button>
+                <button onclick="testPreset('elegant')">👗 Elegant</button>
+                <button onclick="testPreset('gamer')">🎮 Gamer</button>
+                <button onclick="testPreset('winter')">❄️ Winter</button>
+                <button onclick="testPreset('rock')">🎸 Rock</button>
+                <button onclick="clearAll()">🧹 Clear All</button>
+            </div>
+        </div>
+
+        <div class="test-section">
+            <h2>🧪 Individual Tests</h2>
+            <button onclick="testColorRemapper()">Test Color Remapper</button>
+            <button onclick="testAssetLoading()">Test Asset Loading</button>
+            <button onclick="testClothingEngine()">Test Clothing Engine</button>
+            <button onclick="runAllTests()">▶️ Run All Tests</button>
+        </div>
+
+        <div class="test-section">
+            <h2>📝 Test Log</h2>
+            <div class="log" id="log"></div>
+        </div>
+    </div>
+
+    <!-- Load Dependencies -->
+    <script src="https://cdn.jsdelivr.net/npm/@svgdotjs/svg.js@3.2.0/dist/svg.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/tinycolor2@1.6.0/dist/tinycolor-min.js"></script>
+
+    <!-- Load Our Modules -->
+    <script src="svg-color-remapper.js"></script>
+    <script src="assets/asset-database.js"></script>
+    <script src="svg-avatar-renderer.js"></script>
+    <script src="clothing-engine.js"></script>
+
+    <script>
+        // Test logging
+        function log(message, type = 'info') {
+            const logDiv = document.getElementById('log');
+            const entry = document.createElement('div');
+            entry.className = `log-entry ${type}`;
+            entry.textContent = `[${new Date().toLocaleTimeString()}] ${message}`;
+            logDiv.appendChild(entry);
+            logDiv.scrollTop = logDiv.scrollHeight;
+            console.log(message);
+        }
+
+        function updateStatus(id, status) {
+            const element = document.getElementById(id);
+            if (element) {
+                element.textContent = status;
+            }
+        }
+
+        // Test presets from game.js
+        const testPresets = {
+            sporty: {
+                outfit: {
+                    top: {
+                        assetId: "hoodie_colorblock",
+                        colors: ["#3498DB", "#E74C3C", "#2C3E50"]
+                    },
+                    bottom: {
+                        assetId: "pants_joggers",
+                        colors: ["#808080", "#505050", "#fff"]
+                    },
+                    shoes: {
+                        assetId: "shoes_sneakers_red",
+                        colors: ["#E74C3C", "#C0392B", "#fff"]
+                    }
+                }
+            },
+            elegant: {
+                outfit: {
+                    top: {
+                        assetId: "dress_party",
+                        colors: ["#000", "#FFD700", "#C0C0C0"]
+                    },
+                    shoes: {
+                        assetId: "shoes_heels_red",
+                        colors: ["#DC143C", "#B22222", "#8B0000"]
+                    }
+                }
+            },
+            gamer: {
+                outfit: {
+                    top: {
+                        assetId: "tshirt_gaming_pro",
+                        colors: ["#1a1a2e", "#0f3460", "#e94560"]
+                    },
+                    bottom: {
+                        assetId: "pants_jeans",
+                        colors: ["#2E5C8A", "#1a3a5c", "#3a6ea5"]
+                    }
+                }
+            },
+            winter: {
+                outfit: {
+                    top: {
+                        assetId: "jacket_bomber",
+                        colors: ["#8B4513", "#A0522D", "#FFD700"]
+                    },
+                    bottom: {
+                        assetId: "pants_jeans",
+                        colors: ["#4A90E2", "#2E5C8A", "#5BA3F5"]
+                    }
+                }
+            },
+            rock: {
+                outfit: {
+                    top: {
+                        assetId: "jacket_leather",
+                        colors: ["#1a1a1a", "#2a2a2a", "#7F8C8D"]
+                    },
+                    bottom: {
+                        assetId: "pants_jeans",
+                        colors: ["#1a1a1a", "#2a2a2a", "#3a3a3a"]
+                    }
+                }
+            }
+        };
+
+        let renderer, engine;
+
+        // Initialize on load
+        window.addEventListener('load', async () => {
+            log('🚀 Initializing LLM Outfit System Test...', 'info');
+
+            try {
+                // Check SVG.js
+                if (typeof SVG !== 'undefined') {
+                    log('✅ SVG.js loaded', 'success');
+                    updateStatus('remapper-status', '✅');
+                } else {
+                    throw new Error('SVG.js not loaded');
+                }
+
+                // Check TinyColor
+                if (typeof tinycolor !== 'undefined') {
+                    log('✅ TinyColor loaded', 'success');
+                } else {
+                    throw new Error('TinyColor not loaded');
+                }
+
+                // Check Asset Database
+                if (typeof SVGAssetDatabase !== 'undefined') {
+                    const stats = SVGAssetDatabase.getStats();
+                    log(`✅ Asset Database loaded: ${stats.totalAssets} assets`, 'success');
+                    updateStatus('database-status', '✅');
+                    updateStatus('total-assets', stats.totalAssets);
+                } else {
+                    throw new Error('Asset Database not loaded');
+                }
+
+                // Initialize SVG Renderer
+                renderer = new SVGAvatarRenderer('svg-container');
+                log('✅ SVG Renderer initialized', 'success');
+
+                // Initialize Clothing Engine
+                await new Promise(resolve => setTimeout(resolve, 500)); // Wait for renderer
+                engine = new ClothingEngine(renderer, SVGAssetDatabase);
+                log('✅ Clothing Engine initialized', 'success');
+                updateStatus('engine-status', '✅');
+
+                log('🎉 All systems ready!', 'success');
+
+            } catch (error) {
+                log('❌ Initialization error: ' + error.message, 'error');
+                updateStatus('remapper-status', '❌');
+                updateStatus('engine-status', '❌');
+                updateStatus('database-status', '❌');
+            }
+        });
+
+        // Test functions
+        async function testColorRemapper() {
+            log('🧪 Testing Color Remapper...', 'info');
+            try {
+                const remapper = new SVGColorRemapper();
+                const result = await remapper.applyColorScheme(
+                    'assets/hoodies/hoodie-basic-grey.svg',
+                    {
+                        primary: '#FF6B9D',
+                        secondary: '#4169E1',
+                        accent: '#FFD700'
+                    }
+                );
+                log(`✅ Color Remapper test passed! Found ${result.originalColors.length} colors`, 'success');
+                return true;
+            } catch (error) {
+                log('❌ Color Remapper test failed: ' + error.message, 'error');
+                return false;
+            }
+        }
+
+        async function testAssetLoading() {
+            log('🧪 Testing Asset Loading...', 'info');
+            try {
+                const hoodie = SVGAssetDatabase.getById('hoodie_colorblock');
+                if (!hoodie) throw new Error('Could not find hoodie_colorblock');
+
+                const tshirts = SVGAssetDatabase.getByCategory('tshirts');
+                log(`✅ Asset Loading test passed! Found ${tshirts.length} t-shirts`, 'success');
+                return true;
+            } catch (error) {
+                log('❌ Asset Loading test failed: ' + error.message, 'error');
+                return false;
+            }
+        }
+
+        async function testClothingEngine() {
+            log('🧪 Testing Clothing Engine...', 'info');
+            try {
+                if (!engine) throw new Error('Engine not initialized');
+
+                const spec = {
+                    top: {
+                        assetId: "tshirt_cat_love",
+                        colors: ["#FFB6C1", "#FF69B4", "#FF1493"]
+                    }
+                };
+
+                const result = await engine.applyOutfit(spec);
+                log('✅ Clothing Engine test passed!', 'success');
+                return true;
+            } catch (error) {
+                log('❌ Clothing Engine test failed: ' + error.message, 'error');
+                return false;
+            }
+        }
+
+        async function testPreset(presetName) {
+            log(`👔 Testing preset: ${presetName}...`, 'info');
+            try {
+                if (!engine) throw new Error('Engine not initialized');
+
+                const preset = testPresets[presetName];
+                if (!preset) throw new Error('Preset not found');
+
+                engine.clearOutfit();
+                const result = await engine.applyOutfit(preset.outfit);
+
+                if (result.errors && result.errors.length > 0) {
+                    log(`⚠️ Preset applied with ${result.errors.length} warnings`, 'info');
+                    result.errors.forEach(err => log(`  - ${err.error}`, 'info'));
+                } else {
+                    log(`✅ Preset "${presetName}" applied successfully!`, 'success');
+                }
+
+                const summary = engine.getOutfitSummary();
+                log(`  Top: ${summary.top || 'None'}`, 'info');
+                log(`  Bottom: ${summary.bottom || 'None'}`, 'info');
+                log(`  Shoes: ${summary.shoes || 'None'}`, 'info');
+                log(`  Accessories: ${summary.accessories.length}`, 'info');
+
+            } catch (error) {
+                log(`❌ Preset test failed: ${error.message}`, 'error');
+            }
+        }
+
+        function clearAll() {
+            log('🧹 Clearing all...', 'info');
+            if (engine) {
+                engine.clearOutfit();
+                log('✅ Outfit cleared', 'success');
+            }
+        }
+
+        async function runAllTests() {
+            log('▶️ Running all tests...', 'info');
+
+            await testColorRemapper();
+            await new Promise(resolve => setTimeout(resolve, 500));
+
+            await testAssetLoading();
+            await new Promise(resolve => setTimeout(resolve, 500));
+
+            await testClothingEngine();
+            await new Promise(resolve => setTimeout(resolve, 500));
+
+            log('✅ All tests completed!', 'success');
+        }
+    </script>
+</body>
+</html>

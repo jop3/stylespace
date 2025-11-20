@@ -1,0 +1,51 @@
+{
+  "description": "Futuristic cyberpunk outfit with neon colors and tech accessories",
+  "created_by": "LLM Demo",
+  "style": "cyberpunk",
+  "outfit": {
+    "top": {
+      "assetId": "jacket_leather",
+      "colors": ["#0f0f0f", "#1a1a1a", "#00ff9f"],
+      "comment": "Black leather jacket with neon green accents"
+    },
+    "bottom": {
+      "assetId": "pants_jeans",
+      "colors": ["#1a1a2e", "#16213e", "#00ffff"],
+      "comment": "Dark futuristic pants with cyan highlights"
+    },
+    "shoes": {
+      "assetId": "shoes_boots_black",
+      "colors": ["#000000", "#1a1a1a", "#00ff9f"],
+      "comment": "Black combat boots with neon trim"
+    },
+    "accessories": [
+      {
+        "assetId": "accessory_sunglasses_cool",
+        "colors": ["#000000", "#ff00ff"],
+        "comment": "Black sunglasses with magenta tint"
+      },
+      {
+        "assetId": "accessory_watch_digital",
+        "colors": ["#1a1a1a", "#00ffff"],
+        "comment": "Digital watch with cyan display"
+      },
+      {
+        "assetId": "bag_messenger",
+        "colors": ["#0f0f0f", "#1a1a1a", "#00ff9f"],
+        "comment": "Tech messenger bag with neon accents"
+      }
+    ]
+  },
+  "color_palette": {
+    "primary": "#0f0f0f",
+    "secondary": "#1a1a1a",
+    "accent_neon_green": "#00ff9f",
+    "accent_cyan": "#00ffff",
+    "accent_magenta": "#ff00ff"
+  },
+  "metadata": {
+    "mood": "futuristic",
+    "tags": ["cyberpunk", "neon", "tech", "urban", "night"],
+    "inspiration": "Blade Runner aesthetic with modern streetwear"
+  }
+}
