@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="sv">
+<head>
+    <meta charset="UTF-8">
+    <title>StyleSpace - Force Reset</title>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            margin: 0;
+            padding: 20px;
+        }
+        .container {
+            background: rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(10px);
+            border-radius: 20px;
+            padding: 40px;
+            max-width: 600px;
+            text-align: center;
+        }
+        h1 { margin-top: 0; }
+        .btn {
+            background: linear-gradient(135deg, #ff6b9d, #ffc371);
+            border: none;
+            color: white;
+            padding: 15px 40px;
+            font-size: 18px;
+            font-weight: 600;
+            border-radius: 10px;
+            cursor: pointer;
+            margin: 10px;
+            transition: transform 0.2s;
+        }
+        .btn:hover {
+            transform: scale(1.05);
+        }
+        .success {
+            background: #2ecc71;
+            padding: 20px;
+            border-radius: 10px;
+            margin-top: 20px;
+            display: none;
+        }
+        .info {
+            background: rgba(255, 255, 255, 0.2);
+            padding: 20px;
+            border-radius: 10px;
+            margin: 20px 0;
+            font-size: 14px;
+            text-align: left;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🔧 StyleSpace Fix Reset</h1>
+
+        <div class="info">
+            <h3>Problem:</h3>
+            <ul>
+                <li>❌ Man/Kvinna fungerar inte</li>
+                <li>❌ Hår-stilar fungerar inte</li>
+                <li>❌ Kläder och Pets ihoptryckta</li>
+            </ul>
+
+            <h3>Lösning:</h3>
+            <p>Detta beror på att din webbläsare har cachat gammal data. Klicka på knappen nedan för att fixa det.</p>
+        </div>
+
+        <button class="btn" onclick="doFullReset()">🔄 Fixa Allt (Reset + Ladda Om)</button>
+
+        <div class="success" id="success">
+            <h2>✅ Fixat!</h2>
+            <p>Omdirigerar till huvudsidan om 2 sekunder...</p>
+        </div>
+
+        <div class="info" style="margin-top: 30px;">
+            <h3>Manuell Fix:</h3>
+            <ol>
+                <li>Tryck <strong>Ctrl + Shift + R</strong> (Windows/Linux) eller <strong>Cmd + Shift + R</strong> (Mac)</li>
+                <li>Detta gör en "hard refresh" som laddar om alla filer</li>
+            </ol>
+        </div>
+    </div>
+
+    <script>
+        function doFullReset() {
+            console.log('🔄 Performing full reset...');
+
+            // 1. Clear all localStorage
+            localStorage.clear();
+            console.log('✅ LocalStorage cleared');
+
+            // 2. Clear all sessionStorage
+            sessionStorage.clear();
+            console.log('✅ SessionStorage cleared');
+
+            // 3. Set correct default data
+            const defaultData = {
+                avatar: {
+                    style: 'avataaars',
+                    seed: 'stylespace-user',
+                    sex: 'female',
+                    skinColor: 'light',
+                    top: 'longHairStraight',
+                    hairColor: '724133',
+                    eyes: 'default',
+                    eyebrow: 'default',
+                    mouth: 'smile',
+                    accessories: '',
+                    clotheType: 'hoodie',
+                    clotheColor: '4169E1',
+                    facialHairType: '',
+                    facialHairColor: '',
+                    backgroundColor: 'linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%)'
+                },
+                diamonds: 100,
+                devMode: true, // Enable dev mode for testing
+                ownedClothes: [],
+                currentClothes: {
+                    top: null,
+                    bottom: null,
+                    shoes: null,
+                    accessory: null
+                }
+            };
+
+            localStorage.setItem('stylespace_save_v1', JSON.stringify(defaultData));
+            console.log('✅ Default data set with avataaars style');
+
+            // 4. Show success message
+            document.getElementById('success').style.display = 'block';
+
+            // 5. Redirect to main page with cache bust
+            setTimeout(() => {
+                window.location.href = '/index.html?nocache=' + Date.now();
+            }, 2000);
+        }
+    </script>
+</body>
+</html>
