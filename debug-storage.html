@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Debug LocalStorage</title>
+</head>
+<body>
+    <h1>LocalStorage Debug</h1>
+    <pre id="output"></pre>
+    <button onclick="location.reload()">Refresh</button>
+
+    <script>
+        const data = localStorage.getItem('stylespace_save_v1');
+        const parsed = data ? JSON.parse(data) : null;
+
+        const output = {
+            'LocalStorage exists': !!data,
+            'Current style': parsed?.avatar?.style,
+            'Supports customization': parsed?.avatar?.style === 'avataaars',
+            'Full avatar data': parsed?.avatar
+        };
+
+        document.getElementById('output').textContent = JSON.stringify(output, null, 2);
+    </script>
+</body>
+</html>

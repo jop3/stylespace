@@ -257,9 +257,24 @@ class ClothingEngine {
         // Apply size if specified
         if (positioning.width && positioning.height) {
             const bbox = group.bbox();
-            const scaleX = positioning.width / bbox.width;
-            const scaleY = positioning.height / bbox.height;
-            group.scale(scaleX, scaleY);
+            console.log('📏 Bounding box:', bbox);
+
+            // Guard against invalid bbox
+            if (bbox && bbox.width > 0 && bbox.height > 0 && !isNaN(bbox.width) && !isNaN(bbox.height)) {
+                const scaleX = positioning.width / bbox.width;
+                const scaleY = positioning.height / bbox.height;
+
+                console.log(`📐 Scale: ${scaleX}, ${scaleY}`);
+
+                // Guard against invalid scale values
+                if (!isNaN(scaleX) && !isNaN(scaleY) && isFinite(scaleX) && isFinite(scaleY)) {
+                    group.scale(scaleX, scaleY);
+                } else {
+                    console.warn('⚠️ Invalid scale values, skipping scaling');
+                }
+            } else {
+                console.warn('⚠️ Invalid bounding box, skipping scaling');
+            }
         } else if (positioning.scale) {
             group.scale(positioning.scale);
         }
