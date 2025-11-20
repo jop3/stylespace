@@ -1770,6 +1770,43 @@ function initializeSVGRenderer() {
 // CUSTOM DESIGN FUNCTIONS
 // ============================================
 
+// Helper function: Update main avatar display with SVG Renderer output
+function updateAvatarFromSVGRenderer() {
+    if (!svgAvatarRenderer) {
+        console.error('❌ SVG Renderer not initialized');
+        return false;
+    }
+
+    try {
+        // Export SVG from renderer
+        const svgString = svgAvatarRenderer.exportAsSVG();
+
+        // Convert to data URI
+        const svgBlob = new Blob([svgString], { type: 'image/svg+xml;charset=utf-8' });
+        const url = URL.createObjectURL(svgBlob);
+
+        // Update main avatar display
+        const avatarImg = document.getElementById('avatarDisplay');
+        if (avatarImg) {
+            // Clean up old URL to prevent memory leaks
+            if (avatarImg.dataset.svgUrl) {
+                URL.revokeObjectURL(avatarImg.dataset.svgUrl);
+            }
+
+            avatarImg.src = url;
+            avatarImg.dataset.svgUrl = url; // Store for cleanup
+            console.log('✅ Main avatar updated with SVG Renderer output');
+            return true;
+        } else {
+            console.error('❌ Avatar display element not found');
+            return false;
+        }
+    } catch (error) {
+        console.error('❌ Failed to update avatar from SVG Renderer:', error);
+        return false;
+    }
+}
+
 function applyMultiPartColoring() {
     if (!svgAvatarRenderer) {
         alert('SVG Renderer inte initierad än. Prova igen om en stund!');
@@ -1785,6 +1822,9 @@ function applyMultiPartColoring() {
             'zipper': '#4169E1',      // Blue zipper
             'string': '#00CED1'       // Turquoise strings
         });
+
+        // Update main avatar to show the changes
+        updateAvatarFromSVGRenderer();
 
         alert('🌈 Multi-part färgning applicerad!\nOlika delar av plagget har nu olika färger.');
     } catch (error) {
@@ -1809,6 +1849,8 @@ function applyPattern(patternType) {
         );
 
         if (success) {
+            // Update main avatar to show the pattern
+            updateAvatarFromSVGRenderer();
             alert(`✅ ${patternType} mönster applicerat på kläder!`);
         } else {
             alert('⚠️ Kunde inte applicera mönster. Kontrollera att avatar är laddad.');
@@ -1832,6 +1874,9 @@ function applyGlowEffect() {
             4
         );
 
+        // Update main avatar to show the glow
+        updateAvatarFromSVGRenderer();
+
         alert('💫 Glow-effekt applicerad på hår och kläder!');
     } catch (error) {
         console.error('Error applying glow:', error);
@@ -1847,6 +1892,10 @@ function clearEffects() {
 
     try {
         svgAvatarRenderer.clearLayer('effects');
+
+        // Update main avatar to show cleared effects
+        updateAvatarFromSVGRenderer();
+
         alert('🧹 Effekter rensade!');
     } catch (error) {
         console.error('Error clearing effects:', error);
@@ -2306,6 +2355,9 @@ async function applyLLMOutfit() {
 
         // Apply outfit
         const result = await window.clothingEngine.applyOutfit(spec.outfit || spec);
+
+        // Update main avatar to show the outfit
+        updateAvatarFromSVGRenderer();
 
         // Show result
         console.log('✅ Outfit applied:', result);
