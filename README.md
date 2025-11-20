@@ -1,182 +1,163 @@
-# 🎨 StyleSpace - Anime Avatar Spel
+# 🎨 StyleSpace - Avatar Customization Game
 
-Ett anime-inspirerat avatar anpassningsspel med **DiceBear Avataaars** integration!
-
-## ✨ Funktioner
-
-### 🎭 Avatar Anpassning (DiceBear Powered!)
-- **Hudton**: 6 olika nyanser från ljus till mörk
-- **Hårstil**: 9 olika stilar (långt, kort, knut, bob, etc.)
-- **Hårfärg**: 18+ färger inklusive naturliga och fantasifärger
-- **Ögon**: 7 olika uttryck (glad, förvånad, hjärtan, blinkar, etc.)
-- **Ögonbryn**: 7 olika stilar för olika känslor
-- **Mun**: 7 olika uttryck (leende, seriös, tunga, etc.)
-- **Glasögon**: 7 typer inklusive solglasögon och optikglas
-- **Bas-Kläder**: 9 typer med 12 färgalternativ
-
-### 👔 Kläder Shop
-- **Överdel**: 6 items (t-shirts, hoodies, jackor)
-- **Underdel**: 5 items (jeans, kjolar, shorts)
-- **Skor**: 4 items (sneakers, boots, sandaler)
-- **Accessoarer**: 4 items (kepsar, beanies, halsdukar, väskor)
-- **Köp med diamanter** och bygg din garderob!
-
-### 🐾 Pets System
-- **7 olika pets** att välja mellan
-- **Max 3 aktiva** samtidigt
-- **Animerade pets** med bounce-effekt
-- Pets från 25 till 200 diamanter
-
-### 👗 Outfit System
-- **Spara upp till 25 outfits**
-- Varje outfit kostar 5 💎
-- Inkluderar avatar anpassning, kläder OCH pets!
-- Snabbt ladda sparade outfits
-
-### 💎 Promo Koder
-- `WELCOME` - 50 diamanter
-- `STYLE100` - 100 diamanter
-- `FASHION` - 75 diamanter
-- `AVATAR` - 150 diamanter
-
-### 🎬 Anime.js Animationer
-- **Breathing avatar** - subtil upp-och-ner rörelse
-- **UI entrance animations** - panels glider in
-- **Button hover effects** - alla knappar animeras
-- **Diamond sparkle** - kontinuerlig rotation och pulse
-- **Tab switching** - smooth transitions
-- **Pet animations** - bounce och hover effects
-- **Purchase celebrations** - när du köper något!
-
-## 🚀 Kom Igång
-
-### Metod 1: Python Web Server (Rekommenderad)
-```bash
-cd stylespace
-python3 -m http.server 8888
-```
-Öppna: `http://localhost:8888`
-
-### Metod 2: Node.js http-server
-```bash
-npm install -g http-server
-http-server -p 8888
-```
-
-### Metod 3: VS Code Live Server
-1. Installera "Live Server" extension
-2. Högerklicka på `index.html`
-3. Välj "Open with Live Server"
-
-## 🔍 Debug & Verifiering
-
-Öppna Console (F12) när du kör spelet. Du ska se:
-
-```
-🎮 Initializing StyleSpace with DiceBear...
-📦 Anime.js loaded: true
-✨ Anime.js version: 4.2.2
-🎬 Starting animations...
-🎨 Starting UI entrance animations...
-💨 Starting avatar breathing animation...
-💎 Starting diamond sparkle animation...
-🔘 Setting up button animations...
-✅ All animations started!
-```
-
-## 🎨 DiceBear Integration
-
-Detta spel använder **[DiceBear Avataaars API](https://www.dicebear.com/)** för professionell avatar-rendering:
-
-- **SVG-baserade avatars** - skarp och skalbar
-- **Avataaars style** by Pablo Stanley
-- **Hundratals kombinationer** med alla anpassningsalternativ
-- **Perfekt integration** med anime.js animationer
-
-### Varför DiceBear?
-- ✅ Professionell anime/cartoon stil
-- ✅ Massvis med anpassningsalternativ
-- ✅ SVG = skarp kvalitet i alla storlekar
-- ✅ Enklare att animera än Canvas
-- ✅ Ingen asset-hantering behövs
-- ✅ Närmare ZEPETO-kvalitet än Canvas rendering
-
-## 📁 Fil Struktur
-
-```
-stylespace/
-├── index.html              # Huvudfil med DiceBear UI
-├── game.js                 # DiceBear-baserad spel-logik
-├── styles.css              # Anime-inspirerad styling
-├── test-anime.html         # Testfil för anime.js
-├── INSTRUKTIONER.md        # Detaljerad guide
-├── README.md               # Denna fil
-├── index-canvas-backup.html    # Backup av gamla Canvas-versionen
-└── game-canvas-backup.js       # Backup av gamla Canvas-versionen
-```
-
-## 🛠️ Teknisk Stack
-
-- **HTML5** - Struktur
-- **CSS3** - Styling med gradients och animationer
-- **Vanilla JavaScript** - No frameworks!
-- **[DiceBear Avataaars API](https://www.dicebear.com/)** - Avatar rendering
-- **[Anime.js 4.2.2](https://animejs.com/)** - Smooth animations
-- **Client-side storage** - Allt sparas i minnet (no backend)
-
-## 🎯 Användning
-
-1. **Anpassa din avatar** i Utseende-fliken
-2. **Köp kläder** i Kläder-fliken
-3. **Adoptera pets** i Pets-fliken (max 3 aktiva)
-4. **Spara outfits** i Outfits-fliken (5 💎 per outfit)
-5. **Lös in koder** i Koder-fliken för gratis diamanter!
-
-## 🎨 Avatar Exempel
-
-Med DiceBear kan du skapa avatars som:
-- Anime-pojkar och -flickor med stora uttrycksfulla ögon
-- Olika hudtoner och hårstilar
-- Glasögon, skägg, och andra accessories
-- Färgglada kläder som matchar din stil
-- ...och mycket mer!
-
-## 🐛 Felsökning
-
-**Problem: Avataren laddas inte**
-- Kontrollera internet-anslutning (DiceBear API behöver internet)
-- Öppna Console (F12) för felmeddelanden
-- Kör via web server, inte file://
-
-**Problem: Animationer fungerar inte**
-- Kontrollera att anime.js laddades (se Console)
-- Verifiera med test-anime.html först
-
-## 📝 Bakgrundsfiler (Backup)
-
-Om du vill återgå till Canvas-versionen:
-```bash
-mv index.html index-dicebear.html
-mv game.js game-dicebear.js
-mv index-canvas-backup.html index.html
-mv game-canvas-backup.js game.js
-```
-
-## 🚀 Framtida Förbättringar
-
-- [ ] Backend för persistent storage
-- [ ] Multiplayer support
-- [ ] Fler DiceBear styles (Bottts, Adventurer, etc.)
-- [ ] Custom clothing overlays
-- [ ] Mer advanced pet interactions
-- [ ] Achievement system
-- [ ] Daily rewards
-
-## 📄 Licens
-
-Detta är ett demo-projekt för utbildningsändamål.
-DiceBear API är gratis att använda - se [DiceBear License](https://www.dicebear.com/).
+Ett modernt avatar-anpassningsspel med vektorgrafik, LLM-integration och glassmorphic design.
 
 ---
 
-**Skapad med ❤️ och anime.js ✨**
+## 🚀 Snabbstart
+
+### 1. Klona Projektet (redan gjort!)
+```bash
+git clone https://github.com/jop3/stylespace.git
+cd stylespace
+```
+
+### 2. Starta en Lokal Server
+
+**Option A: Python 3 (Rekommenderat)**
+```bash
+python3 -m http.server 8080
+```
+
+**Option B: Python 2**
+```bash
+python -m SimpleHTTPServer 8080
+```
+
+**Option C: Node.js (npx)**
+```bash
+npx http-server -p 8080
+```
+
+**Option D: PHP**
+```bash
+php -S localhost:8080
+```
+
+### 3. Öppna i Webbläsaren
+```
+http://localhost:8080
+```
+
+**Klart!** 🎉 Inga npm install, inga dependencies att installera!
+
+---
+
+## 📦 Vad är detta?
+
+StyleSpace är ett interaktivt avatar-anpassningsspel där du kan:
+- 🎨 Skapa och customiza avatarer med 26+ stilar (DiceBear)
+- 👔 Välja kläder från 62+ SVG-assets
+- 🤖 Importera LLM-genererade outfits via JSON
+- 💎 Tjäna diamanter och köpa nya items
+- 🐾 Samla pets och accessoarer
+- 📊 Tracka progression med achievements
+- 💾 Spara din avatar lokalt
+
+---
+
+## 🎮 Hur Man Använder
+
+### Grundläggande Navigation
+
+1. **Utseende-tab** - Anpassa ansiktet, hår, ögon, kläder
+2. **Kläder-tab** - Shoppa nya kläder med diamanter
+3. **🎨 Custom-tab** - Avancerade features:
+   - LLM Outfit Generator (klistra in JSON)
+   - Multi-part färgning
+   - Mönster och effekter
+   - Dev Mode toggle
+4. **Pets-tab** - Köp och visa pets
+5. **Outfits-tab** - Spara och ladda kompletta looks
+6. **⭐ Progress-tab** - Se stats och achievements
+7. **Koder-tab** - Använd cheat codes
+
+### Quick Actions
+- 🎲 **Slumpa** - Randomisera hela avataren
+- ↶ **Undo** - Ångra senaste ändring
+- ↷ **Redo** - Gör om ändring
+- 💾 **Auto-save** - Sparas automatiskt i localStorage
+
+---
+
+## 🤖 LLM Outfit Generator
+
+### Hur det fungerar:
+
+1. Gå till **🎨 Custom** tab
+2. Se "🤖 LLM Outfit Generator" sektionen
+3. Klistra in en JSON-spec eller tryck på en preset-knapp
+
+### Exempel JSON:
+```json
+{
+  "outfit": {
+    "top": {
+      "assetId": "hoodie_colorblock",
+      "colors": ["#3498DB", "#E74C3C", "#2C3E50"]
+    },
+    "bottom": {
+      "assetId": "pants_jeans",
+      "colors": ["#4A90E2", "#2E5C8A"]
+    },
+    "shoes": {
+      "assetId": "shoes_sneakers_red",
+      "colors": ["#E74C3C", "#fff"]
+    }
+  }
+}
+```
+
+### Presets:
+- 🏃 **Sporty** - Athletic hoodie look
+- 👗 **Elegant** - Party dress with jewelry
+- 🎮 **Gamer** - Gaming tshirt + nerdy glasses
+- ❄️ **Winter** - Bomber jacket + warm accessories
+- 🎸 **Rock** - Leather jacket + edgy style
+
+---
+
+## 💡 Tips & Tricks
+
+### Dev Mode
+1. Gå till **🎨 Custom** tab
+2. Aktivera "🔓 Dev Mode"
+3. **Alla items blir gratis!** 🎉
+
+### Snabba Diamanter
+Använd cheat codes i **Koder** tab:
+- `DIAMONDS` - 10,000 💎
+- `RICH` - 50,000 💎
+- `BILLIONAIRE` - 1,000,000 💎
+
+---
+
+## 🐛 Felsökning
+
+### Avataren Visas Inte
+- Kolla att du kör via web server (inte file://)
+- Öppna Developer Console (F12) för errors
+- Vänta 2-3 sekunder för DiceBear att ladda
+
+### Styling Ser Fel Ut
+- Hard refresh: Ctrl+Shift+R (Windows) / Cmd+Shift+R (Mac)
+- Rensa browser cache
+
+### Localhost Fungerar Inte
+- Testa annan port: `python3 -m http.server 3000`
+- Kolla att ingen annan process använder porten
+
+---
+
+## 📚 Dokumentation
+
+- `llm-outfit-specs.md` - Komplett guide för LLM outfit-generering
+- `UI-IMPROVEMENTS.md` - Alla nya UI/UX features
+- `TEST-RESULTS.md` - Testresultat och coverage
+
+---
+
+## 🎉 Njut av StyleSpace!
+
+**Senast uppdaterad:** November 2025
+**Version:** 2.0 (LLM Outfit System + Modern UI)
