@@ -300,6 +300,14 @@ function loadFromLocalStorage() {
             // Merge loaded data into playerData (preserve new properties)
             Object.assign(playerData, loadedData);
 
+            // FORCE avataaars style if user has a non-customizable style
+            const currentStyle = playerData.avatar.style;
+            if (!avatarStyles[currentStyle]?.supportsCustomization) {
+                console.warn(`⚠️ Resetting style from ${currentStyle} to avataaars (supports customization)`);
+                playerData.avatar.style = 'avataaars';
+                saveToLocalStorage(); // Save the fix
+            }
+
             console.log('📂 Game loaded from LocalStorage');
             showSaveNotification('Laddad! ✓');
             return true;
@@ -1826,6 +1834,10 @@ function initializeSVGRenderer() {
 
     try {
         svgAvatarRenderer = new SVGAvatarRenderer('svg-manipulation-container');
+
+        // EXPOSE to window for ClothingEngine
+        window.svgAvatarRenderer = svgAvatarRenderer;
+
         console.log('✅ SVG Avatar Renderer initialized successfully');
         return svgAvatarRenderer;
     } catch (error) {
@@ -2113,12 +2125,12 @@ function applyEffect(effectType) {
                 alert('🔪 Sharpen-effekt kommer snart!');
                 break;
             case 'vintage':
-                svgAvatarRenderer.applySepia(selector, 0.7);
-                alert('📷 Vintage-effekt applicerad!');
+                // TODO: Implement applySepia in SVGAvatarRenderer
+                alert('📷 Vintage-effekt kommer snart!');
                 break;
             case 'rainbow':
-                svgAvatarRenderer.applyRainbow(selector);
-                alert('🌈 Rainbow-effekt applicerad!');
+                // TODO: Implement applyRainbow in SVGAvatarRenderer
+                alert('🌈 Rainbow-effekt kommer snart!');
                 break;
             case 'emboss':
                 alert('🗿 Emboss-effekt kommer snart!');
@@ -2568,6 +2580,9 @@ window.loadPresetOutfit = loadPresetOutfit;
 window.clearOutfit = clearOutfit;
 window.buyClothes = buyClothes;
 window.wearClothes = wearClothes;
+window.buyPet = buyPet;
+window.activatePet = activatePet;
+window.deactivatePet = deactivatePet;
 
 // Start the game when page loads
 window.addEventListener('load', init);

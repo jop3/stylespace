@@ -831,20 +831,21 @@ textarea:focus {
 /* Fix for shop items inside customization-section */
 #clothesShop .customization-section,
 #petsShop .customization-section {
-    display: grid;
-    grid-template-columns: 1fr;
+    display: flex;
+    flex-direction: column;
     gap: var(--spacing-md);
     padding: var(--spacing-lg);
     margin-bottom: var(--spacing-md);
+    min-height: 200px; /* Prevent collapsing */
 }
 
 #clothesShop .customization-section h3,
 #petsShop .customization-section h3 {
-    grid-column: 1 / -1;
-    margin-bottom: var(--spacing-sm);
+    margin-bottom: var(--spacing-md);
     color: white;
     font-size: 1.2rem;
     font-weight: 700;
+    flex-shrink: 0; /* Prevent title from shrinking */
 }
 
 .customization-section .shop-item {
@@ -856,6 +857,7 @@ textarea:focus {
     border-radius: var(--radius-lg);
     border: 2px solid rgba(255, 255, 255, 0.5);
     transition: all var(--transition-normal);
+    min-height: 80px; /* Minimum height for items */
 }
 
 .customization-section .shop-item:hover {
