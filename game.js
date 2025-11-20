@@ -815,8 +815,9 @@ function generateAvatar() {
         }
 
         // Base options for all styles
+        // NOTE: Do NOT use seed if we want customization to work!
+        // Seed overrides all other parameters in DiceBear
         const options = {
-            seed: playerData.avatar.seed,
             backgroundColor: ['transparent']
         };
 
