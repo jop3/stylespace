@@ -2107,30 +2107,36 @@ function applyEffect(effectType) {
         switch(effectType) {
             case 'glow':
                 svgAvatarRenderer.applyGlow(selector, '#FF6B9D', 4);
+                updateAvatarFromSVGRenderer();
                 alert('💫 Glow-effekt applicerad!');
                 break;
             case 'neon':
                 svgAvatarRenderer.applyGlow(selector, '#00FFFF', 8);
+                updateAvatarFromSVGRenderer();
                 alert('🌟 Neon-effekt applicerad!');
                 break;
             case 'shadow':
                 svgAvatarRenderer.applyShadow(selector, 2, 2, 5, 'rgba(0,0,0,0.5)');
+                updateAvatarFromSVGRenderer();
                 alert('🌑 Shadow-effekt applicerad!');
                 break;
             case 'blur':
                 svgAvatarRenderer.applyBlur(selector, 2);
+                updateAvatarFromSVGRenderer();
                 alert('🌫️ Blur-effekt applicerad!');
                 break;
             case 'sharpen':
                 alert('🔪 Sharpen-effekt kommer snart!');
                 break;
             case 'vintage':
-                // TODO: Implement applySepia in SVGAvatarRenderer
-                alert('📷 Vintage-effekt kommer snart!');
+                svgAvatarRenderer.applySepia(selector, 0.7);
+                updateAvatarFromSVGRenderer();
+                alert('📷 Vintage-effekt applicerad!');
                 break;
             case 'rainbow':
-                // TODO: Implement applyRainbow in SVGAvatarRenderer
-                alert('🌈 Rainbow-effekt kommer snart!');
+                svgAvatarRenderer.applyRainbow(selector);
+                updateAvatarFromSVGRenderer();
+                alert('🌈 Rainbow-effekt applicerad!');
                 break;
             case 'emboss':
                 alert('🗿 Emboss-effekt kommer snart!');

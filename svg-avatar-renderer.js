@@ -337,6 +337,154 @@ class SVGAvatarRenderer {
         console.log(`✅ Glow applied to ${elements.length} elements`);
     }
 
+    // Apply shadow filter
+    applyShadow(selector, dx = 2, dy = 2, blur = 5, color = 'rgba(0,0,0,0.5)') {
+        console.log(`🌑 Applying shadow to ${selector}`);
+
+        const defs = this.container.defs();
+        const filterId = `shadow-${Date.now()}`;
+
+        // Create shadow filter
+        const filter = defs.element('filter').attr({
+            id: filterId,
+            x: '-50%',
+            y: '-50%',
+            width: '200%',
+            height: '200%'
+        });
+
+        filter.element('feGaussianBlur')
+            .attr({
+                in: 'SourceAlpha',
+                stdDeviation: blur
+            });
+
+        filter.element('feOffset')
+            .attr({
+                dx: dx,
+                dy: dy,
+                result: 'offsetblur'
+            });
+
+        filter.element('feFlood')
+            .attr({
+                'flood-color': color
+            });
+
+        filter.element('feComposite')
+            .attr({
+                in2: 'offsetblur',
+                operator: 'in'
+            });
+
+        const merge = filter.element('feMerge');
+        merge.element('feMergeNode');
+        merge.element('feMergeNode').attr({ in: 'SourceGraphic' });
+
+        // Apply filter to elements
+        const elements = this.container.find(selector);
+        elements.each(function() {
+            this.attr('filter', `url(#${filterId})`);
+        });
+
+        console.log(`✅ Shadow applied to ${elements.length} elements`);
+    }
+
+    // Apply blur filter
+    applyBlur(selector, amount = 2) {
+        console.log(`🌫️ Applying blur to ${selector}`);
+
+        const defs = this.container.defs();
+        const filterId = `blur-${Date.now()}`;
+
+        // Create blur filter
+        const filter = defs.element('filter').attr({ id: filterId });
+
+        filter.element('feGaussianBlur')
+            .attr({
+                in: 'SourceGraphic',
+                stdDeviation: amount
+            });
+
+        // Apply filter to elements
+        const elements = this.container.find(selector);
+        elements.each(function() {
+            this.attr('filter', `url(#${filterId})`);
+        });
+
+        console.log(`✅ Blur applied to ${elements.length} elements`);
+    }
+
+    // Apply sepia filter (vintage effect)
+    applySepia(selector, intensity = 0.7) {
+        console.log(`📷 Applying sepia to ${selector}`);
+
+        const defs = this.container.defs();
+        const filterId = `sepia-${Date.now()}`;
+
+        // Create sepia filter using color matrix
+        const filter = defs.element('filter').attr({ id: filterId });
+
+        // Sepia color matrix values
+        const sepiaMatrix = [
+            0.393 * intensity + (1 - intensity), 0.769 * intensity, 0.189 * intensity, 0, 0,
+            0.349 * intensity, 0.686 * intensity + (1 - intensity), 0.168 * intensity, 0, 0,
+            0.272 * intensity, 0.534 * intensity, 0.131 * intensity + (1 - intensity), 0, 0,
+            0, 0, 0, 1, 0
+        ];
+
+        filter.element('feColorMatrix')
+            .attr({
+                type: 'matrix',
+                values: sepiaMatrix.join(' ')
+            });
+
+        // Apply filter to elements
+        const elements = this.container.find(selector);
+        elements.each(function() {
+            this.attr('filter', `url(#${filterId})`);
+        });
+
+        console.log(`✅ Sepia applied to ${elements.length} elements`);
+    }
+
+    // Apply rainbow gradient effect
+    applyRainbow(selector) {
+        console.log(`🌈 Applying rainbow to ${selector}`);
+
+        const defs = this.container.defs();
+        const gradientId = `rainbow-${Date.now()}`;
+
+        // Create rainbow gradient
+        const gradient = defs.gradient('linear', function(add) {
+            add.stop(0, '#ff0000');    // Red
+            add.stop(0.17, '#ff7f00'); // Orange
+            add.stop(0.33, '#ffff00'); // Yellow
+            add.stop(0.5, '#00ff00');  // Green
+            add.stop(0.67, '#0000ff'); // Blue
+            add.stop(0.83, '#4b0082'); // Indigo
+            add.stop(1, '#9400d3');    // Violet
+        });
+
+        gradient.attr({
+            id: gradientId,
+            x1: '0%',
+            y1: '0%',
+            x2: '100%',
+            y2: '100%'
+        });
+
+        // Apply gradient to elements
+        const elements = this.container.find(selector);
+        elements.each(function() {
+            if (this.attr('fill') && this.attr('fill') !== 'none') {
+                this.fill(`url(#${gradientId})`);
+            }
+        });
+
+        console.log(`✅ Rainbow applied to ${elements.length} elements`);
+    }
+
     // Add custom SVG element from URL
     async addCustomSVG(url, layerName = 'decals', position = {x: 0, y: 0}, size = {width: 100, height: 100}) {
         console.log(`📥 Loading custom SVG from: ${url}`);
