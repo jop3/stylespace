@@ -69,21 +69,10 @@ const avatarStyles = {
 // ============================================
 
 const playerData = {
-    // DiceBear avatar properties
+    // HYBRID APPROACH: DiceBear for base, SVG assets for clothing
     avatar: {
-        style: 'avataaars', // Current DiceBear style
-        sex: 'female', // 'male' or 'female'
-        skinColor: 'light',
-        top: 'longHairStraight',
-        hairColor: '724133',
-        eyes: 'default',
-        eyebrow: 'default',
-        mouth: 'smile',
-        accessories: '',
-        clotheType: 'hoodie',
-        clotheColor: '4169E1',
-        facialHairType: '',
-        facialHairColor: '',
+        style: 'avataaars', // DiceBear style (26 options)
+        sex: 'female', // 'male' or 'female' - ONLY customization that works reliably
         backgroundColor: 'linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%)' // Avatar container background
     },
     diamonds: 100,
@@ -678,44 +667,13 @@ function randomizeAvatar() {
     // Save current state to history
     saveToHistory();
 
-    // Random style
+    // SIMPLIFIED: Only randomize what we actually use
+    // Random style (26 DiceBear styles)
     const styleKeys = Object.keys(avatarStyles);
     playerData.avatar.style = styleKeys[Math.floor(Math.random() * styleKeys.length)];
 
     // Random gender
     playerData.avatar.sex = Math.random() > 0.5 ? 'male' : 'female';
-
-    // Random skin color
-    const skinColors = ['light', 'ffdbb4', 'edb98a', 'd08b5b', 'ae5d29', '614335'];
-    playerData.avatar.skinColor = skinColors[Math.floor(Math.random() * skinColors.length)];
-
-    // Random hair
-    const hairStyles = ['noHair', 'longHairStraight', 'shortHairShortFlat', 'shortHairDreads', 'longHairCurly', 'shortHairShortCurly'];
-    playerData.avatar.top = hairStyles[Math.floor(Math.random() * hairStyles.length)];
-
-    // Random hair color
-    const hairColors = ['724133', '4a312c', 'f59797', 'c93305', 'a55728', 'd6b370', 'b58143', '2c1b18'];
-    playerData.avatar.hairColor = hairColors[Math.floor(Math.random() * hairColors.length)];
-
-    // Random eyes
-    const eyeTypes = ['default', 'happy', 'surprised', 'wink', 'hearts', 'cry', 'squint', 'side', 'closed'];
-    playerData.avatar.eyes = eyeTypes[Math.floor(Math.random() * eyeTypes.length)];
-
-    // Random eyebrows
-    const eyebrowTypes = ['default', 'angry', 'flat', 'raised', 'sad', 'unibrow', 'up', 'down'];
-    playerData.avatar.eyebrow = eyebrowTypes[Math.floor(Math.random() * eyebrowTypes.length)];
-
-    // Random mouth
-    const mouthTypes = ['smile', 'concerned', 'default', 'eating', 'grimace', 'sad', 'scream', 'serious', 'tongue', 'twinkle'];
-    playerData.avatar.mouth = mouthTypes[Math.floor(Math.random() * mouthTypes.length)];
-
-    // Random clothes
-    const clotheTypes = ['hoodie', 'overall', 'shirtCrewNeck', 'shirtScoopNeck', 'shirtVNeck', 'collarSweater', 'graphicShirt'];
-    playerData.avatar.clotheType = clotheTypes[Math.floor(Math.random() * clotheTypes.length)];
-
-    // Random clothe color
-    const clotheColors = ['4169E1', 'DC143C', '228B22', 'FFD700', 'FF6347', '9370DB', 'FF69B4'];
-    playerData.avatar.clotheColor = clotheColors[Math.floor(Math.random() * clotheColors.length)];
 
     // Random background
     const backgrounds = [
@@ -730,7 +688,7 @@ function randomizeAvatar() {
     playerData.avatar.backgroundColor = backgrounds[Math.floor(Math.random() * backgrounds.length)];
 
     updateAvatar();
-    showNotification('🎲 Avatar slumpad!');
+    showNotification('🎲 Avatar slumpad! (Använd Kläder-tabben för outfit)');
 }
 
 // ============================================
@@ -813,60 +771,26 @@ function generateAvatar() {
             return null;
         }
 
-        // Create a dynamic seed based on current customization
-        // This ensures same settings = same avatar, but different settings = different avatar
-        const seedParts = [
-            playerData.avatar.sex || 'neutral',
-            playerData.avatar.skinColor || 'default',
-            playerData.avatar.top || 'default',
-            playerData.avatar.hairColor || 'default',
-            playerData.avatar.eyes || 'default',
-            playerData.avatar.eyebrow || 'default',
-            playerData.avatar.mouth || 'default',
-            playerData.avatar.clotheType || 'default',
-            playerData.avatar.clotheColor || 'default',
-            playerData.avatar.accessories || 'none',
-            playerData.avatar.facialHairType || 'none'
-        ];
-        const dynamicSeed = seedParts.join('-');
+        // HYBRID APPROACH: Use DiceBear ONLY for base body
+        // SVG assets will handle clothing, accessories, etc.
+        // Simple seed based on sex + style for variety between male/female
+        const simpleSeed = `stylespace-${playerData.avatar.sex}-${styleName}`;
 
-        // Base options for all styles
         const options = {
-            seed: dynamicSeed,
+            seed: simpleSeed,
             backgroundColor: ['transparent']
         };
 
-        // Add customization options only for styles that support it
-        if (styleConfig.supportsCustomization) {
-            // Add common customization options
-            if (playerData.avatar.sex) options.sex = [playerData.avatar.sex];
-            if (playerData.avatar.skinColor) options.skinColor = [playerData.avatar.skinColor];
-            if (playerData.avatar.top) options.top = [playerData.avatar.top];
-            if (playerData.avatar.hairColor) options.hairColor = [playerData.avatar.hairColor];
-            if (playerData.avatar.eyes) options.eyes = [playerData.avatar.eyes];
-            if (playerData.avatar.eyebrow) options.eyebrow = [playerData.avatar.eyebrow];
-            if (playerData.avatar.mouth) options.mouth = [playerData.avatar.mouth];
-            if (playerData.avatar.clotheType) options.clothesType = [playerData.avatar.clotheType];
-            if (playerData.avatar.clotheColor) options.clothesColor = [playerData.avatar.clotheColor];
-
-            // Add accessories if selected
-            if (playerData.avatar.accessories) {
-                options.accessories = [playerData.avatar.accessories];
-                options.accessoriesColor = ['262E33'];
-            }
-
-            // Add facial hair if selected
-            if (playerData.avatar.facialHairType) {
-                options.facialHairType = [playerData.avatar.facialHairType];
-                options.facialHairColor = [playerData.avatar.facialHairColor || playerData.avatar.hairColor];
-            }
+        // ONLY add sex for styles that support it (minimal customization)
+        if (styleConfig.supportsCustomization && playerData.avatar.sex) {
+            options.sex = [playerData.avatar.sex];
         }
 
-        console.log('🎨 Generating avatar with style:', styleName, 'options:', options);
+        console.log('🎨 Generating DiceBear base avatar:', styleName, 'seed:', simpleSeed);
 
         // Create avatar using selected style
         const avatar = createAvatar(styleConfig.style, options);
-        console.log('✅ Avatar created');
+        console.log('✅ DiceBear base avatar created (clothing via SVG assets)');
 
         return avatar;
     } catch (error) {
