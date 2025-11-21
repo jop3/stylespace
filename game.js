@@ -813,8 +813,26 @@ function generateAvatar() {
             return null;
         }
 
+        // Create a dynamic seed based on current customization
+        // This ensures same settings = same avatar, but different settings = different avatar
+        const seedParts = [
+            playerData.avatar.sex || 'neutral',
+            playerData.avatar.skinColor || 'default',
+            playerData.avatar.top || 'default',
+            playerData.avatar.hairColor || 'default',
+            playerData.avatar.eyes || 'default',
+            playerData.avatar.eyebrow || 'default',
+            playerData.avatar.mouth || 'default',
+            playerData.avatar.clotheType || 'default',
+            playerData.avatar.clotheColor || 'default',
+            playerData.avatar.accessories || 'none',
+            playerData.avatar.facialHairType || 'none'
+        ];
+        const dynamicSeed = seedParts.join('-');
+
         // Base options for all styles
         const options = {
+            seed: dynamicSeed,
             backgroundColor: ['transparent']
         };
 
