@@ -72,7 +72,6 @@ const playerData = {
     // DiceBear avatar properties
     avatar: {
         style: 'avataaars', // Current DiceBear style
-        seed: 'stylespace-user', // Static seed - won't randomize on updates
         sex: 'female', // 'male' or 'female'
         skinColor: 'light',
         top: 'longHairStraight',
@@ -816,7 +815,6 @@ function generateAvatar() {
 
         // Base options for all styles
         const options = {
-            seed: playerData.avatar.seed,
             backgroundColor: ['transparent']
         };
 
