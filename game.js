@@ -1,67 +1,13 @@
 // ============================================
-// IMPORTS - DiceBear Library
+// MULTIAVATAR SIMPLE AVATAR SYSTEM
+// No more DiceBear complexity!
 // ============================================
 
-import { createAvatar } from '@dicebear/core';
-import {
-    avataaars,
-    adventurer,
-    adventurerNeutral,
-    bigEars,
-    bigEarsNeutral,
-    bigSmile,
-    bottts,
-    botttsNeutral,
-    croodles,
-    croodlesNeutral,
-    funEmoji,
-    icons,
-    identicon,
-    initials,
-    lorelei,
-    loreleiNeutral,
-    micah,
-    miniavs,
-    notionists,
-    notionistsNeutral,
-    openPeeps,
-    personas,
-    pixelArt,
-    pixelArtNeutral,
-    rings,
-    shapes,
-    thumbs
-} from '@dicebear/collection';
-
-// Avatar styles mapping
-const avatarStyles = {
-    avataaars: { style: avataaars, name: 'Avataaars', supportsCustomization: true },
-    adventurer: { style: adventurer, name: 'Adventurer', supportsCustomization: true },
-    adventurerNeutral: { style: adventurerNeutral, name: 'Adventurer Neutral', supportsCustomization: true },
-    bigEars: { style: bigEars, name: 'Big Ears', supportsCustomization: true },
-    bigEarsNeutral: { style: bigEarsNeutral, name: 'Big Ears Neutral', supportsCustomization: true },
-    bigSmile: { style: bigSmile, name: 'Big Smile', supportsCustomization: true },
-    bottts: { style: bottts, name: 'Bottts (Robot)', supportsCustomization: false },
-    botttsNeutral: { style: botttsNeutral, name: 'Bottts Neutral', supportsCustomization: false },
-    croodles: { style: croodles, name: 'Croodles', supportsCustomization: true },
-    croodlesNeutral: { style: croodlesNeutral, name: 'Croodles Neutral', supportsCustomization: true },
-    funEmoji: { style: funEmoji, name: 'Fun Emoji', supportsCustomization: false },
-    icons: { style: icons, name: 'Icons', supportsCustomization: false },
-    identicon: { style: identicon, name: 'Identicon', supportsCustomization: false },
-    initials: { style: initials, name: 'Initials', supportsCustomization: false },
-    lorelei: { style: lorelei, name: 'Lorelei', supportsCustomization: true },
-    loreleiNeutral: { style: loreleiNeutral, name: 'Lorelei Neutral', supportsCustomization: true },
-    micah: { style: micah, name: 'Micah', supportsCustomization: true },
-    miniavs: { style: miniavs, name: 'Miniavs', supportsCustomization: false },
-    notionists: { style: notionists, name: 'Notionists', supportsCustomization: false },
-    notionistsNeutral: { style: notionistsNeutral, name: 'Notionists Neutral', supportsCustomization: false },
-    openPeeps: { style: openPeeps, name: 'Open Peeps', supportsCustomization: true },
-    personas: { style: personas, name: 'Personas', supportsCustomization: true },
-    pixelArt: { style: pixelArt, name: 'Pixel Art', supportsCustomization: false },
-    pixelArtNeutral: { style: pixelArtNeutral, name: 'Pixel Art Neutral', supportsCustomization: false },
-    rings: { style: rings, name: 'Rings', supportsCustomization: false },
-    shapes: { style: shapes, name: 'Shapes', supportsCustomization: false },
-    thumbs: { style: thumbs, name: 'Thumbs', supportsCustomization: false }
+// Simple avatar configuration
+const AVATAR_OPTIONS = {
+    sex: ['male', 'female'],
+    skinTones: ['light', 'medium', 'dark'],
+    hairColors: ['blonde', 'brown', 'black', 'red', 'blue', 'pink']
 };
 
 // ============================================
@@ -69,23 +15,13 @@ const avatarStyles = {
 // ============================================
 
 const playerData = {
-    // DiceBear avatar properties
+    // Avatar properties (using Multiavatar)
     avatar: {
-        style: 'avataaars', // Current DiceBear style
-        seed: 'stylespace-user', // Static seed - won't randomize on updates
-        sex: 'female', // 'male' or 'female'
+        seed: 'user', // Base seed for Multiavatar
+        sex: 'female',
         skinColor: 'light',
-        top: 'longHairStraight',
-        hairColor: '724133',
-        eyes: 'default',
-        eyebrow: 'default',
-        mouth: 'smile',
-        accessories: '',
-        clotheType: 'hoodie',
-        clotheColor: '4169E1',
-        facialHairType: '',
-        facialHairColor: '',
-        backgroundColor: 'linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%)' // Avatar container background
+        hairColor: 'brown',
+        backgroundColor: 'linear-gradient(135deg, #ffecd2 0%, #fcb69f 100%)'
     },
     diamonds: 100,
     devMode: false, // Toggle to unlock everything for free
@@ -300,13 +236,7 @@ function loadFromLocalStorage() {
             // Merge loaded data into playerData (preserve new properties)
             Object.assign(playerData, loadedData);
 
-            // FORCE avataaars style if user has a non-customizable style
-            const currentStyle = playerData.avatar.style;
-            if (!avatarStyles[currentStyle]?.supportsCustomization) {
-                console.warn(`⚠️ Resetting style from ${currentStyle} to avataaars (supports customization)`);
-                playerData.avatar.style = 'avataaars';
-                saveToLocalStorage(); // Save the fix
-            }
+            // Multiavatar doesn't have styles, so no style validation needed
 
             console.log('📂 Game loaded from LocalStorage');
             showSaveNotification('Laddad! ✓');
@@ -679,44 +609,16 @@ function randomizeAvatar() {
     // Save current state to history
     saveToHistory();
 
-    // Random style
-    const styleKeys = Object.keys(avatarStyles);
-    playerData.avatar.style = styleKeys[Math.floor(Math.random() * styleKeys.length)];
-
     // Random gender
     playerData.avatar.sex = Math.random() > 0.5 ? 'male' : 'female';
 
     // Random skin color
-    const skinColors = ['light', 'ffdbb4', 'edb98a', 'd08b5b', 'ae5d29', '614335'];
+    const skinColors = AVATAR_OPTIONS.skinTones;
     playerData.avatar.skinColor = skinColors[Math.floor(Math.random() * skinColors.length)];
 
-    // Random hair
-    const hairStyles = ['noHair', 'longHairStraight', 'shortHairShortFlat', 'shortHairDreads', 'longHairCurly', 'shortHairShortCurly'];
-    playerData.avatar.top = hairStyles[Math.floor(Math.random() * hairStyles.length)];
-
     // Random hair color
-    const hairColors = ['724133', '4a312c', 'f59797', 'c93305', 'a55728', 'd6b370', 'b58143', '2c1b18'];
+    const hairColors = AVATAR_OPTIONS.hairColors;
     playerData.avatar.hairColor = hairColors[Math.floor(Math.random() * hairColors.length)];
-
-    // Random eyes
-    const eyeTypes = ['default', 'happy', 'surprised', 'wink', 'hearts', 'cry', 'squint', 'side', 'closed'];
-    playerData.avatar.eyes = eyeTypes[Math.floor(Math.random() * eyeTypes.length)];
-
-    // Random eyebrows
-    const eyebrowTypes = ['default', 'angry', 'flat', 'raised', 'sad', 'unibrow', 'up', 'down'];
-    playerData.avatar.eyebrow = eyebrowTypes[Math.floor(Math.random() * eyebrowTypes.length)];
-
-    // Random mouth
-    const mouthTypes = ['smile', 'concerned', 'default', 'eating', 'grimace', 'sad', 'scream', 'serious', 'tongue', 'twinkle'];
-    playerData.avatar.mouth = mouthTypes[Math.floor(Math.random() * mouthTypes.length)];
-
-    // Random clothes
-    const clotheTypes = ['hoodie', 'overall', 'shirtCrewNeck', 'shirtScoopNeck', 'shirtVNeck', 'collarSweater', 'graphicShirt'];
-    playerData.avatar.clotheType = clotheTypes[Math.floor(Math.random() * clotheTypes.length)];
-
-    // Random clothe color
-    const clotheColors = ['4169E1', 'DC143C', '228B22', 'FFD700', 'FF6347', '9370DB', 'FF69B4'];
-    playerData.avatar.clotheColor = clotheColors[Math.floor(Math.random() * clotheColors.length)];
 
     // Random background
     const backgrounds = [
@@ -794,64 +696,42 @@ function updateUndoRedoButtons() {
 }
 
 // ============================================
-// DICEBEAR AVATAR GENERATION
+// MULTIAVATAR GENERATION
 // ============================================
 
 function generateAvatar() {
     try {
-        // Check if DiceBear is loaded
-        if (typeof createAvatar === 'undefined') {
-            console.error('❌ DiceBear not loaded!');
+        // Check if Multiavatar is loaded
+        if (typeof multiavatar === 'undefined') {
+            console.error('❌ Multiavatar not loaded!');
             return null;
         }
 
-        // Get selected style
-        const styleName = playerData.avatar.style || 'avataaars';
-        const styleConfig = avatarStyles[styleName];
+        // Create a unique seed based on player customization
+        const seed = [
+            playerData.avatar.sex,
+            playerData.avatar.skinColor,
+            playerData.avatar.hairColor,
+            playerData.avatar.seed
+        ].join('-');
 
-        if (!styleConfig) {
-            console.error('❌ Unknown avatar style:', styleName);
-            return null;
-        }
+        console.log('🎨 Generating Multiavatar with seed:', seed);
 
-        // Base options for all styles
-        // NOTE: Do NOT use seed if we want customization to work!
-        // Seed overrides all other parameters in DiceBear
-        const options = {
-            backgroundColor: ['transparent']
+        // Generate avatar SVG string
+        const svgString = multiavatar(seed);
+
+        console.log('✅ Avatar created, SVG length:', svgString.length);
+
+        // Create a simple object with toString() method for compatibility
+        const avatar = {
+            svgString: svgString,
+            toString() {
+                return this.svgString;
+            },
+            toDataUri() {
+                return 'data:image/svg+xml;utf8,' + encodeURIComponent(this.svgString);
+            }
         };
-
-        // Add customization options only for styles that support it
-        if (styleConfig.supportsCustomization) {
-            // Add common customization options
-            if (playerData.avatar.sex) options.sex = [playerData.avatar.sex];
-            if (playerData.avatar.skinColor) options.skinColor = [playerData.avatar.skinColor];
-            if (playerData.avatar.top) options.top = [playerData.avatar.top];
-            if (playerData.avatar.hairColor) options.hairColor = [playerData.avatar.hairColor];
-            if (playerData.avatar.eyes) options.eyes = [playerData.avatar.eyes];
-            if (playerData.avatar.eyebrow) options.eyebrow = [playerData.avatar.eyebrow];
-            if (playerData.avatar.mouth) options.mouth = [playerData.avatar.mouth];
-            if (playerData.avatar.clotheType) options.clothesType = [playerData.avatar.clotheType];
-            if (playerData.avatar.clotheColor) options.clothesColor = [playerData.avatar.clotheColor];
-
-            // Add accessories if selected
-            if (playerData.avatar.accessories) {
-                options.accessories = [playerData.avatar.accessories];
-                options.accessoriesColor = ['262E33'];
-            }
-
-            // Add facial hair if selected
-            if (playerData.avatar.facialHairType) {
-                options.facialHairType = [playerData.avatar.facialHairType];
-                options.facialHairColor = [playerData.avatar.facialHairColor || playerData.avatar.hairColor];
-            }
-        }
-
-        console.log('🎨 Generating avatar with style:', styleName, 'options:', options);
-
-        // Create avatar using selected style
-        const avatar = createAvatar(styleConfig.style, options);
-        console.log('✅ Avatar created');
 
         return avatar;
     } catch (error) {
@@ -859,35 +739,6 @@ function generateAvatar() {
         return null;
     }
 }
-
-// Change avatar style
-function changeAvatarStyle(styleName) {
-    console.log(`🎨 Changing avatar style to: ${styleName}`);
-
-    const styleConfig = avatarStyles[styleName];
-    if (!styleConfig) {
-        console.error('❌ Unknown avatar style:', styleName);
-        return;
-    }
-
-    // Update playerData
-    playerData.avatar.style = styleName;
-
-    // Regenerate avatar with new style (includes auto-save)
-    updateAvatar();
-
-    // Show info about customization support
-    if (!styleConfig.supportsCustomization) {
-        console.log('ℹ️ Note: This style does not support detailed customization');
-    }
-
-    // Animate the change
-    if (typeof anime !== 'undefined') {
-        animateAvatarChange();
-    }
-}
-// Make globally accessible for HTML onchange handler
-window.changeAvatarStyle = changeAvatarStyle;
 
 function updateAvatar() {
     try {
@@ -1069,26 +920,8 @@ document.querySelectorAll('.option-btn').forEach(btn => {
         siblings.forEach(s => s.classList.remove('selected'));
         btn.classList.add('selected');
 
-        // Special handling for sex changes
-        if (type === 'sex') {
-            playerData.avatar.sex = value;
-
-            // Update hair to match gender (optional, for better defaults)
-            if (value === 'male') {
-                // Default male hairstyles
-                if (playerData.avatar.top.includes('long')) {
-                    playerData.avatar.top = 'shortHairShortFlat';
-                }
-            } else if (value === 'female') {
-                // Default female hairstyles
-                if (!playerData.avatar.top.includes('long')) {
-                    playerData.avatar.top = 'longHairStraight';
-                }
-            }
-        } else {
-            // Normal update for other attributes
-            playerData.avatar[type] = value;
-        }
+        // Update avatar property
+        playerData.avatar[type] = value;
 
         updateAvatar();
 
@@ -2192,15 +2025,14 @@ function toggleDevMode() {
 // ============================================
 
 function init() {
-    console.log('🎮 Initializing StyleSpace with DiceBear...');
+    console.log('🎮 Initializing StyleSpace with Multiavatar...');
     console.log('📦 Anime.js loaded:', typeof anime !== 'undefined');
     if (typeof anime !== 'undefined') {
         console.log('✨ Anime.js version:', anime.version);
     }
 
-    // Check DiceBear loading
-    console.log('📦 DiceBear createAvatar loaded:', typeof createAvatar !== 'undefined');
-    console.log('📦 DiceBear avataaars loaded:', typeof avataaars !== 'undefined');
+    // Check Multiavatar loading
+    console.log('📦 Multiavatar loaded:', typeof multiavatar !== 'undefined');
 
     // Check dependencies for shop
     console.log('📦 SVGAssetDatabase loaded:', typeof SVGAssetDatabase !== 'undefined');
@@ -2208,8 +2040,8 @@ function init() {
     console.log('📦 ClothingEngine loaded:', typeof ClothingEngine !== 'undefined');
     console.log('📦 SVGColorRemapper loaded:', typeof SVGColorRemapper !== 'undefined');
 
-    if (typeof createAvatar === 'undefined' || typeof avataaars === 'undefined') {
-        console.error('❌ DiceBear library not loaded! Check import map and network.');
+    if (typeof multiavatar === 'undefined') {
+        console.error('❌ Multiavatar library not loaded! Check CDN and network.');
     }
 
     // Load saved data from LocalStorage
