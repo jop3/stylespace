@@ -14,9 +14,15 @@
     <!-- SVG.js for SVG manipulation -->
     <script src="https://cdn.jsdelivr.net/npm/@svgdotjs/svg.js@3.2.0/dist/svg.min.js"></script>
 
-    <!-- Multiavatar for simple avatar generation -->
-    <script src="https://cdn.jsdelivr.net/npm/@multiavatar/multiavatar/multiavatar.min.js"></script>
-
+    <!-- DiceBear Avatar Library (ESM) -->
+    <script type="importmap">
+    {
+      "imports": {
+        "@dicebear/core": "https://esm.sh/@dicebear/core@9",
+        "@dicebear/collection": "https://esm.sh/@dicebear/collection@9"
+      }
+    }
+    </script>
 </head>
 <body>
     <div class="game-container">
@@ -62,6 +68,47 @@
                             <button class="option-btn selected" data-type="sex" data-value="female">👩 Kvinna</button>
                             <button class="option-btn" data-type="sex" data-value="male">👨 Man</button>
                         </div>
+                    </div>
+
+                    <!-- Avatar Style -->
+                    <div class="customization-section">
+                        <h3>Avatar Stil</h3>
+                        <select id="avatarStyleSelect" class="style-select" onchange="changeAvatarStyle(this.value)">
+                            <optgroup label="Humanoid Styles">
+                                <option value="avataaars" selected>Avataaars (Classic)</option>
+                                <option value="adventurer">Adventurer</option>
+                                <option value="adventurerNeutral">Adventurer Neutral</option>
+                                <option value="bigEars">Big Ears</option>
+                                <option value="bigEarsNeutral">Big Ears Neutral</option>
+                                <option value="bigSmile">Big Smile</option>
+                                <option value="lorelei">Lorelei</option>
+                                <option value="loreleiNeutral">Lorelei Neutral</option>
+                                <option value="micah">Micah</option>
+                                <option value="miniavs">Miniavs</option>
+                                <option value="notionists">Notionists</option>
+                                <option value="notionistsNeutral">Notionists Neutral</option>
+                                <option value="openPeeps">Open Peeps</option>
+                                <option value="personas">Personas</option>
+                                <option value="pixelArt">Pixel Art</option>
+                                <option value="pixelArtNeutral">Pixel Art Neutral</option>
+                            </optgroup>
+                            <optgroup label="Abstract & Fun Styles">
+                                <option value="bottts">Bottts (Robot)</option>
+                                <option value="botttsNeutral">Bottts Neutral</option>
+                                <option value="croodles">Croodles (Doodle)</option>
+                                <option value="croodlesNeutral">Croodles Neutral</option>
+                                <option value="funEmoji">Fun Emoji</option>
+                                <option value="icons">Icons</option>
+                                <option value="identicon">Identicon</option>
+                                <option value="initials">Initials</option>
+                                <option value="rings">Rings</option>
+                                <option value="shapes">Shapes</option>
+                                <option value="thumbs">Thumbs</option>
+                            </optgroup>
+                        </select>
+                        <p class="text-xs opacity-70 mt-2">
+                            💡 Vissa stilar stödjer inte alla anpassningar
+                        </p>
                     </div>
 
                     <!-- Bakgrundsfärg -->
@@ -116,30 +163,215 @@
                     <!-- Hudton -->
                     <div class="customization-section">
                         <h3>Hudton</h3>
-                        <div class="option-buttons">
-                            <button class="option-btn selected" data-type="skinColor" data-value="light">☀️ Ljus</button>
-                            <button class="option-btn" data-type="skinColor" data-value="medium">🌤️ Medium</button>
-                            <button class="option-btn" data-type="skinColor" data-value="dark">🌙 Mörk</button>
+
+                        <!-- Preset Skin Tones -->
+                        <h4 class="text-sm font-medium my-2 opacity-80">Förvalda Toner</h4>
+                        <div class="color-grid">
+                            <button class="color-btn" data-type="skinColor" data-value="pale" style="background-color: #FFDBB4;" title="Pale"></button>
+                            <button class="color-btn" data-type="skinColor" data-value="light" style="background-color: #EDB98A;" title="Light"></button>
+                            <button class="color-btn" data-type="skinColor" data-value="tanned" style="background-color: #D08B5B;" title="Tanned"></button>
+                            <button class="color-btn" data-type="skinColor" data-value="brown" style="background-color: #AE5D29;" title="Brown"></button>
+                            <button class="color-btn" data-type="skinColor" data-value="darkBrown" style="background-color: #614335;" title="Dark Brown"></button>
+                            <button class="color-btn" data-type="skinColor" data-value="black" style="background-color: #2C1B18;" title="Black"></button>
                         </div>
-                        <p class="text-xs opacity-70 mt-2">
-                            💡 Multiavatar genererar avatarer baserat på dessa inställningar
-                        </p>
+
+                        <!-- Custom Skin Color Picker -->
+                        <div class="mt-4 p-4 bg-white bg-opacity-10 rounded-xl backdrop-blur-sm border border-white border-opacity-20 shadow-lg">
+                            <h4 class="text-sm font-semibold mb-3 text-white">🎨 Custom Hudton</h4>
+                            <div class="flex gap-3 items-center">
+                                <input type="color" id="customSkinColor" value="#EDB98A" class="color-picker flex-1 h-12">
+                                <button class="option-btn flex-1 transform hover:scale-105 transition-transform duration-200" onclick="applyCustomSkinColor()">Använd Färg</button>
+                            </div>
+                        </div>
                     </div>
 
-                    <!-- Hårfärg -->
+                    <!-- Hår -->
                     <div class="customization-section">
-                        <h3>Hårfärg</h3>
-                        <div class="option-buttons grid grid-cols-3 gap-2">
-                            <button class="option-btn" data-type="hairColor" data-value="blonde">👱 Blond</button>
-                            <button class="option-btn selected" data-type="hairColor" data-value="brown">🟤 Brun</button>
-                            <button class="option-btn" data-type="hairColor" data-value="black">⚫ Svart</button>
-                            <button class="option-btn" data-type="hairColor" data-value="red">🔴 Röd</button>
-                            <button class="option-btn" data-type="hairColor" data-value="blue">🔵 Blå</button>
-                            <button class="option-btn" data-type="hairColor" data-value="pink">💗 Rosa</button>
+                        <h3>Hårstil</h3>
+                        <div class="option-buttons grid grid-cols-2 gap-2">
+                            <button class="option-btn" data-type="top" data-value="noHair">Inget Hår</button>
+                            <button class="option-btn" data-type="top" data-value="eyepatch">Ögonlapp</button>
+                            <button class="option-btn" data-type="top" data-value="hat">Hatt</button>
+                            <button class="option-btn" data-type="top" data-value="hijab">Hijab</button>
+                            <button class="option-btn" data-type="top" data-value="turban">Turban</button>
+                            <button class="option-btn" data-type="top" data-value="winterHat1">Vintermössa 1</button>
+                            <button class="option-btn" data-type="top" data-value="winterHat2">Vintermössa 2</button>
+                            <button class="option-btn" data-type="top" data-value="winterHat3">Vintermössa 3</button>
+                            <button class="option-btn" data-type="top" data-value="winterHat4">Vintermössa 4</button>
+                            <button class="option-btn" data-type="top" data-value="longHairBigHair">Långt Stort</button>
+                            <button class="option-btn" data-type="top" data-value="longHairBob">Bob</button>
+                            <button class="option-btn" data-type="top" data-value="longHairBun">Knut</button>
+                            <button class="option-btn" data-type="top" data-value="longHairCurly">Långt Lockigt</button>
+                            <button class="option-btn" data-type="top" data-value="longHairCurvy">Långt Vågigt</button>
+                            <button class="option-btn" data-type="top" data-value="longHairDreads">Dreads</button>
+                            <button class="option-btn" data-type="top" data-value="longHairFrida">Frida</button>
+                            <button class="option-btn" data-type="top" data-value="longHairFro">Afro</button>
+                            <button class="option-btn" data-type="top" data-value="longHairFroBand">Afro Band</button>
+                            <button class="option-btn" data-type="top" data-value="longHairNotTooLong">Shoulder</button>
+                            <button class="option-btn" data-type="top" data-value="longHairShavedSides">Rakade Sidor</button>
+                            <button class="option-btn" data-type="top" data-value="longHairMiaWallace">Mia Wallace</button>
+                            <button class="option-btn" data-type="top" data-value="longHairStraight">Långt Rakt</button>
+                            <button class="option-btn" data-type="top" data-value="longHairStraight2">Långt Rakt 2</button>
+                            <button class="option-btn" data-type="top" data-value="longHairStraightStrand">Långt Slät</button>
+                            <button class="option-btn" data-type="top" data-value="shortHairDreads01">Kort Dreads 1</button>
+                            <button class="option-btn" data-type="top" data-value="shortHairDreads02">Kort Dreads 2</button>
+                            <button class="option-btn" data-type="top" data-value="shortHairFrizzle">Frizzigt</button>
+                            <button class="option-btn" data-type="top" data-value="shortHairShaggyMullet">Mullet</button>
+                            <button class="option-btn" data-type="top" data-value="shortHairShortCurly">Kort Lockigt</button>
+                            <button class="option-btn" data-type="top" data-value="shortHairShortFlat">Kort Platt</button>
+                            <button class="option-btn" data-type="top" data-value="shortHairShortRound">Kort Runt</button>
+                            <button class="option-btn" data-type="top" data-value="shortHairShortWaved">Kort Vågigt</button>
+                            <button class="option-btn" data-type="top" data-value="shortHairSides">Sides</button>
+                            <button class="option-btn" data-type="top" data-value="shortHairTheCaesar">Caesar</button>
+                            <button class="option-btn" data-type="top" data-value="shortHairTheCaesarSidePart">Caesar Side</button>
                         </div>
-                        <p class="text-xs opacity-70 mt-2">
-                            💡 Hårfärgen påverkar avatar-genereringen
-                        </p>
+
+                        <h4 class="mt-4 text-base font-semibold">Hårfärg</h4>
+                        <h5 class="text-xs font-medium my-2 opacity-80">Förvalda Färger</h5>
+                        <div class="color-grid">
+                            <button class="color-btn" data-type="hairColor" data-value="000000" style="background-color: #000000;" title="Svart"></button>
+                            <button class="color-btn" data-type="hairColor" data-value="2C1B18" style="background-color: #2C1B18;" title="Mörkbrun"></button>
+                            <button class="color-btn" data-type="hairColor" data-value="4A312C" style="background-color: #4A312C;" title="Brun"></button>
+                            <button class="color-btn" data-type="hairColor" data-value="724133" style="background-color: #724133;" title="Auburn"></button>
+                            <button class="color-btn" data-type="hairColor" data-value="A55728" style="background-color: #A55728;" title="Ljusbrun"></button>
+                            <button class="color-btn" data-type="hairColor" data-value="B58143" style="background-color: #B58143;" title="Beigebrun"></button>
+                            <button class="color-btn" data-type="hairColor" data-value="D6B370" style="background-color: #D6B370;" title="Blond"></button>
+                            <button class="color-btn" data-type="hairColor" data-value="F59797" style="background-color: #F59797;" title="PastelPink"></button>
+                            <button class="color-btn" data-type="hairColor" data-value="ECDCBF" style="background-color: #ECDCBF;" title="Platinum"></button>
+                            <button class="color-btn" data-type="hairColor" data-value="C93305" style="background-color: #C93305;" title="Röd"></button>
+                            <button class="color-btn" data-type="hairColor" data-value="E8E1E1" style="background-color: #E8E1E1;" title="Silver"></button>
+                            <button class="color-btn" data-type="hairColor" data-value="FF6B9D" style="background-color: #FF6B9D;" title="Rosa"></button>
+                            <button class="color-btn" data-type="hairColor" data-value="FF1493" style="background-color: #FF1493;" title="Het Rosa"></button>
+                            <button class="color-btn" data-type="hairColor" data-value="9370DB" style="background-color: #9370DB;" title="Lila"></button>
+                            <button class="color-btn" data-type="hairColor" data-value="4169E1" style="background-color: #4169E1;" title="Blå"></button>
+                            <button class="color-btn" data-type="hairColor" data-value="40E0D0" style="background-color: #40E0D0;" title="Turkos"></button>
+                            <button class="color-btn" data-type="hairColor" data-value="32CD32" style="background-color: #32CD32;" title="Grön"></button>
+                            <button class="color-btn" data-type="hairColor" data-value="FFD700" style="background-color: #FFD700;" title="Guld"></button>
+                        </div>
+
+                        <!-- Custom Hair Color Picker -->
+                        <div class="mt-4 p-4 bg-white bg-opacity-10 rounded-xl backdrop-blur-sm border border-white border-opacity-20 shadow-lg">
+                            <h5 class="text-sm font-semibold mb-3 text-white">🎨 Custom Hårfärg</h5>
+                            <div class="flex gap-3 items-center">
+                                <input type="color" id="customHairColor" value="#000000" class="color-picker flex-1 h-12">
+                                <button class="option-btn flex-1 transform hover:scale-105 transition-transform duration-200" onclick="applyCustomHairColor()">Använd Färg</button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Ögon -->
+                    <div class="customization-section">
+                        <h3>Ögon</h3>
+                        <div class="option-buttons grid grid-cols-2 gap-2">
+                            <button class="option-btn" data-type="eyes" data-value="default">👀 Standard</button>
+                            <button class="option-btn" data-type="eyes" data-value="close">😌 Stängda</button>
+                            <button class="option-btn" data-type="eyes" data-value="cry">😢 Gråter</button>
+                            <button class="option-btn" data-type="eyes" data-value="dizzy">😵 Snurrigt</button>
+                            <button class="option-btn" data-type="eyes" data-value="eyeRoll">🙄 Ögonrull</button>
+                            <button class="option-btn" data-type="eyes" data-value="happy">😊 Glada</button>
+                            <button class="option-btn" data-type="eyes" data-value="hearts">😍 Hjärtan</button>
+                            <button class="option-btn" data-type="eyes" data-value="side">👁️ Åt sidan</button>
+                            <button class="option-btn" data-type="eyes" data-value="squint">😑 Kisande</button>
+                            <button class="option-btn" data-type="eyes" data-value="surprised">😲 Förvånad</button>
+                            <button class="option-btn" data-type="eyes" data-value="wink">😉 Blinkar</button>
+                            <button class="option-btn" data-type="eyes" data-value="winkWacky">😜 Galen Blink</button>
+                            <button class="option-btn" data-type="eyes" data-value="xDizzy">😵‍💫 X Dizzy</button>
+                        </div>
+                    </div>
+
+                    <!-- Ögonbryn -->
+                    <div class="customization-section">
+                        <h3>Ögonbryn</h3>
+                        <div class="option-buttons grid grid-cols-2 gap-2">
+                            <button class="option-btn" data-type="eyebrow" data-value="default">Standard</button>
+                            <button class="option-btn" data-type="eyebrow" data-value="defaultNatural">Naturlig</button>
+                            <button class="option-btn" data-type="eyebrow" data-value="angryNatural">😠 Arg Natural</button>
+                            <button class="option-btn" data-type="eyebrow" data-value="angry">😡 Arg</button>
+                            <button class="option-btn" data-type="eyebrow" data-value="flatNatural">😐 Platt Natural</button>
+                            <button class="option-btn" data-type="eyebrow" data-value="frownNatural">☹️ Sur Natural</button>
+                            <button class="option-btn" data-type="eyebrow" data-value="raisedExcited">😃 Upphetsad</button>
+                            <button class="option-btn" data-type="eyebrow" data-value="raisedExcitedNatural">🤩 Upph. Natural</button>
+                            <button class="option-btn" data-type="eyebrow" data-value="sadConcerned">😟 Bekymrad</button>
+                            <button class="option-btn" data-type="eyebrow" data-value="sadConcernedNatural">😥 Bekym. Natural</button>
+                            <button class="option-btn" data-type="eyebrow" data-value="unibrowNatural">😤 Unibrow</button>
+                            <button class="option-btn" data-type="eyebrow" data-value="upDown">🤨 Upp-Ner</button>
+                            <button class="option-btn" data-type="eyebrow" data-value="upDownNatural">🧐 Upp-Ner Natural</button>
+                        </div>
+                    </div>
+
+                    <!-- Mun -->
+                    <div class="customization-section">
+                        <h3>Mun</h3>
+                        <div class="option-buttons grid grid-cols-2 gap-2">
+                            <button class="option-btn" data-type="mouth" data-value="default">😊 Standard</button>
+                            <button class="option-btn" data-type="mouth" data-value="concerned">😟 Bekymrad</button>
+                            <button class="option-btn" data-type="mouth" data-value="disbelief">😒 Misstro</button>
+                            <button class="option-btn" data-type="mouth" data-value="eating">😋 Äter</button>
+                            <button class="option-btn" data-type="mouth" data-value="grimace">😬 Grimas</button>
+                            <button class="option-btn" data-type="mouth" data-value="sad">😢 Ledsen</button>
+                            <button class="option-btn" data-type="mouth" data-value="screamOpen">😱 Skriker</button>
+                            <button class="option-btn" data-type="mouth" data-value="serious">😐 Seriös</button>
+                            <button class="option-btn" data-type="mouth" data-value="smile">😄 Leende</button>
+                            <button class="option-btn" data-type="mouth" data-value="tongue">😛 Tunga</button>
+                            <button class="option-btn" data-type="mouth" data-value="twinkle">✨ Blinka</button>
+                            <button class="option-btn" data-type="mouth" data-value="vomit">🤮 Kräks</button>
+                        </div>
+                    </div>
+
+                    <!-- Tillbehör -->
+                    <div class="customization-section">
+                        <h3>Glasögon</h3>
+                        <div class="option-buttons">
+                            <button class="option-btn" data-type="accessories" data-value="">Inga</button>
+                            <button class="option-btn" data-type="accessories" data-value="Round">Runda</button>
+                            <button class="option-btn" data-type="accessories" data-value="Wayfarers">Wayfarers</button>
+                            <button class="option-btn" data-type="accessories" data-value="Sunglasses">Solglasögon</button>
+                            <button class="option-btn" data-type="accessories" data-value="Prescription01">Optik 1</button>
+                            <button class="option-btn" data-type="accessories" data-value="Prescription02">Optik 2</button>
+                            <button class="option-btn" data-type="accessories" data-value="Kurt">Kurt</button>
+                        </div>
+                    </div>
+
+                    <!-- Kläder (DiceBear bygger in) -->
+                    <div class="customization-section">
+                        <h3>Bas-Kläder</h3>
+                        <div class="option-buttons grid grid-cols-2 gap-2">
+                            <button class="option-btn" data-type="clotheType" data-value="blazerShirt">👔 Blazer</button>
+                            <button class="option-btn" data-type="clotheType" data-value="blazerSweater">🧥 Blazer Tröja</button>
+                            <button class="option-btn" data-type="clotheType" data-value="collarSweater">🧶 Krage Tröja</button>
+                            <button class="option-btn" data-type="clotheType" data-value="graphicShirt">👕 Grafisk T-shirt</button>
+                            <button class="option-btn" data-type="clotheType" data-value="hoodie">🤷 Huvtröja</button>
+                            <button class="option-btn" data-type="clotheType" data-value="overall">👖 Overall</button>
+                            <button class="option-btn" data-type="clotheType" data-value="shirtCrewNeck">👕 T-shirt</button>
+                            <button class="option-btn" data-type="clotheType" data-value="shirtScoopNeck">👚 Scoop Neck</button>
+                            <button class="option-btn" data-type="clotheType" data-value="shirtVNeck">👕 V-Neck</button>
+                        </div>
+
+                        <h4 class="mt-4 text-base font-semibold">Klädfärg</h4>
+                        <h5 class="text-xs font-medium my-2 opacity-80">Förvalda Färger</h5>
+                        <div class="color-grid">
+                            <button class="color-btn" data-type="clotheColor" data-value="000000" style="background-color: #000000;" title="Svart"></button>
+                            <button class="color-btn" data-type="clotheColor" data-value="FFFFFF" style="background-color: #FFFFFF; border: 2px solid #ccc;" title="Vit"></button>
+                            <button class="color-btn" data-type="clotheColor" data-value="FF6B9D" style="background-color: #FF6B9D;" title="Rosa"></button>
+                            <button class="color-btn" data-type="clotheColor" data-value="4169E1" style="background-color: #4169E1;" title="Blå"></button>
+                            <button class="color-btn" data-type="clotheColor" data-value="32CD32" style="background-color: #32CD32;" title="Grön"></button>
+                            <button class="color-btn" data-type="clotheColor" data-value="FFD700" style="background-color: #FFD700;" title="Guld"></button>
+                            <button class="color-btn" data-type="clotheColor" data-value="DC143C" style="background-color: #DC143C;" title="Röd"></button>
+                            <button class="color-btn" data-type="clotheColor" data-value="9370DB" style="background-color: #9370DB;" title="Lila"></button>
+                            <button class="color-btn" data-type="clotheColor" data-value="FFA500" style="background-color: #FFA500;" title="Orange"></button>
+                            <button class="color-btn" data-type="clotheColor" data-value="40E0D0" style="background-color: #40E0D0;" title="Turkos"></button>
+                            <button class="color-btn" data-type="clotheColor" data-value="808080" style="background-color: #808080;" title="Grå"></button>
+                            <button class="color-btn" data-type="clotheColor" data-value="654321" style="background-color: #654321;" title="Brun"></button>
+                        </div>
+
+                        <!-- Custom Clothe Color Picker -->
+                        <div class="mt-4 p-4 bg-white bg-opacity-10 rounded-xl backdrop-blur-sm border border-white border-opacity-20 shadow-lg">
+                            <h5 class="text-sm font-semibold mb-3 text-white">🎨 Custom Klädfärg</h5>
+                            <div class="flex gap-3 items-center">
+                                <input type="color" id="customClotheColor" value="#000000" class="color-picker flex-1 h-12">
+                                <button class="option-btn flex-1 transform hover:scale-105 transition-transform duration-200" onclick="applyCustomClotheColor()">Använd Färg</button>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
